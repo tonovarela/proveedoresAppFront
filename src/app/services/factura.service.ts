@@ -10,7 +10,10 @@ import * as moment from 'moment';
 })
 export class FacturaService {
   URL_SERVICIOS: string = environment.URL_SERVICIOS;
-  constructor(private _http: HttpClient) { }
+  
+
+  constructor(private _http: HttpClient) {    
+   }
 
   obtenerPendientesCobro(proveedor) {
     return this._http.get<Movimiento[]>(`${this.URL_SERVICIOS}/facturas/pendientescobro/${proveedor}`)
@@ -33,7 +36,8 @@ export class FacturaService {
       );
   }
   obtenerContraRecibosPendientes(proveedor) {
-    return this._http.get<Contrarecibo[]>(`${this.URL_SERVICIOS}/facturas/contrarecibospendientes/${proveedor}`)
+    return this._http
+               .get<Contrarecibo[]>(`${this.URL_SERVICIOS}/facturas/contrarecibospendientes/${proveedor}`)
       .pipe(
         map(resp => resp["data"]),
         map(data => data.map(m => {

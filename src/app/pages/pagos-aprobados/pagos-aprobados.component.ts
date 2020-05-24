@@ -10,16 +10,11 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./pagos-aprobados.component.css']
 })
 export class PagosAprobadosComponent implements OnInit {  
-  constructor(private _pdfService: PdfMovimientosService,
-              private _facturasService:FacturaService) { }
+  constructor() { }
 
   ngOnInit(): void {
     
   }
-  generatePdf() {
- 
-     this._pdfService.obtenerDetalleContrarecibos(this._facturasService.obtenerMovimientosFicticios("Pesos",5));
   
-  }
 
 }

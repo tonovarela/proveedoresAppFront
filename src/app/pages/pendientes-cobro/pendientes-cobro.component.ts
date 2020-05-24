@@ -72,6 +72,19 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
       this.movimientos = movs;
       this.movimientos=this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Pesos",5));
       this.movimientos=this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Dolares",1));      
+      // this.movimientos.unshift({
+      //   folio: 66666,
+      //   solicitaContraRecibo: false,
+      //   movimientoID: 6985,
+      //   movimientoDescripcion: "Movimiento Ficticio ",
+      //   referencia: "59897",
+      //   moneda: 'Pesos',
+      //   saldo: 3004.40,
+      //   tienePDF: false,
+      //   tieneXML:false,
+      //   fechaEmision: moment('2020-01-05').toDate(),
+      //   fechaVencimiento: moment('2020-01-05').toDate()
+      // })
     });
   }
 

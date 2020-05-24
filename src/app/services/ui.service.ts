@@ -60,7 +60,7 @@ export class UiService {
       title: titulo,
       text: mensaje,
       showConfirmButton: false,
-      timer: 1500
+      timer: 3500
     });
   }
 }
