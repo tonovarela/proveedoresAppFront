@@ -1,0 +1,16 @@
+[{
+    "icono": "fa fa-money",
+    "titulo": "Pendientes cobro",     
+    "url": "/pendientes-cobro"
+  },
+  {
+    "icono": "fa fa-file-text-o",
+    "titulo": "Contra-recibos pendientes",      
+    "url": "/contra-recibos"
+  },
+  {
+    "icono": "fa fa-credit-card ",
+    "titulo": "Pagos aprobados",      
+    "url": "/pagos-aprobados"
+  }
+]

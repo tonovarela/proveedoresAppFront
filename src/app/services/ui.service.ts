@@ -1,0 +1,66 @@
+import swal, { SweetAlertResult } from 'sweetalert2';
+import { Injectable } from '@angular/core';
+import { ToastrService } from 'ngx-toastr'; 
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UiService {
+
+
+  constructor(private toastr: ToastrService) { }
+  mostrarAlertaError(titulo, mensaje) {
+    swal.fire(titulo, mensaje, 'error');
+  }
+
+  mostrarToasterWarning(titulo, mensaje) {
+    this.toastr.warning( mensaje,titulo,{ progressBar:true, timeOut:2000,progressAnimation:'increasing'});
+  }
+
+  mostrarAlertaConfirmacion(titulo, mensaje): Promise<SweetAlertResult> {
+    return swal.fire({
+      title: titulo,
+      text: mensaje,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      reverseButtons: true
+    });
+    //.then((result) => {
+    //   if (result.value) {
+    //     swalWithBootstrapButtons.fire(
+    //       'Deleted!',
+    //       'Your file has been deleted.',
+    //       'success'
+    //     )
+    //   } else if (
+    //     /* Read more about handling dismissals below */
+    //     result.dismiss === swal.DismissReason.cancel
+    //   ) {
+    //     swalWithBootstrapButtons.fire(
+    //       'Cancelled',
+    //       'Your imaginary file is safe :)',
+    //       'error'
+    //     )
+    //   }
+    // })
+
+
+
+
+  }
+
+  mostrarAlertaSuccess(titulo, mensaje) {
+    swal.fire({
+      icon: 'success',
+      title: titulo,
+      text: mensaje,
+      showConfirmButton: false,
+      timer: 1500
+    });
+  }
+}

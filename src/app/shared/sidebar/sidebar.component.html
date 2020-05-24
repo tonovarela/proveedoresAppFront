@@ -1,0 +1,35 @@
+<!-- ============================================================== -->
+<!-- Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->
+<aside class="left-sidebar">
+    <!-- Sidebar scroll-->
+    <div class="scroll-sidebar">
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav">
+            <ul id="sidebarnav">
+                <li class="user-profile">
+                    <a class="has-arrow waves-effect " href="#" aria-expanded="false"><img src="assets/images/users/av-6.png" alt="user" /><span class="hide-menu">Nombre del usuario </span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a routerLinkActive="active" routerLink="/perfil">Mi perfil </a></li>                        
+                        <li><a routerLinkActive="active" routerLink="/account-settings">Settings</a></li>
+                        <li><a routerLink="" (click)="_usuarioService.logout()" class="pointer">Cerrar sesión</a></li>
+                    </ul>
+                </li>
+                <li class="nav-devider"></li>
+                <li class="nav-small-cap"></li>
+                <li *ngFor="let menu of _sidebarService.menu | async"  routerLinkActive="active" >                    
+                    <a class="waves-effect waves-dark"    [routerLink]="menu.url">
+                        <i [class]="menu.icono" ></i>
+                        <span class="hide-menu" style="font-size: 11px" >{{menu.titulo}}                            
+                        </span>
+                    </a>                    
+                </li>
+            </ul>
+        </nav>
+        <!-- End Sidebar navigation -->
+    </div>
+    <!-- End Sidebar scroll-->
+</aside>
+<!-- ============================================================== -->
+<!-- End Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->

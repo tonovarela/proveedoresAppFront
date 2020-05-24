@@ -1,0 +1,77 @@
+<!-- <section id="wrapper">
+    <div class="login-register" style="background-image:url(../assets/images/background/login-register.jpg);">
+        <div class="login-box card">
+            <div class="card-body">
+                <form class="form-horizontal form-material" id="loginform" action="index.html">
+                    <h3 class="box-title m-b-20">Portal de Proveedores</h3>
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input class="form-control" type="text" required="" placeholder="Usuario"> </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input class="form-control" type="password" required="" placeholder="Password"> </div>
+                    </div>
+                 
+                    <div class="form-group text-center">
+                        <div class="col-xs-12 p-b-20">
+                            <button class="btn btn-block btn-lg btn-info btn-rounded" type="submit">Ingresar</button>
+                        </div>
+                    </div>                    
+                    <div class="form-group m-b-0">
+                        <div class="col-sm-12 text-center">
+
+                            <p>Para cualquier duda o aclaración puede comunicarse con: </p>
+                            <p>Diana Sarmiento 2122-5600, ext. 213 <br><a href="pages-register.html" class="text-info m-l-5"><b>cxp@litoprocess.com</b></a></p>
+                            <p>Auxiliar CxP 2122-5600, ext. 217 <br><a href="pages-register.html" class="text-info m-l-5"><b>contabilidad@litoprocess.com</b></a></p>
+                            
+                        </div>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</section> -->
+
+
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+<section id="wrapper" class="login-register login-sidebar" style="background-image:url(assets/images/background/login-register.jpg);">
+    <div class="login-box card">
+        <div class="card-body">
+            <form ngNativeValidate #f="ngForm" class="form-horizontal form-material" id="loginform" action="index.html" (ngSubmit)="ingresar(f)">
+                <a href="javascript:void(0)" class="text-center db"><img src="https://sistemas.litoprocess.com/litoapps/img/logo_b.png" alt="Home" /><br/>                    
+                </a>
+                <div class="form-group m-t-40">
+                    <div class="col-xs-12">
+                        <input class="form-control" [(ngModel)]="usuario.usuario"  autocomplete="off" name="usuario" type="text" required placeholder="Clave de proveedor">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <input class="form-control" [(ngModel)]="usuario.password"  name="password" type="password" required placeholder="contraseña">
+                    </div>
+                </div>                
+                <div class="form-group text-center m-t-20">
+                    <div class="col-xs-12">
+                        <button class="btn btn-info btn-lg btn-block text-uppercase btn-rounded" type="submit">Ingresar</button>
+                    </div>
+                </div>  
+                 <div class="form-group m-b-0" class="m-20">
+                        <div class="col-sm-12 text-center">
+
+                            <p>Para cualquier duda o aclaración puede comunicarse con: </p>
+                            <p>Diana Sarmiento 2122-5600, ext. 213 <br><a href="mailto:cxp@litoprocess.com" class="text-info m-l-5"><b><i class="mdi mdi-email-outline"></i>cxp@litoprocess.com</b></a></p>
+                            <p>Auxiliar CxP 2122-5600, ext. 217 <br><a href="mailto:contabilidad@litoprocess.com" class="text-info m-l-5"><b><i class="mdi mdi-email-outline"></i>contabilidad@litoprocess.com</b></a></p>
+                            
+                        </div>
+                    </div>                              
+            </form>            
+        </div>
+    </div>
+</section>
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->
