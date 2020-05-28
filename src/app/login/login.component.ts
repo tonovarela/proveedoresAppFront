@@ -19,17 +19,20 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     iniciar_plugins();
+    if (this._usuarioService.estaLogueado()){
+      this.router.navigate(['/pendientes-cobro']);
+    }
   }
 
   ingresar(form: NgForm) {
     const usuario = { usuario:form.value.usuario, password: form.value.password };
     this._usuarioService.login(usuario).subscribe((resp: ResponseLogin) => {
       if (resp.validacion == false) {
-        console.log("Login incorrecto");
+        //console.log("Login incorrecto");
         this._uiService.mostrarAlertaError("Acceso","Login incorrecto");
               
       } else {
-        console.log("Login correcto");
+        //console.log("Login correcto");
         this.router.navigate(['/pendientes-cobro']);
       }
 

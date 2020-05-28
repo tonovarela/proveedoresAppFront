@@ -26,10 +26,8 @@ L10n.load(traduccion);
 export class PendientesCobroComponent implements OnInit, OnDestroy {
 
   @ViewChild('grid') grid: Grid;
-
   movimientosCR_$ = new EventEmitter<void>();
   subscripcionMovMoneda: Subscription;
-
   gridInstance: Grid;
   subscriptionMovFile: Subscription;
   cargando: boolean = false;
@@ -44,6 +42,8 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     //checkboxOnly: true 
   };
 
+  monedasUnicas: boolean = true;
+  cumpleSaldoContrarecibo: boolean = true;
   movimientos: Movimiento[] = [];
   constructor(
     private _subirUsuarioService: SubirArchivoService,
@@ -53,7 +53,6 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     public _usuarioService: UsuarioService
   ) {
   }
-
   ngOnInit(): void {
 
     this.subscriptionMovFile = this._subirUsuarioService.notificacion.subscribe((mov: Movimiento) => {
@@ -62,42 +61,55 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
       this.movimientos = _movimientos;
     });
     this.subscripcionMovMoneda = this.movimientosCR_$.subscribe(() => {
-      if (!this.tieneMonedasUnicas()) {
-        this._uiService.mostrarToasterWarning("Monedas",
-          "Para generar contrarecibo se necesitan movimiento con el mismo tipo de moneda");
-      }
+      this.validarReglasContraRecibo();
     });
 
-    this._facturaService.obtenerPendientesCobro(this._usuarioService.usuario.Proveedor).subscribe(movs => {
-      this.movimientos = movs;
-      this.movimientos=this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Pesos",5));
-      this.movimientos=this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Dolares",1));      
-      // this.movimientos.unshift({
-      //   folio: 66666,
-      //   solicitaContraRecibo: false,
-      //   movimientoID: 6985,
-      //   movimientoDescripcion: "Movimiento Ficticio ",
-      //   referencia: "59897",
-      //   moneda: 'Pesos',
-      //   saldo: 3004.40,
-      //   tienePDF: false,
-      //   tieneXML:false,
-      //   fechaEmision: moment('2020-01-05').toDate(),
-      //   fechaVencimiento: moment('2020-01-05').toDate()
-      // })
-    });
+    this._facturaService
+      .obtenerPendientesCobro(this._usuarioService.usuario.Proveedor)
+      .subscribe(movs => {
+        this.movimientos = movs;
+        this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Pesos", 5));
+        this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Dolares", 1));
+        // this.movimientos.unshift({
+        //   folio: 66666,
+        //   solicitaContraRecibo: false,
+        //   movimientoID: 6985,
+        //   movimientoDescripcion: "Movimiento Ficticio ",
+        //   referencia: "59897",
+        //   moneda: 'Pesos',
+        //   saldo: 3004.40,
+        //   tienePDF: false,
+        //   tieneXML:false,
+        //   fechaEmision: moment('2020-01-05').toDate(),
+        //   fechaVencimiento: moment('2020-01-05').toDate()
+        // })
+      });
   }
+
+  validarReglasContraRecibo() {
+    if (!this.tieneMonedasUnicas()) {
+      this.monedasUnicas = false;
+      this._uiService.mostrarToasterWarning("Monedas",
+        "Para generar contrarecibo se necesitan movimiento con el mismo tipo de moneda");
+    } else {
+      this.monedasUnicas = true;
+    }
+    let movimientosPorGenerar = this.movimientos.filter(mov => mov.solicitaContraRecibo);
+    const maxContrarecibo: number = this._usuarioService.usuario.MontoMaxContraRecibo;
+    const total: number = new TotalSaldoCRPipe().transform(movimientosPorGenerar);
+    this.cumpleSaldoContrarecibo = total < maxContrarecibo
+  }
+
+
+
 
   ngOnDestroy(): void {
     this.subscriptionMovFile.unsubscribe();
     this.subscripcionMovMoneda.unsubscribe();
-
   }
 
-
-
+  //Evento del checkbox
   cambio(mov: Movimiento) {
-
     this.movimientos.forEach(x => {
       if (x.movimientoID == mov.movimientoID) {
         x.solicitaContraRecibo = !mov.solicitaContraRecibo;
@@ -106,20 +118,14 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
     })
   }
-
-
-
-
   async generarContraRecibo() {
-    let movimientosPorGenerar = this.movimientos.filter(mov => mov.solicitaContraRecibo);
-    const maxContrarecibo: number = this._usuarioService.usuario.MontoMaxContraRecibo;
-    const total: number = new TotalSaldoCRPipe().transform(movimientosPorGenerar);
-    if (total > maxContrarecibo) {
+      
+    if (!this.cumpleSaldoContrarecibo) {
       this._uiService.mostrarAlertaError("Cuota de contra-recibo excedido ",
-        `Solo se puede generar contra-recibo con un máximo de ${maxContrarecibo}`);
+        `Solo se puede generar contra-recibo con un máximo de ${this._usuarioService.usuario.MontoMaxContraRecibo}`);
       return;
     }
-    if (!this.tieneMonedasUnicas()) {
+    if (!this.monedasUnicas) {
       this._uiService.mostrarAlertaError("Monedas ",
         `Solo puede generar un contra-recibo con facturas con el mismo tipo de moneda`);
       return;
@@ -130,6 +136,8 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
       return
 
     this.cargando = true;
+    //Movimientos para generar contrarecibo
+    // let movimientosPorGenerar = this.movimientos.filter(mov => mov.solicitaContraRecibo);
 
     setTimeout(() => {
       this.cargando = false;
@@ -161,25 +169,6 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     this.grid.refresh();
 
   }
-
-  // agregarMovimientosFicticios(moneda, total) {
-  //   for (let i = moneda == "Pesos" ? total : 0; i < (moneda == "Pesos" ? total : 0) + total; i++) {
-  //     this.movimientos.unshift({
-  //       folio: (i + 1),
-  //       solicitaContraRecibo: false,
-  //       movimientoID: (i + 1),
-  //       movimientoDescripcion: "Movimiento Ficticio ",
-  //       referencia: "5989791",
-  //       moneda: moneda,
-  //       saldo: Math.random() * (10000 - 50 + 1) + 50,
-  //       tienePDF: true,
-  //       tieneXML: true,
-  //       fechaEmision: moment('2020-01-05').toDate(),
-  //       fechaVencimiento: moment('2020-01-05').toDate()
-  //     });
-  //   }
-  // }
-
 
 
 }

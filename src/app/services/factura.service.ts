@@ -10,10 +10,10 @@ import * as moment from 'moment';
 })
 export class FacturaService {
   URL_SERVICIOS: string = environment.URL_SERVICIOS;
-  
 
-  constructor(private _http: HttpClient) {    
-   }
+
+  constructor(private _http: HttpClient) {
+  }
 
   obtenerPendientesCobro(proveedor) {
     return this._http.get<Movimiento[]>(`${this.URL_SERVICIOS}/facturas/pendientescobro/${proveedor}`)
@@ -21,51 +21,53 @@ export class FacturaService {
         map(resp => resp["data"]),
         map(data => data.map(m => {
           let mov: Movimiento = {
-            movimientoID:m["ID"],
+            movimientoID: m["ID"],
             folio: m["Folio"],
-            movimientoDescripcion:m["Movimiento"],          
-            referencia:m["Referencia"],
+            movimientoDescripcion: m["Movimiento"],
+            referencia: m["Referencia"],
             saldo: Number(m["Saldo"]),
-            fechaEmision:moment(m["FechaEmision"]).toDate(),
-            fechaVencimiento:moment(m["Vencimiento"]).toDate(),
-            moneda: m["Moneda"].trim(),            
-            solicitaContraRecibo:false,            
-          };          
-          return mov; 
+            fechaEmision: moment(m["FechaEmision"]).toDate(),
+            fechaVencimiento: moment(m["Vencimiento"]).toDate(),
+            moneda: m["Moneda"].trim(),
+            solicitaContraRecibo: false,
+            tienePDF: m["PDF"] == "1" ? true : false,
+            tieneXML: m["XML"] == "1" ? true : false
+          };
+          return mov;
         }))
       );
   }
   obtenerContraRecibosPendientes(proveedor) {
     return this._http
-               .get<Contrarecibo[]>(`${this.URL_SERVICIOS}/facturas/contrarecibospendientes/${proveedor}`)
+      .get<Contrarecibo[]>(`${this.URL_SERVICIOS}/facturas/contrarecibospendientes/${proveedor}`)
       .pipe(
         map(resp => resp["data"]),
         map(data => data.map(m => {
           let mov: Contrarecibo = {
-            movimientoID:m["ID"],
+            movimientoID: m["ID"],
             folio: m["Folio"],
-            movimientoDescripcion:m["Movimiento"],          
-            referencia:m["Referencia"],
+            movimientoDescripcion: m["Movimiento"],
+            referencia: m["Referencia"],
             saldo: Number(m["Saldo"]),
-            fechaEmision:moment(m["FechaEmision"]).toDate(),
-            fechaVencimiento:moment(m["Vencimiento"]).toDate(),
-            moneda: m["Moneda"],      
-            detalle:this.obtenerMovimientosFicticios('Pesos',5)            
-          };          
-          return mov; 
+            fechaEmision: moment(m["FechaEmision"]).toDate(),
+            fechaVencimiento: moment(m["Vencimiento"]).toDate(),
+            moneda: m["Moneda"],
+            //detalle:this.obtenerMovimientosFicticios('Pesos',5)            
+          };
+          return mov;
         }))
       );
   }
 
   obtenerMovimientosFicticios(moneda, total) {
-    let movimientos =[];
+    let movimientos = [];
     for (let i = moneda == "Pesos" ? total : 0; i < (moneda == "Pesos" ? total : 0) + total; i++) {
       movimientos.push({
         folio: (i + 1),
         solicitaContraRecibo: false,
         movimientoID: (i + 1),
         movimientoDescripcion: "Movimiento Ficticio ",
-        referencia: "59897"+(i + 1),
+        referencia: "59897" + (i + 1),
         moneda: moneda,
         saldo: Math.random() * (10000 - 50 + 1) + 50,
         tienePDF: true,
@@ -75,6 +77,25 @@ export class FacturaService {
       });
     }
     return movimientos;
+  }
+
+  obtenerDetalleContraRecibo(id) {
+    return this._http
+      .get<Movimiento[]>(`${this.URL_SERVICIOS}/facturas/detallecontrarecibo/${id}`)
+      .pipe(
+        map(resp => resp["data"]),
+        map(data => data
+          .filter(m =>m["Referencia"]!=null)
+          .map(m => {
+            let mov: Movimiento = {            
+              referencia: m["Referencia"],
+              saldo: Number(m["ImporteTotal"]),
+              fechaEmision: moment(m["FechaEmision"]).toDate(),              
+            };
+            return mov;
+          }))
+      );
+
   }
 
 }

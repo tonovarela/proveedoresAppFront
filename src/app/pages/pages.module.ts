@@ -46,7 +46,9 @@ import { CheckBoxModule } from '@syncfusion/ej2-angular-buttons';
      PagerModule,
      PipesModule,
      BrowserAnimationsModule,          
-     ToastrModule.forRoot(),
+     ToastrModule.forRoot({
+       preventDuplicates:true
+     }),
      NgbModule
   ]
 })

@@ -10,13 +10,14 @@
         </div>      
         <div  style="float:left;">          
             <h6 class="text-muted m-t-10 m-b-0 ">Total seleccionado </h6>
-            <h2 class="m-t-0">{{movimientos | totalSaldoCR | currency}} </h2>          
+            <h2 *ngIf="monedasUnicas" class="m-t-0">{{movimientos | totalSaldoCR | currency}} </h2>          
+            <i *ngIf="!monedasUnicas || !cumpleSaldoContrarecibo" class="m-t-0 fa fa-exclamation text-danger fa-2x"> </i>                      
         </div>
         <div >
           
           <div style="float:left" >         
             <button class="btn btn-block btn-outline btn-secondary m-t-30 m-l-30 font-14 "
-              *ngIf="(movimientos | totalSaldoCR) < _usuarioService.usuario.MontoMaxContraRecibo"
+              *ngIf="cumpleSaldoContrarecibo"
               (click)="generarContraRecibo()">Generar contra-recibo </button>
           </div>
         </div>
@@ -35,10 +36,10 @@
       [selectionSettings]="selectOptions" [editSettings]='editSettings' allowPaging="true" allowFiltering="true"
       [filterSettings]='filterSettings' allowSorting="true" allowResizing='true' [pageSettings]="pageSettings">
       <e-columns>
-        <e-column field="folio" headerText='Folio' width=30>
-        </e-column>
         <e-column field="movimientoDescripcion" headerText="Movimiento" width=50></e-column>
-        <e-column field="referencia" headerText="Referencia" width=60>
+        <e-column field="folio" headerText='Folio' width=30>
+        </e-column>        
+        <e-column field="referencia" headerText="Factura" width=60>
         </e-column>
         <e-column field="fechaEmision" [filter]='filterMenu' headerText="Emisión" [format]='formatoptions' width=40>
         </e-column>

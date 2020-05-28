@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs';
 import swal, { SweetAlertResult } from 'sweetalert2';
 import { Injectable } from '@angular/core';
-import { ToastrService } from 'ngx-toastr'; 
+import { ToastrService } from 'ngx-toastr';
 
 
 @Injectable({
@@ -9,13 +10,17 @@ import { ToastrService } from 'ngx-toastr';
 export class UiService {
 
 
-  constructor(private toastr: ToastrService) { }
+  constructor(private toastr: ToastrService) {
+
+  }
   mostrarAlertaError(titulo, mensaje) {
     swal.fire(titulo, mensaje, 'error');
   }
 
   mostrarToasterWarning(titulo, mensaje) {
-    this.toastr.warning( mensaje,titulo,{ progressBar:true, timeOut:2000,progressAnimation:'increasing'});
+    const toaster = this.toastr.warning(mensaje, titulo, { progressBar: true, timeOut: 2000, progressAnimation: 'increasing' });
+
+
   }
 
   mostrarAlertaConfirmacion(titulo, mensaje): Promise<SweetAlertResult> {
@@ -62,5 +67,6 @@ export class UiService {
       showConfirmButton: false,
       timer: 3500
     });
+
   }
 }

@@ -6,6 +6,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 @Component({
   selector: 'app-modal-upload',
   templateUrl: './modal-upload.component.html',
+  styleUrls: ['./modal-upload.component.css']
 })
 export class ModalUploadComponent implements OnInit {
   mensaje: string = "";
@@ -15,6 +16,7 @@ export class ModalUploadComponent implements OnInit {
 
   @ViewChild('archivo') archivoRef: ElementRef;
 
+  
   constructor(public _modalUploadService: ModalUploadService,
     public _uiService: UiService,
     public _subirArchivoService: SubirArchivoService

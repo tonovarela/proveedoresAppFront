@@ -1,20 +1,20 @@
 <app-loader *ngIf="cargando"></app-loader>
-<!-- <button class="btn btn-primary" (click)="openModal(detalle)">Create</button> -->
 <div class="row" *ngIf="!cargando">
   <div class="col-12">
     <ejs-grid #grid id="grid" height='350' [dataSource]="contraRecibos " allowReordering='true' allowSelection="false"
       [selectionSettings]="selectOptions" [editSettings]='editSettings' allowPaging="true" allowFiltering="true"
       [filterSettings]='filterSettings' allowSorting="true" allowResizing='true' [pageSettings]="pageSettings">
       <e-columns>
-        <e-column field="movimientoID" headerText=Folio width=40>
+        <e-column field="movimientoDescripcion" headerText="Movimiento" width=40>
           <ng-template #template let-data>
             <a href="javascript:void(0);" 
-            (click)="verDetalle(data.detalle)"
-            >{{data.movimientoID}}</a>            
+            (click)="verDetalle(data)"
+            >{{data.movimientoDescripcion}}</a>            
           </ng-template>
         </e-column>
-        <e-column field="movimientoDescripcion" headerText="Movimiento" width=60></e-column>
-        <e-column field="referencia" headerText="Referencia" width=60>
+        <e-column field="movimientoID" headerText=Folio width=30>          
+        </e-column>        
+        <e-column field="referencia" headerText="Factura" width=40>
         </e-column>
         <e-column field="fechaEmision" [filter]='filterMenu' headerText="Emisión" [format]='formatoptions' width=40>
         </e-column>
@@ -28,6 +28,11 @@
         </e-column>
         <e-column field="moneda" headerText="Moneda" width=30>
         </e-column>
+        <!-- <e-column  headerText="Detalle" width=30>
+          <ng-template #template let-data>
+            <i class="fa fa-file-pdf-o  text-danger detalle" (click)="verPDF(data)"></i> 
+          </ng-template>
+        </e-column> -->
       </e-columns>
     </ejs-grid>
   </div>
@@ -38,13 +43,13 @@
 
   <ng-template #detalle let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Detalle contra-recibo</h4>
+      <h4 class="modal-title" id="modal-basic-title">Contra-recibo {{_contraRecibo.movimientoID }} </h4>
       <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      <app-detalle-contra-recibo [movimientos]="detalleContraRecibo"></app-detalle-contra-recibo>            
+      <app-detalle-contra-recibo [contraRecibo]="_contraRecibo"></app-detalle-contra-recibo>            
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-secondary waves-effect" (click)="modal.close('Save click')">Cerrar</button>

@@ -1,3 +1,4 @@
+import { PdfMovimientosService } from './../../services/pdf-movimientos.service';
 
 import { UsuarioService } from './../../services/usuario.service';
 import { FacturaService } from './../../services/factura.service';
@@ -21,7 +22,7 @@ L10n.load(traduccion);
 })
 export class ContraRecibosComponent implements OnInit, OnDestroy {
   @ViewChild('grid') grid: Grid;
-  @ViewChild('detalle') detalle:any;
+  @ViewChild('detalle') detalle: any;
   gridInstance: Grid;
   subscription: Subscription;
   cargando: boolean = false;
@@ -35,20 +36,30 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
     //checkboxOnly: true 
   };
   contraRecibos: Contrarecibo[] = [];
-  detalleContraRecibo: Movimiento[] = [];
+  _contraRecibo: Contrarecibo = {};
 
-  constructor(    
+  constructor(
     public _modalUploadService: ModalUploadService,
     public _facturaService: FacturaService,
     private _usuarioService: UsuarioService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private _pdfService: PdfMovimientosService
   ) { }
 
 
 
-  verDetalle( movs) {
-    this.detalleContraRecibo = movs;
-    this.modalService.open(this.detalle,{ size: 'lg' });
+  verDetalle(contrarecibo: Contrarecibo) {
+    this._contraRecibo = contrarecibo;
+    //this._contraRecibo.detalle= this._facturaService.obtenerMovimientosFicticios('Pesos',2);
+    //this.modalService.open(this.detalle, { size: 'lg' });      
+    this.cargando=true;
+    this._facturaService.obtenerDetalleContraRecibo(contrarecibo.movimientoID).subscribe(
+      (movs: Movimiento[]) => {
+        this._contraRecibo.detalle=movs;
+        console.log(this._contraRecibo.detalle);
+        this.modalService.open(this.detalle, { size: 'md' });      
+        this.cargando=false;
+      });
   }
 
 
@@ -58,6 +69,17 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
       .subscribe(movs => {
         this.contraRecibos = movs;
       });
+  }
+
+  verPDF(contrarecibo: Contrarecibo){
+    // this.cargando=true;
+    // this._contraRecibo = contrarecibo;
+    // this._facturaService.obtenerDetalleContraRecibo(contrarecibo.movimientoID).subscribe(
+    //   (movs: Movimiento[]) => {
+    //     this._contraRecibo.detalle=movs;                
+    //     this._pdfService.obtenerDetalleContrarecibos(this._contraRecibo);
+    //     this.cargando=false;
+    //   });   
   }
 
   created(e) {

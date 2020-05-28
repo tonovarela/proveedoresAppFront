@@ -1,34 +1,33 @@
 <div class="row">  
-  <div class="col-10"></div>
-  <div class="col-2">
-    <button   (click)="pdfDetalle()" type="button" class="btn btn-danger btn-circle btn-lg"><i class="fa  fa-file-pdf-o"></i> </button>
+  <div class="col-10">    
+    <h4>Aplica para los siguientes movimientos</h4>
   </div>
-
+  <div class="col-2"><button   (click)="pdfDetalle()" type="button" class="btn btn-danger btn-circle btn-md"><i class="fa  fa-file-pdf-o"></i> </button>
+    
+    <!-- <button   (click)="excelDetalle()" style="margin-left: 2px;" type="button" class="btn btn-success btn-circle btn-md"><i class="fa   fa-file-excel-o"></i> </button>  -->
+  </div>
+  
   
     
 </div>
 <div class="row"  >    
-    <div class="col-12">
+    <div class="col-12">      
       <div class="card">
         <div class="card-body">
           <div class="table-responsive">
             <table class="table  table-detalle color-bordered-table inverse-bordered-table">
               <thead>
                 <tr>
-                  <th>Folio</th>
-                  <th>Referencia</th>
-                  <th>Emision</th>                  
-                  <th>Vencimiento</th>
+                  <th>Factura</th>
+                  <th>Fecha</th>                  
                   <th>Total</th>
                   
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let movimiento of _movimientos">
-                  <td>{{movimiento.folio}} </td>
-                  <td>{{movimiento.referencia}}</td>
-                  <td>{{movimiento.fechaEmision | date:'dd-MM-yyyy'}}</td>
-                  <td>{{movimiento.fechaVencimiento | date:'dd-MM-yyyy'}}</td>
+                <tr *ngFor="let movimiento of _contraRecibo.detalle">                  
+                  <td>{{movimiento.referencia}} </td>                                    
+                  <td>{{movimiento.fechaEmision | date:'dd-MM-yyyy'}}</td>                  
                   <td>{{movimiento.saldo | currency}}</td>
                 </tr>                
             </tbody>
@@ -38,4 +37,10 @@
       </div>
 
     </div>      
+  </div>
+  <div class="row">
+    <div class="col-6"></div>
+    <div class="col-6">      
+      <h2 class="text-info">Total  :{{ _contraRecibo.saldo | currency}}</h2>
+    </div>
   </div>

@@ -1,44 +1,84 @@
-<!-- <div class="row animated fadeIn ">
+<div class="row animated fadeIn ">
 
     <div class="col-lg-7">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Perfil de usuario</h4>
-                <h6 class="card-subtitle">---</h6>
-                <form ngNativeValidate #f="ngForm" (ngSubmit)="guardar(f.value)" class="form p-t-20">
+                <h4 class="card-title">Usuario</h4>
+                <h6 class="card-subtitle"></h6>
+                <form class="form p-t-20">
                     <div class="form-group">
-
                         <div class="input-group">
                             <div class="input-group-addon"><i class="ti-user"></i></div>
-                            <input [ngModel]="usuario.nombre" disabled name="nombre" required class="form-control" id="exampleInputuname" placeholder="Usuario" type="text">
+                            <input [ngModel]="usuario.Nombre" disabled name="nombre" required class="form-control"
+                                id="exampleInputuname" type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="input-group">
-                            <div class="input-group-addon"><i class="ti-email"></i></div>
-                            <input [ngModel]="usuario.email" disabled name="email" required class="form-control" id="exampleInputEmail1" placeholder="Ingrese email" type="email">
+                            <div class="input-group-addon"><i class="fa fa-vcard-o"></i></div>
+                            <input [ngModel]="usuario.RFC" disabled name="email" required class="form-control"
+                                id="exampleInputEmail1" type="email">
                         </div>
                     </div>
 
 
-                    <button type="submit"  class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i>Guardar</button>
+                    <!-- <button type="submit"  class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i>Guardar</button> -->
 
                 </form>
             </div>
         </div>
     </div>
-    <div class="col-lg-5" *ngIf=false>
-        <div class="card" align="center">
-            <div class="card-body">
-                <h4 class="card-title">Fotografia del usuario</h4>
-                <h6 class="card-subtitle">---</h6>
-                <img *ngIf="!imagenTemp" [src]="usuario.img | imagen" class="w150" />
-                <img *ngIf="imagenTemp" [src]="imagenTemp" class="w150" />
-                <input type="file" (change)="seleccionImagen($event.target.files[0])" />
-                <hr>
-                <button type="button" (click)="cambiarImagen()" [disabled]="!imagenSubir" class="btn btn-block btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i>Actualizar foto <i class="fas fa-football-ball    "></i></button>
+    <div class="col-lg-5">                
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex no-block">
+                        <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span>
+                            <i class="fa fa-dollar fa-2x text-info"></i>                                
+                        </div>
+                        <div class="align-self-center">
+                            <h6 class="text-muted m-t-10 m-b-0">Máximo contra-recibo</h6>
+                            <h2 class="m-t-0">{{usuario.MontoMaxContraRecibo | currency}}</h2>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex no-block">
+                        <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img
+                                src="assets/images/icon/assets.png" alt="Income"></div>
+                        <div class="align-self-center">
+                            <h6 class="text-muted m-t-10 m-b-0">Condiciones de pago</h6>
+                            <h2 class="m-t-0">{{usuario.Condicion}}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex no-block">
+                        <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="assets/images/icon/expense.png" alt="Income"></div>
+                        <div class="align-self-center">
+                            <h6 class="text-muted m-t-10 m-b-0">Forma de pago</h6>
+                            <h2 class="m-t-0">{{usuario.FormaPago}}</h2></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex no-block">
+                        <div class="m-r-20 align-self-center"><span class="lstick m-r-20"></span><img src="assets/images/icon/income.png" alt="Income"></div>
+                        <div class="align-self-center">
+                            <h6 class="text-muted m-t-10 m-b-0">Método pago</h6>
+                            <h2 class="m-t-0">{{usuario.MetodoPago}}</h2></div>
+                    </div>
+                </div>
+            </div>  
+        
+
+
+
     </div>
 
-</div> -->
+
+</div>

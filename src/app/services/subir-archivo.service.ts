@@ -11,8 +11,8 @@ import { map } from 'rxjs/operators';
 })
 export class SubirArchivoService {
   public notificacion = new EventEmitter<Movimiento>();
-  URL_SERVICE: string = 'http://localhost:44382';
-  validarEstructura: boolean =false;
+  URL_SERVICE: string = 'http://192.168.5.28/proveedores';
+  validarEstructura: boolean =true;
   constructor(private _http: HttpClient,
     private _usuarioService: UsuarioService) { }
 

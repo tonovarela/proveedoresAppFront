@@ -27,11 +27,13 @@
     "@syncfusion/ej2-material-theme": "^18.1.52",
     "bootstrap": "^4.4.0",
     "core-js": "^3.6.5",
+    "file-saver": "^2.0.2",
     "moment": "^2.25.3",
     "ngx-toastr": "^12.0.1",
     "pdfmake": "^0.1.65",
     "rxjs": "~6.5.4",
     "sweetalert2": "^9.10.13",
+    "xlsx": "^0.16.1",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

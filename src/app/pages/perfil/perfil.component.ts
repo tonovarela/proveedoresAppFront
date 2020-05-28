@@ -1,4 +1,6 @@
+import { UsuarioService } from './../../services/usuario.service';
 import { Component, OnInit } from '@angular/core';
+import { Usuario } from 'src/app/models/proveedor';
 
 @Component({
   selector: 'app-perfil',
@@ -6,22 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./perfil.component.css']
 })
 export class PerfilComponent implements OnInit {
-
-  constructor() { }
+   usuario: Usuario ={};
+  constructor(private _usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
+    this.usuario= this._usuarioService.usuario;    
   }
 
-  cambiarImagen() {
-    //this._usuarioService.cambiarImagen(this.imagenSubir);
-  }
-  guardar(usuario: any) {
-    // this.usuario.nombre = usuario.nombre;
-    // if (!this.usuario.google) {
-    //   this.usuario.email = usuario.email;
-    // }
 
-    //this._usuarioService.actualizarUsuario(this.usuario).subscribe();
-  }
 
 }

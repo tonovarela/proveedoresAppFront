@@ -1,6 +1,6 @@
 
 export interface Movimiento {
-    movimientoID: number;
+    movimientoID?: number;
     folio?:number;
     movimientoDescripcion?:string;
     referencia?: string;
@@ -16,7 +16,7 @@ export interface Movimiento {
 }
 
 export interface Contrarecibo {
-    movimientoID: number;
+    movimientoID?: number;
     folio?:number;
     movimientoDescripcion?:string;
     referencia?: string;
@@ -31,3 +31,4 @@ export interface Contrarecibo {
     detalle?:Movimiento[]
     
 }
+
