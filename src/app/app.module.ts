@@ -13,7 +13,6 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,    
@@ -27,6 +26,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FormsModule,        
     ReactiveFormsModule,
     PagesModule,
+    FormsModule,
     CheckBoxModule,
     APP_ROUTES,
     NgbModule,

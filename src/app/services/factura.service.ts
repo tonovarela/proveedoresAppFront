@@ -14,7 +14,6 @@ export class FacturaService {
 
   constructor(private _http: HttpClient) {
   }
-
   obtenerPendientesCobro(proveedor) {
     return this._http.get<Movimiento[]>(`${this.URL_SERVICIOS}/facturas/pendientescobro/${proveedor}`)
       .pipe(
@@ -26,6 +25,7 @@ export class FacturaService {
             movimientoDescripcion: m["Movimiento"],
             referencia: m["Referencia"],
             saldo: Number(m["Saldo"]),
+            importe: Number(m["Importe"]) ,
             fechaEmision: moment(m["FechaEmision"]).toDate(),
             fechaVencimiento: moment(m["Vencimiento"]).toDate(),
             moneda: m["Moneda"].trim(),
@@ -34,7 +34,8 @@ export class FacturaService {
             tieneXML: m["XML"] == "1" ? true : false
           };
           return mov;
-        }))
+        })),
+        map(movimientos => movimientos.sort((a: Movimiento, b:Movimiento) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime()))
       );
   }
   obtenerContraRecibosPendientes(proveedor) {
@@ -48,14 +49,17 @@ export class FacturaService {
             folio: m["Folio"],
             movimientoDescripcion: m["Movimiento"],
             referencia: m["Referencia"],
-            saldo: Number(m["Saldo"]),
+            saldo: Number(m["Saldo"]), 
+            importe:Number(m["Importe"]), 
             fechaEmision: moment(m["FechaEmision"]).toDate(),
             fechaVencimiento: moment(m["Vencimiento"]).toDate(),
             moneda: m["Moneda"],
             //detalle:this.obtenerMovimientosFicticios('Pesos',5)            
           };
           return mov;
-        }))
+        })
+        ),
+        map(contrarecibos => contrarecibos.sort((a: Contrarecibo, b:Contrarecibo) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime()))
       );
   }
 
@@ -70,6 +74,7 @@ export class FacturaService {
         referencia: "59897" + (i + 1),
         moneda: moneda,
         saldo: Math.random() * (10000 - 50 + 1) + 50,
+        importe:Math.random() * (10000 - 50 + 1) + 50,
         tienePDF: true,
         tieneXML: true,
         fechaEmision: moment('2020-01-05').toDate(),
@@ -89,7 +94,7 @@ export class FacturaService {
           .map(m => {
             let mov: Movimiento = {            
               referencia: m["Referencia"],
-              saldo: Number(m["ImporteTotal"]),
+              importe: Number(m["ImporteTotal"]),              
               fechaEmision: moment(m["FechaEmision"]).toDate(),              
             };
             return mov;

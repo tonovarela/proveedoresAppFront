@@ -7,6 +7,7 @@ export interface Movimiento {
     fechaEmision?: Date;
     fechaVencimiento?:Date;
     saldo?: number;
+    importe?:number,    
     moneda?: string;
     montoMaximoContraRecibo?:number;
     tieneXML?:boolean;
@@ -23,6 +24,7 @@ export interface Contrarecibo {
     fechaEmision?: Date;
     fechaVencimiento?:Date;
     saldo?: number;
+    importe?: number;
     moneda?: string;
     montoMaximoContraRecibo?:number;
     tieneXML?:boolean;

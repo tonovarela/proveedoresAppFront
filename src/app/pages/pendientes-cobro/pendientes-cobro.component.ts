@@ -8,15 +8,15 @@ import { Movimiento } from './../../models/movimiento';
 import { traduccion } from './../../i18n/es-MX';
 import { Component, OnInit, ViewChild, OnDestroy, EventEmitter } from '@angular/core';
 import { L10n } from '@syncfusion/ej2-base'
-import { SaamService } from 'src/app/services/saam.service';
-import { EditSettingsModel, PageSettingsModel, FilterSettingsModel, Grid } from '@syncfusion/ej2-angular-grids';
+import { EditSettingsModel, PageSettingsModel, FilterSettingsModel, Grid, IFilter } from '@syncfusion/ej2-angular-grids';
 import { setSpinner } from '@syncfusion/ej2-popups';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
-import { timeInterval, map, filter } from 'rxjs/operators';
-setSpinner({ template: '<div class="loader-centerd-screen"> <div></div></div>' });
+
+
+
+setSpinner({ template: '<div class="loader-centerd-screen"> <div>' });
 L10n.load(traduccion);
-//declare function iniciar_pluginCheck();
 @Component({
   selector: 'app-pendientes-cobro',
   templateUrl: './pendientes-cobro.component.html',
@@ -26,6 +26,7 @@ L10n.load(traduccion);
 export class PendientesCobroComponent implements OnInit, OnDestroy {
 
   @ViewChild('grid') grid: Grid;
+
   movimientosCR_$ = new EventEmitter<void>();
   subscripcionMovMoneda: Subscription;
   gridInstance: Grid;
@@ -41,6 +42,13 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     //persistSelection: true, type: "Multiple",
     //checkboxOnly: true 
   };
+  
+  
+
+
+
+  
+
 
   monedasUnicas: boolean = true;
   cumpleSaldoContrarecibo: boolean = true;
@@ -53,8 +61,10 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     public _usuarioService: UsuarioService
   ) {
   }
-  ngOnInit(): void {
 
+
+  ngOnInit(): void {
+    this.cargando=true;
     this.subscriptionMovFile = this._subirUsuarioService.notificacion.subscribe((mov: Movimiento) => {
       let _movimientos = this.movimientos.filter(movimiento => movimiento.movimientoID != mov.movimientoID);
       _movimientos.unshift(mov);
@@ -68,22 +78,31 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
       .obtenerPendientesCobro(this._usuarioService.usuario.Proveedor)
       .subscribe(movs => {
         this.movimientos = movs;
+        this.cargando=false;
         this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Pesos", 5));
         this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Dolares", 1));
-        // this.movimientos.unshift({
-        //   folio: 66666,
-        //   solicitaContraRecibo: false,
-        //   movimientoID: 6985,
-        //   movimientoDescripcion: "Movimiento Ficticio ",
-        //   referencia: "59897",
-        //   moneda: 'Pesos',
-        //   saldo: 3004.40,
-        //   tienePDF: false,
-        //   tieneXML:false,
-        //   fechaEmision: moment('2020-01-05').toDate(),
-        //   fechaVencimiento: moment('2020-01-05').toDate()
-        // })
+        this.movimientos.unshift({
+          folio: 66666,
+          solicitaContraRecibo: false,
+          movimientoID: 6985,
+          movimientoDescripcion: "Movimiento Ficticio ",
+          referencia: "59897",
+          moneda: 'Pesos',
+          saldo: 1004.40,
+          importe: 3004.40,
+          tienePDF: false,
+          tieneXML: false,
+          fechaEmision: moment('2020-01-05').toDate(),
+          fechaVencimiento: moment('2020-01-05').toDate()
+        })
       });
+
+    //this._usuarioService.usuario.MontoMaxContraRecibo=10000;  
+
+
+
+
+
   }
 
   validarReglasContraRecibo() {
@@ -119,7 +138,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     })
   }
   async generarContraRecibo() {
-      
+
     if (!this.cumpleSaldoContrarecibo) {
       this._uiService.mostrarAlertaError("Cuota de contra-recibo excedido ",
         `Solo se puede generar contra-recibo con un máximo de ${this._usuarioService.usuario.MontoMaxContraRecibo}`);

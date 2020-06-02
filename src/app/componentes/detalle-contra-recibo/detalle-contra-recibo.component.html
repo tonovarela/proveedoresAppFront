@@ -28,7 +28,7 @@
                 <tr *ngFor="let movimiento of _contraRecibo.detalle">                  
                   <td>{{movimiento.referencia}} </td>                                    
                   <td>{{movimiento.fechaEmision | date:'dd-MM-yyyy'}}</td>                  
-                  <td>{{movimiento.saldo | currency}}</td>
+                  <td>{{movimiento.importe | currency}}</td>
                 </tr>                
             </tbody>
             </table>

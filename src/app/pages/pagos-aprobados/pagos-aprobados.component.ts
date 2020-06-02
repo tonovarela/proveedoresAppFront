@@ -1,7 +1,6 @@
-import { Movimiento } from './../../models/movimiento';
-import { FacturaService } from './../../services/factura.service';
-import { PdfMovimientosService } from './../../services/pdf-movimientos.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+
 
 
 @Component({
@@ -9,12 +8,13 @@ import { Component, OnInit, Input } from '@angular/core';
   templateUrl: './pagos-aprobados.component.html',
   styleUrls: ['./pagos-aprobados.component.css']
 })
-export class PagosAprobadosComponent implements OnInit {  
-  constructor() { }
+export class PagosAprobadosComponent implements OnInit {
 
+  constructor() { }
   ngOnInit(): void {
-    
   }
-  
+
+
+
 
 }

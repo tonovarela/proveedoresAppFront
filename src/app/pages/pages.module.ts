@@ -18,8 +18,11 @@ import { ContraRecibosComponent } from './contra-recibos/contra-recibos.componen
 import { PagosAprobadosComponent } from './pagos-aprobados/pagos-aprobados.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PerfilComponent } from './perfil/perfil.component';
+import { GridAllModule } from '@syncfusion/ej2-angular-grids';
 import { GridModule, PagerModule,DetailRowService, PageService, SortService, FilterService, ReorderService,ResizeService,SelectionService, ToolbarService,EditService } from '@syncfusion/ej2-angular-grids';
 import { CheckBoxModule } from '@syncfusion/ej2-angular-buttons';
+import { DateRangePickerModule } from '@syncfusion/ej2-angular-calendars';
+import { DatePickerAllModule } from '@syncfusion/ej2-angular-calendars';
 
 
 
@@ -40,12 +43,15 @@ import { CheckBoxModule } from '@syncfusion/ej2-angular-buttons';
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    GridAllModule,
     GridModule,
+    DatePickerAllModule,
     CheckBoxModule,
     ComponentesModule,
      PagerModule,
      PipesModule,
-     BrowserAnimationsModule,          
+     BrowserAnimationsModule, 
+     DateRangePickerModule,         
      ToastrModule.forRoot({
        preventDuplicates:true
      }),

@@ -2,6 +2,7 @@ export const traduccion  = {
     "en-US": {      
       "grid": {
         "EmptyRecord": "No hay registros que mostrar",
+        //"EmptyRecord": "-",
         "GroupDropArea": "Arrastre un encabezado de columna aquí para agrupar su columna",
         "DeleteOperationAlert": "No hay registros seleccionados para la operación de eliminación",
         "EditOperationAlert": "No hay registros seleccionados para la operación de edición",

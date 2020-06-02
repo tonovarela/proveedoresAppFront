@@ -21,7 +21,7 @@ export class UsuarioService {
     const url = `${this.url}/cliente/login`;
     return this.http.post<ResponseLogin>(url, usuario).pipe(
       map((resp) => {
-        console.log(resp.data);
+   //     console.log(resp.data);
         if (resp.validacion == true) {
           this.guardarStorage(resp.data[0]);          
         }
