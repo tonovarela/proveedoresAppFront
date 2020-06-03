@@ -28,6 +28,7 @@
     "@syncfusion/ej2-fabric-theme": "^18.1.52",
     "@syncfusion/ej2-material-theme": "^18.1.52",
     "bootstrap": "^4.4.0",
+    "cldr-data": "^36.0.0",
     "core-js": "^3.6.5",
     "file-saver": "^2.0.2",
     "moment": "^2.25.3",

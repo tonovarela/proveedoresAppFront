@@ -12,11 +12,11 @@ import { EditSettingsModel, PageSettingsModel, FilterSettingsModel, Grid, IFilte
 import { setSpinner } from '@syncfusion/ej2-popups';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
+import { FechaDictionary } from 'src/app/utils/dates';
 
 
 
 setSpinner({ template: '<div class="loader-centerd-screen"> <div>' });
-L10n.load(traduccion);
 @Component({
   selector: 'app-pendientes-cobro',
   templateUrl: './pendientes-cobro.component.html',
@@ -53,6 +53,16 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   monedasUnicas: boolean = true;
   cumpleSaldoContrarecibo: boolean = true;
   movimientos: Movimiento[] = [];
+
+
+
+  public fechaEmisionFilter: any;
+  public fechaVencimientoFilter: any;
+  public contenedorFiltroFechaEmision: any = null;
+  public contenedorFiltroFechaVencimiento: any = null;
+  public fecha:FechaDictionary=new FechaDictionary();
+
+
   constructor(
     private _subirUsuarioService: SubirArchivoService,
     public _modalUploadService: ModalUploadService,
@@ -97,13 +107,61 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
         })
       });
 
-    //this._usuarioService.usuario.MontoMaxContraRecibo=10000;  
-
-
-
-
-
+    //this._usuarioService.usuario.MontoMaxContraRecibo=10000; 
   }
+
+
+  actionComplete(args) {    
+    if (args.requestType == "filterafteropen" && args.columnName == "fechaEmision") {
+      args.filterModel.dlgObj.element.querySelector('.e-flm_optrdiv').hidden = true;
+      this.contenedorFiltroFechaEmision = args.filterModel.dlgObj.element
+        //this.elementRef.nativeElement
+        .querySelector('.e-flmenu-cancelbtn')
+        .addEventListener('click', this.borrarFiltroFechaEmision.bind(this));
+    }
+    if (args.requestType == "filterafteropen" && args.columnName == "fechaVencimiento") {
+      args.filterModel.dlgObj.element.querySelector('.e-flm_optrdiv').hidden = true;
+      this.contenedorFiltroFechaVencimiento = args.filterModel.dlgObj.element
+        //this.elementRef.nativeElement        
+        .querySelector('.e-flmenu-cancelbtn')
+        .addEventListener('click', this.borrarFiltroFechaVencimiento.bind(this));
+    }
+  }
+
+  borrarFiltroFechaEmision(event) {
+    this.fechaEmisionFilter = null;
+    this.grid.removeFilteredColsByField("fechaEmision");
+  }
+  borrarFiltroFechaVencimiento(event) {
+    this.fechaVencimientoFilter = null;
+    this.grid.removeFilteredColsByField("fechaVencimiento");
+  }
+  cambioFechaVencimiento(e) {
+    if (e.value) {
+      this.grid.filterSettings.columns = [
+        { "value": e.value[0], "operator": "greaterthanorequal", "field": "fechaVencimiento", "predicate": "and" },
+        { "value": e.value[1], "operator": "lessthanorequal", "field": "fechaVencimiento", "predicate": "and" }
+      ]
+    }
+    else {
+
+      this.grid.filterSettings.columns = [];
+      //this.grid.removeFilteredColsByField("fechaVencimiento");
+    }
+  }
+  cambioFechaEmision(e) {
+    if (e.value) {
+      this.grid.filterSettings.columns = [
+        { "value": e.value[0], "operator": "greaterthanorequal", "field": "fechaEmision", "predicate": "and" },
+        { "value": e.value[1], "operator": "lessthanorequal", "field": "fechaEmision", "predicate": "and" }
+      ]
+    }
+    else {
+      this.grid.filterSettings.columns = [];
+      //this.grid.removeFilteredColsByField("fechaEmision");
+    }
+  }
+
 
   validarReglasContraRecibo() {
     if (!this.tieneMonedasUnicas()) {

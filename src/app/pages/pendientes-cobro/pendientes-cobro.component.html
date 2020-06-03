@@ -30,7 +30,9 @@
   <div class="col-12">    
     <ejs-grid #grid id="grid" height='350'  [dataSource]="movimientos" allowReordering='true' allowSelection="false"
       [selectionSettings]="selectOptions" [editSettings]='editSettings' allowPaging="true" [allowFiltering]="true"
-      [filterSettings]='filterSettings' allowSorting="true" allowResizing='true' [pageSettings]="pageSettings">
+      [filterSettings]='filterSettings' allowSorting="true" allowResizing='true' [pageSettings]="pageSettings"
+      (actionComplete)="actionComplete($event)" 
+      >
       <e-columns>
         <e-column field="movimientoDescripcion" headerText="Movimiento" width=50></e-column>
         <e-column field="folio" headerText='Folio' width=30>
@@ -38,10 +40,27 @@
         <e-column field="referencia" headerText="Factura" width=60>
         </e-column>
         <e-column field="fechaEmision"  [filter]='filterMenu'   headerText="Emisión" [format]='formatoptions' width=40>         
-          
+          <ng-template #filterTemplate let-data > 
+            <ejs-daterangepicker  format='dd-MM-yyyy' placeholder="Elija la fecha"  [(ngModel)]="fechaEmisionFilter"   (change)="cambioFechaEmision($event)"  >
+              <e-presets>
+                <e-preset label="Esta semana" [start]='fecha.weekStart' [end]='fecha.weekEnd'></e-preset>
+                <e-preset label="Este mes" [start]='fecha.monthStart' [end]='fecha.monthEnd'></e-preset>
+                <e-preset label="Anterior mes" [start]='fecha.lastStart' [end]='fecha.lastEnd'></e-preset>                                
+              </e-presets>
+            </ejs-daterangepicker>
+          </ng-template>             
         </e-column>
         <e-column field="fechaVencimiento"  [filter]='filterMenu'  headerText="Vencimiento" [format]='formatoptions'
-          width=40>          
+          width=40> 
+          <ng-template #filterTemplate let-data > 
+            <ejs-daterangepicker  format='dd-MM-yyyy' placeholder="Elija la fecha"  [(ngModel)]="fechaVencimientoFilter"   (change)="cambioFechaVencimiento($event)"  >
+              <e-presets>
+                <e-preset label="Esta semana" [start]='fecha.weekStart' [end]='fecha.weekEnd'></e-preset>
+                <e-preset label="Este mes" [start]='fecha.monthStart' [end]='fecha.monthEnd'></e-preset>
+                <e-preset label="Anterior mes" [start]='fecha.lastStart' [end]='fecha.lastEnd'></e-preset>                                
+              </e-presets>
+            </ejs-daterangepicker>
+          </ng-template>                    
         </e-column>
         <!-- <e-column field="saldo" headerText="Saldo" width=30>
           <ng-template #template let-data>

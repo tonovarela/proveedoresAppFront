@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  URL_SERVICIOS:"http://sistemas.litoprocess.com/proveedores/api"
+//  URL_SERVICIOS:"http://sistemas.litoprocess.com/proveedores/api"
+  URL_SERVICIOS:"http://192.168.2.209/proveedores/api"
 };
 
 /*
