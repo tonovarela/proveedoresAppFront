@@ -5,7 +5,6 @@ import { UsuarioService } from './../../services/usuario.service';
 import { FacturaService } from './../../services/factura.service';
 import { ModalUploadService } from './../../services/modal-upload.service';
 import { Movimiento } from './../../models/movimiento';
-import { traduccion } from './../../i18n/es-MX';
 import { Component, OnInit, ViewChild, OnDestroy, EventEmitter } from '@angular/core';
 import { L10n } from '@syncfusion/ej2-base'
 import { EditSettingsModel, PageSettingsModel, FilterSettingsModel, Grid, IFilter } from '@syncfusion/ej2-angular-grids';
@@ -89,22 +88,22 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
       .subscribe(movs => {
         this.movimientos = movs;
         this.cargando=false;
-        this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Pesos", 5));
-        this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Dolares", 1));
-        this.movimientos.unshift({
-          folio: 66666,
-          solicitaContraRecibo: false,
-          movimientoID: 6985,
-          movimientoDescripcion: "Movimiento Ficticio ",
-          referencia: "59897",
-          moneda: 'Pesos',
-          saldo: 1004.40,
-          importe: 3004.40,
-          tienePDF: false,
-          tieneXML: false,
-          fechaEmision: moment('2020-01-05').toDate(),
-          fechaVencimiento: moment('2020-01-05').toDate()
-        })
+        // this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Pesos", 5));
+        // this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Dolares", 1));
+        // this.movimientos.unshift({
+        //   folio: 66666,
+        //   solicitaContraRecibo: false,
+        //   movimientoID: 6985,
+        //   movimientoDescripcion: "Movimiento Ficticio ",
+        //   referencia: "59897",
+        //   moneda: 'Pesos',
+        //   saldo: 1004.40,
+        //   importe: 3004.40,
+        //   tienePDF: false,
+        //   tieneXML: false,
+        //   fechaEmision: moment('2020-01-05').toDate(),
+        //   fechaVencimiento: moment('2020-01-05').toDate()
+        // })
       });
 
     //this._usuarioService.usuario.MontoMaxContraRecibo=10000; 
@@ -114,6 +113,8 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   actionComplete(args) {    
     if (args.requestType == "filterafteropen" && args.columnName == "fechaEmision") {
       args.filterModel.dlgObj.element.querySelector('.e-flm_optrdiv').hidden = true;
+      const btn = (document.getElementsByClassName('e-primary e-flat')[0] as any);
+      btn.hidden= true;
       this.contenedorFiltroFechaEmision = args.filterModel.dlgObj.element
         //this.elementRef.nativeElement
         .querySelector('.e-flmenu-cancelbtn')
@@ -121,7 +122,10 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     }
     if (args.requestType == "filterafteropen" && args.columnName == "fechaVencimiento") {
       args.filterModel.dlgObj.element.querySelector('.e-flm_optrdiv').hidden = true;
+      const btn = (document.getElementsByClassName('e-primary e-flat')[0] as any);
+      btn.hidden= true;
       this.contenedorFiltroFechaVencimiento = args.filterModel.dlgObj.element
+
         //this.elementRef.nativeElement        
         .querySelector('.e-flmenu-cancelbtn')
         .addEventListener('click', this.borrarFiltroFechaVencimiento.bind(this));
@@ -177,9 +181,6 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     this.cumpleSaldoContrarecibo = total < maxContrarecibo
   }
 
-
-
-
   ngOnDestroy(): void {
     this.subscriptionMovFile.unsubscribe();
     this.subscripcionMovMoneda.unsubscribe();
@@ -195,6 +196,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
     })
   }
+
   async generarContraRecibo() {
 
     if (!this.cumpleSaldoContrarecibo) {

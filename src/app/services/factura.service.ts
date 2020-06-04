@@ -29,15 +29,22 @@ export class FacturaService {
             fechaEmision: moment(m["FechaEmision"]).toDate(),
             fechaVencimiento: moment(m["Vencimiento"]).toDate(),
             moneda: m["Moneda"].trim(),
+            usoCFDI:m["UsoCFDI"],
+            metodopago:m["MetodoPago"],
+            formaPago:m["FormaPago"],
             solicitaContraRecibo: false,
             tienePDF: m["PDF"] == "1" ? true : false,
-            tieneXML: m["XML"] == "1" ? true : false
+            tieneXML: m["XML"] == "1" ? true : false,
+            tipo :"Factura-Ingreso"
           };
           return mov;
         })),
         map(movimientos => movimientos.sort((a: Movimiento, b:Movimiento) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime()))
       );
   }
+
+  
+
   obtenerContraRecibosPendientes(proveedor) {
     return this._http
       .get<Contrarecibo[]>(`${this.URL_SERVICIOS}/facturas/contrarecibospendientes/${proveedor}`)
@@ -62,6 +69,35 @@ export class FacturaService {
         map(contrarecibos => contrarecibos.sort((a: Contrarecibo, b:Contrarecibo) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime()))
       );
   }
+
+
+  obtenerPagosAprobados(proveedor){
+    return this._http.get<Movimiento[]>(`${this.URL_SERVICIOS}/facturas/pagosaprobados/${proveedor}`)
+      .pipe(
+        map(resp => resp["data"]),
+        map(data => data.map(m => {
+          let mov: Movimiento = {
+            movimientoID: m["ID"],
+            folio: m["Folio"],
+            movimientoDescripcion: m["Movimiento"],
+            referencia: m["Referencia"],
+            saldo: Number(m["Saldo"]),
+            importe: Number(m["Importe"]) ,
+            fechaEmision: moment(m["FechaEmision"]).toDate(),
+            fechaVencimiento: moment(m["Vencimiento"]).toDate(),
+            moneda: m["Moneda"].trim(),
+            //solicitaContraRecibo: false,
+            //tienePDF: m["PDF"] == "1" ? true : false,
+            //tieneXML: m["XML"] == "1" ? true : false,
+            tipo :"Pago"
+          };
+          return mov;
+        })),
+        map(movimientos => movimientos.sort((a: Movimiento, b:Movimiento) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime()))
+      );
+    
+  }
+
 
   obtenerMovimientosFicticios(moneda, total) {
     let movimientos = [];

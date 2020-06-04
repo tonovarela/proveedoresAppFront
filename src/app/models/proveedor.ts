@@ -3,9 +3,9 @@ export interface Usuario {
     Estatus?: string;
     Nombre?: string;
     RFC?: string;
-    MetodoPago?:string,
-    FormaPago?:string,
-    Condicion?:string,
+    // MetodoPago?:string,
+    // FormaPago?:string,
+    // Condicion?:string,
     MontoMaxContraRecibo?:number;
 }
 

@@ -13,6 +13,10 @@ export interface Movimiento {
     tieneXML?:boolean;
     tienePDF?: boolean    
     solicitaContraRecibo?: boolean,
+    tipo?:string  //Factura-Ingreso o  Pago
+    usoCFDI?:string,
+    metodopago?:string,
+    formaPago?:string
     
 }
 

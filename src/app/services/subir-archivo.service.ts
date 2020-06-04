@@ -11,7 +11,8 @@ import { map } from 'rxjs/operators';
 })
 export class SubirArchivoService {
   public notificacion = new EventEmitter<Movimiento>();
-  URL_SERVICE: string = 'http://192.168.5.28/proveedores';
+  //URL_SERVICE: string = 'http://192.168.5.28/proveedores';
+  URL_SERVICE: string = 'http://localhost:44382/';  
   validarEstructura: boolean =true;
   constructor(private _http: HttpClient,
     private _usuarioService: UsuarioService) { }
@@ -20,12 +21,17 @@ export class SubirArchivoService {
     const url = `${this.URL_SERVICE}/api/factura/revisar${tipo}?validar=${this.validarEstructura}`;
     const formData = new FormData();
     formData.append('archivo', archivo, archivo.name);
-    formData.append('monto', movimiento.saldo.toString());
+    formData.append('monto', movimiento.importe.toString());
     formData.append('rfc', this._usuarioService.usuario.RFC);
-    formData.append('condicionesPago',this._usuarioService.usuario.Condicion);
-    formData.append('metodoPago',this._usuarioService.usuario.MetodoPago);
-    formData.append('formaPago',this._usuarioService.usuario.FormaPago);
+    formData.append('condicionesPago',"------");
+    formData.append('metodoPago',movimiento.metodopago);
+    formData.append('formaPago',movimiento.formaPago);
+    formData.append('usoCFDI',movimiento.usoCFDI);
     formData.append('idMovimiento', movimiento.movimientoID.toString());
+    formData.append('movimiento', `${movimiento.movimientoDescripcion}-${movimiento.folio}`.trim());
+    formData.append('proveedor', `${this._usuarioService.usuario.Proveedor.trim()}`);
+    formData.append('tipo', `${movimiento.tipo}`);
+    
 
     return this._http.post(url, formData, { reportProgress: true }).pipe(
       map(resp => {        

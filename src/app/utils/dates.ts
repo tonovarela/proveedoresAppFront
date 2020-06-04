@@ -1,15 +1,30 @@
 
+import * as moment from 'moment';
  export  class FechaDictionary {  
-                  
-    public today: Date = new Date(new Date().toDateString());
-    public weekStart: Date = new Date(new Date(new Date().setDate(new Date().getDate() - (new Date().getDay() + 7) % 7)).toDateString());
-    public weekEnd: Date = new Date(new Date(new Date().setDate(new Date(new Date().setDate((new Date().getDate()
-        - (new Date().getDay() + 7) % 7))).getDate() + 6)).toDateString())
-        ;
-    public monthStart: Date = new Date(new Date(new Date().setDate(1)).toDateString());
-    public monthEnd: Date = this.today;
-    public lastStart: Date = new Date(new Date(new Date(new Date().setMonth(new Date().getMonth() - 1)).setDate(1)).toDateString());
-    public lastEnd: Date = this.today;   
+     private _hoy: moment.Moment = moment();
+
+     get today():Date{
+         return this._hoy.toDate();
+     }
+     get weekStart():Date{
+        return this._hoy.clone().weekday(1).toDate();
+    }
+    get weekEnd():Date{
+        return this._hoy.clone().weekday(7).toDate();
+    }
+    get monthStart():Date{
+        return this._hoy.clone().startOf('month').toDate();    
+    }
+    get monthEnd():Date{
+        return this._hoy.clone().endOf('month').toDate();
+    }
+    get lastStart():Date{
+        return this._hoy.clone().subtract(1, 'months').startOf('month').toDate()
+    }
+    get lastEnd():Date{
+        return this._hoy.clone().subtract(1, 'months').endOf('month').toDate();
+    }
+        
 };
 
 

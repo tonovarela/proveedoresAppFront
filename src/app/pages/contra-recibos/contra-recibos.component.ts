@@ -5,9 +5,7 @@ import { ModalUploadService } from './../../services/modal-upload.service';
 import { Contrarecibo, Movimiento } from './../../models/movimiento';
 import { Component, OnInit, ViewChild, OnDestroy, TemplateRef, ElementRef } from '@angular/core';
 import { EditSettingsModel, PageSettingsModel, FilterSettingsModel, Grid,GridComponent } from '@syncfusion/ej2-angular-grids';
-//import * as moment from 'moment';
 import { Subscription } from 'rxjs';
-//import { BsModalService } from 'ngx-bootstrap/modal';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FechaDictionary} from 'src/app/utils/dates';
 
@@ -78,6 +76,8 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
   actionComplete(args) {    
     if (args.requestType == "filterafteropen" && args.columnName == "fechaEmision") {
       args.filterModel.dlgObj.element.querySelector('.e-flm_optrdiv').hidden = true;
+      const btn = (document.getElementsByClassName('e-primary e-flat')[0] as any);
+      btn.hidden= true;
       this.contenedorFiltroFechaEmision = args.filterModel.dlgObj.element
         //this.elementRef.nativeElement
         .querySelector('.e-flmenu-cancelbtn')
@@ -85,6 +85,8 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
     }
     if (args.requestType == "filterafteropen" && args.columnName == "fechaVencimiento") {
       args.filterModel.dlgObj.element.querySelector('.e-flm_optrdiv').hidden = true;
+      const btn = (document.getElementsByClassName('e-primary e-flat')[0] as any);
+      btn.hidden= true;
       this.contenedorFiltroFechaVencimiento = args.filterModel.dlgObj.element
         //this.elementRef.nativeElement        
         .querySelector('.e-flmenu-cancelbtn')
