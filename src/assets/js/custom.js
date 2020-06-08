@@ -14,6 +14,16 @@ function iniciar_pluginCheck() {
         });
     });
 }
+
+function cerrarBusqueda() {
+    $(function () {
+        "use strict";
+        //$(".search-box a, .search-box .app-search .srh-btn").on('click', function () {
+            $(".app-search").hide(200);
+        //});
+    });
+}
+
 function iniciar_plugins() {
     $(function () {
         "use strict";

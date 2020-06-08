@@ -1,4 +1,4 @@
-import { Movimiento, Contrarecibo } from './../models/movimiento';
+import { Movimiento, Contrarecibo, PagoDetalle, PagoAprobado, Factura } from './../models/movimiento';
 import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -25,25 +25,25 @@ export class FacturaService {
             movimientoDescripcion: m["Movimiento"],
             referencia: m["Referencia"],
             saldo: Number(m["Saldo"]),
-            importe: Number(m["Importe"]) ,
+            importe: Number(m["Importe"]),
             fechaEmision: moment(m["FechaEmision"]).toDate(),
             fechaVencimiento: moment(m["Vencimiento"]).toDate(),
             moneda: m["Moneda"].trim(),
-            usoCFDI:m["UsoCFDI"],
-            metodopago:m["MetodoPago"],
-            formaPago:m["FormaPago"],
+            usoCFDI: m["UsoCFDI"],
+            metodopago: m["MetodoPago"],
+            formaPago: m["FormaPago"],
             solicitaContraRecibo: false,
             tienePDF: m["PDF"] == "1" ? true : false,
             tieneXML: m["XML"] == "1" ? true : false,
-            tipo :"Factura-Ingreso"
+            tipo: "Factura-Ingreso"
           };
           return mov;
         })),
-        map(movimientos => movimientos.sort((a: Movimiento, b:Movimiento) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime()))
+        map(movimientos => movimientos.sort((a: Movimiento, b: Movimiento) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime()))
       );
   }
 
-  
+
 
   obtenerContraRecibosPendientes(proveedor) {
     return this._http
@@ -56,8 +56,8 @@ export class FacturaService {
             folio: m["Folio"],
             movimientoDescripcion: m["Movimiento"],
             referencia: m["Referencia"],
-            saldo: Number(m["Saldo"]), 
-            importe:Number(m["Importe"]), 
+            saldo: Number(m["Saldo"]),
+            importe: Number(m["Importe"]),
             fechaEmision: moment(m["FechaEmision"]).toDate(),
             fechaVencimiento: moment(m["Vencimiento"]).toDate(),
             moneda: m["Moneda"],
@@ -66,36 +66,36 @@ export class FacturaService {
           return mov;
         })
         ),
-        map(contrarecibos => contrarecibos.sort((a: Contrarecibo, b:Contrarecibo) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime()))
+        map(contrarecibos => contrarecibos.sort((a: Contrarecibo, b: Contrarecibo) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime()))
       );
   }
 
 
-  obtenerPagosAprobados(proveedor){
-    return this._http.get<Movimiento[]>(`${this.URL_SERVICIOS}/facturas/pagosaprobados/${proveedor}`)
+  obtenerPagosAprobados(proveedor) {
+    return this._http.get<PagoAprobado[]>(`${this.URL_SERVICIOS}/facturas/pagosaprobados/${proveedor}`)
       .pipe(
         map(resp => resp["data"]),
         map(data => data.map(m => {
-          let mov: Movimiento = {
+          let pago: PagoAprobado = {
             movimientoID: m["ID"],
             folio: m["Folio"],
             movimientoDescripcion: m["Movimiento"],
             referencia: m["Referencia"],
             saldo: Number(m["Saldo"]),
-            importe: Number(m["Importe"]) ,
+            importe: Number(m["Importe"]),
             fechaEmision: moment(m["FechaEmision"]).toDate(),
             fechaVencimiento: moment(m["Vencimiento"]).toDate(),
             moneda: m["Moneda"].trim(),
             //solicitaContraRecibo: false,
             //tienePDF: m["PDF"] == "1" ? true : false,
             //tieneXML: m["XML"] == "1" ? true : false,
-            tipo :"Pago"
+            tipo: "Pago"
           };
-          return mov;
+          return pago;
         })),
-        map(movimientos => movimientos.sort((a: Movimiento, b:Movimiento) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime()))
+        map(movimientos => movimientos.sort((a: PagoAprobado, b: PagoAprobado) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime()))
       );
-    
+
   }
 
 
@@ -110,7 +110,7 @@ export class FacturaService {
         referencia: "59897" + (i + 1),
         moneda: moneda,
         saldo: Math.random() * (10000 - 50 + 1) + 50,
-        importe:Math.random() * (10000 - 50 + 1) + 50,
+        importe: Math.random() * (10000 - 50 + 1) + 50,
         tienePDF: true,
         tieneXML: true,
         fechaEmision: moment('2020-01-05').toDate(),
@@ -120,23 +120,74 @@ export class FacturaService {
     return movimientos;
   }
 
-  obtenerDetalleContraRecibo(id) {
+  obtenerDetalleContraRecibo(folio) {
     return this._http
-      .get<Movimiento[]>(`${this.URL_SERVICIOS}/facturas/detallecontrarecibo/${id}`)
+      .get<Movimiento[]>(`${this.URL_SERVICIOS}/facturas/detallecontrarecibo/${folio}`)
       .pipe(
         map(resp => resp["data"]),
         map(data => data
-          .filter(m =>m["Referencia"]!=null)
+          .filter(m => m["Referencia"] != null)
           .map(m => {
-            let mov: Movimiento = {            
+            let mov: Movimiento = {
               referencia: m["Referencia"],
-              importe: Number(m["ImporteTotal"]),              
-              fechaEmision: moment(m["FechaEmision"]).toDate(),              
+              importe: Number(m["ImporteTotal"]),
+              fechaEmision: moment(m["FechaEmision"]).toDate(),
             };
             return mov;
           }))
       );
 
   }
+
+
+
+
+  obtenerDetallePagoAprobado(folio) {
+    return this._http
+      .get<PagoDetalle[]>(`${this.URL_SERVICIOS}/facturas/detallepagos/${folio}`)
+      .pipe(
+        map(resp => resp["data"]),
+        map(data => data
+          .filter(m => m["Factura"] != null)
+          .map(m => {
+            let d: PagoDetalle = {
+              factura: m["Factura"],
+              numE: m["NumE"],
+              movPago: m["MovPago"],
+              numeroCR: m["NumCR"],
+              importe: Number(m["ImporteF"]),
+              fechaEmision: moment(m["FechaEmisionP"]).toDate()
+            };
+            return d;
+          }))
+      );
+
+
+
+  }
+
+
+
+  obtenerFacturas(cliente) {
+
+    return this._http
+      .get<Factura[]>(`${this.URL_SERVICIOS}/facturas/${cliente}`)
+      .pipe(
+        map(resp => resp["facturas"]),
+        map(data => data
+          .map(m => {
+            let d: Factura = {
+              referencia: m["Referencia"],
+              folio: m["Folio"],
+              modulo: m["Modulo"]
+            };
+            return d;
+          })));
+  }
+
+
+
+
+
 
 }

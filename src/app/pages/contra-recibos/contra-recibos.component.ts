@@ -3,11 +3,12 @@ import { UsuarioService } from './../../services/usuario.service';
 import { FacturaService } from './../../services/factura.service';
 import { ModalUploadService } from './../../services/modal-upload.service';
 import { Contrarecibo, Movimiento } from './../../models/movimiento';
-import { Component, OnInit, ViewChild, OnDestroy, TemplateRef, ElementRef } from '@angular/core';
-import { EditSettingsModel, PageSettingsModel, FilterSettingsModel, Grid,GridComponent } from '@syncfusion/ej2-angular-grids';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild, OnDestroy, TemplateRef, ElementRef, AfterViewInit, Renderer2, HostListener } from '@angular/core';
+import { EditSettingsModel, PageSettingsModel, FilterSettingsModel, Grid, GridComponent } from '@syncfusion/ej2-angular-grids';
+import { Subscription, fromEvent } from 'rxjs';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { FechaDictionary} from 'src/app/utils/dates';
+import { FechaDictionary } from 'src/app/utils/dates';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -42,9 +43,9 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
   public fechaVencimientoFilter: any;
   public contenedorFiltroFechaEmision: any = null;
   public contenedorFiltroFechaVencimiento: any = null;
-  public fecha:FechaDictionary=new FechaDictionary();
+  public fecha: FechaDictionary = new FechaDictionary();
 
-    
+
 
   constructor(
     public _modalUploadService: ModalUploadService,
@@ -52,32 +53,24 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
     private _usuarioService: UsuarioService,
     private modalService: NgbModal,
     private _pdfService: PdfMovimientosService,
+    private renderer: Renderer2
     //private elementRef: ElementRef
-  ) { }
-
-
-
-
-  
-
+  ) {
+  }
   verDetalle(contrarecibo: Contrarecibo) {
-    this._contraRecibo = contrarecibo;
-    //this._contraRecibo.detalle= this._facturaService.obtenerMovimientosFicticios('Pesos',2);
-    //this.modalService.open(this.detalle, { size: 'lg' });      
-    this.cargando = true;
+    this._contraRecibo = contrarecibo;        
     this._facturaService.obtenerDetalleContraRecibo(contrarecibo.movimientoID).subscribe(
       (movs: Movimiento[]) => {
-        this._contraRecibo.detalle = movs;        
-        this.modalService.open(this.detalle, { size: 'md' });
-        this.cargando = false;
+        this._contraRecibo.detalle = movs;
+        this.modalService.open(this.detalle, { size: 'md' });      
       });
   }
 
-  actionComplete(args) {    
+  actionComplete(args) {
     if (args.requestType == "filterafteropen" && args.columnName == "fechaEmision") {
       args.filterModel.dlgObj.element.querySelector('.e-flm_optrdiv').hidden = true;
       const btn = (document.getElementsByClassName('e-primary e-flat')[0] as any);
-      btn.hidden= true;
+      btn.hidden = true;
       this.contenedorFiltroFechaEmision = args.filterModel.dlgObj.element
         //this.elementRef.nativeElement
         .querySelector('.e-flmenu-cancelbtn')
@@ -86,7 +79,7 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
     if (args.requestType == "filterafteropen" && args.columnName == "fechaVencimiento") {
       args.filterModel.dlgObj.element.querySelector('.e-flm_optrdiv').hidden = true;
       const btn = (document.getElementsByClassName('e-primary e-flat')[0] as any);
-      btn.hidden= true;
+      btn.hidden = true;
       this.contenedorFiltroFechaVencimiento = args.filterModel.dlgObj.element
         //this.elementRef.nativeElement        
         .querySelector('.e-flmenu-cancelbtn')
@@ -132,35 +125,49 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
   }
 
 
+  aplicarFiltroGeneral() {
+     if (this._usuarioService.filtroAplicar==null || this.grid == undefined){
+       return;
+     }        
+     const folio =this._usuarioService.filtroAplicar.folio;
 
+      this.grid.filterSettings.columns = [
+        { "value": `${folio}`, "operator": "equal", "field": "folio", },
+      ];      
+      this._usuarioService.filtroAplicar=null;
+      this._contraRecibo= this.contraRecibos.find(x=>x.folio==folio);
+      this.verDetalle(this._contraRecibo);
+          
+  }
 
+ 
 
+  ngOnInit(): void {
 
-  ngOnInit(): void {        
+    
+
+    this.subscription = this._usuarioService.filtroGeneral.subscribe(x => {
+      this.aplicarFiltroGeneral();
+    });
     this.cargando = true;
     this._facturaService.obtenerContraRecibosPendientes(this._usuarioService.usuario.Proveedor)
       .subscribe(movs => {
         this.contraRecibos = movs;
         this.cargando = false;
-      });      
-
+      });
   }
-  verPDF(contrarecibo: Contrarecibo) {
-    // this.cargando=true;
-    // this._contraRecibo = contrarecibo;
-    // this._facturaService.obtenerDetalleContraRecibo(contrarecibo.movimientoID).subscribe(
-    //   (movs: Movimiento[]) => {
-    //     this._contraRecibo.detalle=movs;                
-    //     this._pdfService.obtenerDetalleContrarecibos(this._contraRecibo);
-    //     this.cargando=false;
-    //   });   
+  verPDF(contrarecibo: Contrarecibo) {  
   }
 
-  created(e) {
-    this.grid.showSpinner();
+  created(e) {    
+    this.aplicarFiltroGeneral();
+    console.log("Se termino de cargar");
+
   }
   ngOnDestroy(): void {
+    this.subscription.unsubscribe();    
     //this.subscription.unsubscribe();
+    console.log("Adios");
   }
 
 }

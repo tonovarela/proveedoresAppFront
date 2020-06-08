@@ -1122,12 +1122,14 @@ File: scss
   margin: 0px;
   display: block;
   z-index: 110;
-  width: 100%;
+  width: 82%;
   top: -1px;
   -webkit-box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.2);
   box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.2);
   display: none;
-  left: 0px; }
+  right: 0;
+  /* left: 0px;  */
+}
   .search-box .app-search input {
     width: 100.5%;
     padding: 25px 40px 25px 20px;

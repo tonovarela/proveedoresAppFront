@@ -11,7 +11,7 @@ export class TotalSaldoCRPipe implements PipeTransform {
     let total = 0;
     movimientos.forEach(mov => {
       if (mov.solicitaContraRecibo)
-        total += mov.saldo;
+        total += mov.importe;
     });
     return total;
   }

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ModalUploadComponent } from './modal-upload/modal-upload.component';
 import { DetalleContraReciboComponent } from './detalle-contra-recibo/detalle-contra-recibo.component';
+import { DetallePagoComponent } from './detalle-pago/detalle-pago.component';
 
 
 
@@ -10,12 +11,14 @@ import { DetalleContraReciboComponent } from './detalle-contra-recibo/detalle-co
   declarations: [
     LoaderComponent,
     ModalUploadComponent,
-    DetalleContraReciboComponent
+    DetalleContraReciboComponent,
+    DetallePagoComponent
   ],
   exports:[
    LoaderComponent,
    ModalUploadComponent,
-   DetalleContraReciboComponent
+   DetalleContraReciboComponent,
+   DetallePagoComponent
   ],
   imports: [
     CommonModule

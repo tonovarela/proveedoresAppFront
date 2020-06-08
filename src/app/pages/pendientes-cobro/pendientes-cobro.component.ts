@@ -88,8 +88,8 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
       .subscribe(movs => {
         this.movimientos = movs;
         this.cargando=false;
-        // this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Pesos", 5));
-        // this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Dolares", 1));
+         //this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Pesos", 5));
+         //this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Dolares", 1));
         // this.movimientos.unshift({
         //   folio: 66666,
         //   solicitaContraRecibo: false,
@@ -106,7 +106,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
         // })
       });
 
-    //this._usuarioService.usuario.MontoMaxContraRecibo=10000; 
+    //this._usuarioService.usuario.MontoMaxContraRecibo=5000; 
   }
 
 

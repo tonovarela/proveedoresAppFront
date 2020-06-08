@@ -6,13 +6,16 @@ import { environment } from 'src/environments/environment';
 import { Movimiento } from '../models/movimiento';
 import { map } from 'rxjs/operators';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class SubirArchivoService {
   public notificacion = new EventEmitter<Movimiento>();
+  
   //URL_SERVICE: string = 'http://192.168.5.28/proveedores';
   URL_SERVICE: string = 'http://localhost:44382/';  
+  //#436784
   validarEstructura: boolean =true;
   constructor(private _http: HttpClient,
     private _usuarioService: UsuarioService) { }
@@ -31,6 +34,7 @@ export class SubirArchivoService {
     formData.append('movimiento', `${movimiento.movimientoDescripcion}-${movimiento.folio}`.trim());
     formData.append('proveedor', `${this._usuarioService.usuario.Proveedor.trim()}`);
     formData.append('tipo', `${movimiento.tipo}`);
+    formData.append('moneda', `${movimiento.moneda}`);
     
 
     return this._http.post(url, formData, { reportProgress: true }).pipe(
@@ -48,6 +52,12 @@ export class SubirArchivoService {
 
     );
   }
+
+  anexarMovimientoIntelisis(nombreArchivo,id){
+   return this._http.post(`${environment.URL_SERVICIOS}`,
+                            {path:`\\192.168.2.217\${nombreArchivo}`,id});    
+  }
+
   //Revisa validez ante el SAT
   validarXML(archivo: File) {
     const url = `${this.URL_SERVICE}/api/factura/validar`;

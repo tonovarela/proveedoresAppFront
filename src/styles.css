@@ -29,6 +29,16 @@
 
 
 
+/* @import '../node_modules/@syncfusion/ej2-buttons/styles/material.css'; */
+/* @import '../node_modules/@syncfusion/ej2-dropdowns/styles/material.css'; */
+@import '../node_modules/@syncfusion/ej2-angular-dropdowns/styles/material.css';
+/* @import '../node_modules/@syncfusion/ej2-inputs/styles/material.css'; */
+/* @import '../node_modules/@syncfusion/ej2-popups/styles/material.css'; */
+/* @import '../node_modules/@syncfusion/ej2-lists/styles/material.css'; */
+
+
+
+
 @-webkit-keyframes spinner-border {
     to {
       -webkit-transform: rotate(360deg);

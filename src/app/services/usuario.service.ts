@@ -2,19 +2,22 @@ import { ResponseLogin, Usuario } from './../models/proveedor';
 import { environment } from './../../environments/environment';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
   url: string = environment.URL_SERVICIOS;
+  filtroGeneral= new EventEmitter<any>();
+  filtroAplicar:any =null;
   usuario: Usuario = {};
   constructor(
     public http: HttpClient,
     public router: Router
   ) {
     this.cargarStorage();
+    
   }
 
   login(usuario: any) {

@@ -34,8 +34,7 @@ export class ModalUploadComponent implements OnInit {
     this.archivoSubiendo=false;
   }
   subirArchivo() {
-    if (!this.archivoSubir) {
-      console.log("No hay archivo");
+    if (!this.archivoSubir) {      
       return;
     }
     this.archivoSubiendo=true;
@@ -44,8 +43,8 @@ export class ModalUploadComponent implements OnInit {
                                             this._modalUploadService.tipoArchivo,
                                             this._modalUploadService.movimiento)
       .subscribe((response) => {
-        this.archivoSubiendo=false;
-        if (response['esIgual']) {
+        this.archivoSubiendo=false;        
+        if (response['esIgual']) {          
           this._modalUploadService.ocultarModal();                 
           this.cerrarModal();
           this._uiService.mostrarAlertaSuccess("Listo",response["mensaje"]);
@@ -54,6 +53,14 @@ export class ModalUploadComponent implements OnInit {
           this.errores= response["errores"];
         }
       });
+  }
+
+  registrarBitacoraIntelisis(){
+    const rootPath="\\\\192.168.2.217\\intelisis\\CFD\\ContabilidadElectronica\\XML_PROV\\FACTURAS_PROVEEDORES\\";    
+    if (this._modalUploadService.movimiento.tipo=="Factura-Ingreso"){
+       this._subirArchivoService
+       .anexarMovimientoIntelisis(rootPath,this._modalUploadService.movimiento.movimientoID);
+    }
   }
 
 

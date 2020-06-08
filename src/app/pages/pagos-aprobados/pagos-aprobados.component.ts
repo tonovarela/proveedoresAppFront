@@ -1,9 +1,12 @@
-import { Movimiento } from './../../models/movimiento';
+import { Movimiento, Contrarecibo, PagoAprobado, PagoDetalle } from './../../models/movimiento';
+
 import { UsuarioService } from './../../services/usuario.service';
 import { FacturaService } from './../../services/factura.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Grid, EditSettingsModel, PageSettingsModel, FilterSettingsModel } from '@syncfusion/ej2-angular-grids';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FechaDictionary } from 'src/app/utils/dates';
+
 
 
 
@@ -17,6 +20,7 @@ export class PagosAprobadosComponent implements OnInit {
 
 
   @ViewChild('grid') grid: Grid;
+  @ViewChild('detalle') detalle: any;
   gridInstance: Grid;
 
   cargando: boolean = false;
@@ -32,7 +36,8 @@ export class PagosAprobadosComponent implements OnInit {
   };
   
 
-  pagosAprobados: Movimiento[] = [];
+  pagosAprobados: PagoAprobado[] = [];
+  _pagoActual: PagoAprobado =null;
 
   public fechaEmisionFilter: any;
   public fechaVencimientoFilter: any;
@@ -41,20 +46,21 @@ export class PagosAprobadosComponent implements OnInit {
   public fecha:FechaDictionary=new FechaDictionary();
 
 
-  constructor(private _facturaService: FacturaService, private _usuarioService: UsuarioService) { }
+  constructor(private _facturaService: FacturaService,
+     private _usuarioService: UsuarioService,
+     private modalService: NgbModal,
+     ) { }
 
 
   ngOnInit(): void {
     this.cargando=true;
-    this._facturaService.obtenerPagosAprobados(this._usuarioService.usuario.Proveedor).subscribe( (movs:Movimiento[]) => {
-      this.pagosAprobados= movs;      
+    this._facturaService.obtenerPagosAprobados(this._usuarioService.usuario.Proveedor).subscribe( (pagos:PagoAprobado[]) => {
+      this.pagosAprobados= pagos;      
       this.cargando=false;
     });
 
 
   }
-
-
 
   actionComplete(args) {    
     if (args.requestType == "filterafteropen" && args.columnName == "fechaEmision") {
@@ -65,39 +71,26 @@ export class PagosAprobadosComponent implements OnInit {
       this.contenedorFiltroFechaEmision = args.filterModel.dlgObj.element        
         .querySelector('.e-flmenu-cancelbtn')
         .addEventListener('click', this.borrarFiltroFechaEmision.bind(this));
-    }
-    if (args.requestType == "filterafteropen" && args.columnName == "fechaVencimiento") {
-      args.filterModel.dlgObj.element.querySelector('.e-flm_optrdiv').hidden = true;
-      const btn = (document.getElementsByClassName('e-primary e-flat')[0] as any);
-      btn.hidden= true;
-      this.contenedorFiltroFechaVencimiento = args.filterModel.dlgObj.element
-        //this.elementRef.nativeElement        
-        .querySelector('.e-flmenu-cancelbtn')
-        .addEventListener('click', this.borrarFiltroFechaVencimiento.bind(this));
-    }
+    }   
+  }
+
+  verDetalle(mov:PagoAprobado) {    
+    this.cargando = true;
+    this._pagoActual=mov;
+    this._facturaService.obtenerDetallePagoAprobado(mov.folio).subscribe(
+      (movs: PagoDetalle[]) => {
+        //console.log(movs);
+        this._pagoActual.detalle=movs;
+        this.cargando=false;                        
+        this.modalService.open(this.detalle, { size: 'lg' });
+        //this.cargando = false;
+      });
   }
 
   borrarFiltroFechaEmision(event) {
     this.fechaEmisionFilter = null;
     this.grid.removeFilteredColsByField("fechaEmision");
-  }
-  borrarFiltroFechaVencimiento(event) {
-    this.fechaVencimientoFilter = null;
-    this.grid.removeFilteredColsByField("fechaVencimiento");
-  }
-  cambioFechaVencimiento(e) {
-    if (e.value) {
-      this.grid.filterSettings.columns = [
-        { "value": e.value[0], "operator": "greaterthanorequal", "field": "fechaVencimiento", "predicate": "and" },
-        { "value": e.value[1], "operator": "lessthanorequal", "field": "fechaVencimiento", "predicate": "and" }
-      ]
-    }
-    else {
-
-      this.grid.filterSettings.columns = [];
-      //this.grid.removeFilteredColsByField("fechaVencimiento");
-    }
-  }
+  }    
   cambioFechaEmision(e) {
     if (e.value) {
       this.grid.filterSettings.columns = [

@@ -8,11 +8,11 @@
       >
       <e-columns>
         <e-column field="movimientoDescripcion" headerText="Movimiento" width=40>
-          <!-- <ng-template #template let-data>
+          <ng-template #template let-data>
             <a href="javascript:void(0);" 
-            (click)="verDetalle(data)"
+              (click)="verDetalle(data)"            
             >{{data.movimientoDescripcion}}</a>            
-          </ng-template> -->
+          </ng-template>          
         </e-column>
         <e-column field="folio" headerText=Folio width=30>          
         </e-column>        
@@ -28,27 +28,42 @@
               </e-presets>
             </ejs-daterangepicker>
           </ng-template>            
-        </e-column>        
-        <e-column field="fechaVencimiento" [filter]='filterMenu' headerText="Vencimiento" [format]='formatoptions'
-          width=40>
-          <ng-template #filterTemplate let-data > 
-            <ejs-daterangepicker  format='dd-MM-yyyy' placeholder="Elija la fecha"  [(ngModel)]="fechaVencimientoFilter"   (change)="cambioFechaVencimiento($event)"  >
-              <e-presets>
-                <e-preset label="Esta semana" [start]='fecha.weekStart' [end]='fecha.weekEnd'></e-preset>
-                <e-preset label="Este mes" [start]='fecha.monthStart' [end]='fecha.monthEnd'></e-preset>
-                <e-preset label="Anterior mes" [start]='fecha.lastStart' [end]='fecha.lastEnd'></e-preset>                                
-              </e-presets>
-            </ejs-daterangepicker>
-          </ng-template>            
-        </e-column>
-        <e-column field="importe" headerText="Importe" width=30>
+        </e-column>                
+        <e-column field="importe" headerText="Importe" width=30  >
           <ng-template #template let-data>
             {{data.importe | currency}}
           </ng-template>
         </e-column>
         <e-column field="moneda" headerText="Moneda" width=30>
-        </e-column>        
+        </e-column> 
+        <e-column allowFiltering='false' headerText="XML" allowSelection="false" width='20'>
+          <ng-template #template let-data>
+            <div class="rounded-icon rounded-info"><i class="mdi mdi-file-xml"></i></div>            
+          </ng-template>
+        </e-column>
+        <e-column allowFiltering='false' headerText="PDF" allowSelection="false" width='20'>
+          <ng-template #template let-data>            
+              <div
+              class="rounded-icon rounded-warning"><i class="mdi mdi-file-pdf"></i></div>            
+          </ng-template>
+        </e-column>
+               
       </e-columns>
     </ejs-grid>
   </div>
 </div>
+
+<ng-template #detalle let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Detalle de pago {{_pagoActual.folio }} </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">    
+    <app-detalle-pago [pago]="_pagoActual"></app-detalle-pago>            
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary waves-effect" (click)="modal.close('Save click')">Cerrar</button>
+  </div>
+</ng-template>

@@ -9,26 +9,26 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="index.html">
                 <!-- Logo icon --><b>
-                            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                            <!-- Dark Logo icon -->
-                            <!-- <img src="https://sistemas.litoprocess.com/crece/img/Lito2.png"  height="10px"  alt="homepage" class="dark-logo" /> -->
-                            <img src="assets\images\logoLito.png"  alt="homepage" class="dark-logo" />
-                            
-                            <!-- Light Logo icon -->
-                            <img src="assets\images\logoLito.png"  alt="homepage" class="light-logo" />
-                            <!-- <img src="https://sistemas.litoprocess.com/litoapps/img/logo_b.png" alt="homepage" class="light-logo" /> -->
-                            <!-- <img src="assets/images/logo-light-icon.png" alt="homepage" class="light-logo" /> -->
-                        </b>
+                    <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                    <!-- Dark Logo icon -->
+                    <!-- <img src="https://sistemas.litoprocess.com/crece/img/Lito2.png"  height="10px"  alt="homepage" class="dark-logo" /> -->
+                    <img src="assets\images\logoLito.png" alt="homepage" class="dark-logo" />
+
+                    <!-- Light Logo icon -->
+                    <img src="assets\images\logoLito.png" alt="homepage" class="light-logo" />
+                    <!-- <img src="https://sistemas.litoprocess.com/litoapps/img/logo_b.png" alt="homepage" class="light-logo" /> -->
+                    <!-- <img src="assets/images/logo-light-icon.png" alt="homepage" class="light-logo" /> -->
+                </b>
                 <!--End Logo icon -->
                 <!-- Logo text --><span>
-                         <!-- dark Logo text -->
-                         <!-- <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo" /> -->
-                         <!-- Light Logo text -->    
-                         <!-- <img src="assets/images/logo-light-text.png" class="light-logo" alt="homepage" /> -->
-                         <img src="assets\images\letrasLito.png"  class="light-logo" alt="homepage" />
-                         <img src="assets\images\letras-light.png"  class="dark-logo" alt="homepage" />
-                        </span>
-                         </a>
+                    <!-- dark Logo text -->
+                    <!-- <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo" /> -->
+                    <!-- Light Logo text -->
+                    <!-- <img src="assets/images/logo-light-text.png" class="light-logo" alt="homepage" /> -->
+                    <img src="assets\images\letrasLito.png" class="light-logo" alt="homepage" />
+                    <img src="assets\images\letras-light.png" class="dark-logo" alt="homepage" />
+                </span>
+            </a>
         </div>
         <!-- ============================================================== -->
         <!-- End Logo -->
@@ -39,8 +39,10 @@
             <!-- ============================================================== -->
             <ul class="navbar-nav mr-auto">
                 <!-- This is  -->
-                <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
-                <li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up waves-effect waves-dark"
+                        href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                <li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down waves-effect waves-dark"
+                        href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
                 <li class="nav-item hidden-sm-down"></li>
             </ul>
             <!-- ============================================================== -->
@@ -50,17 +52,53 @@
                 <!-- ============================================================== -->
                 <!-- Search -->
                 <!-- ============================================================== -->
-                <!-- <li class="nav-item hidden-xs-down search-box"> <a class="nav-link hidden-sm-down waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
-                    <div class="app-search">
-                         <input type="text" #input (keyup.enter)="buscar(input.value)" class="form-control" placeholder="Buscar"> <a class="srh-btn"><i class="ti-close"></i></a>  
+                <li class="nav-item hidden-xs-down search-box"> <a
+                        class="nav-link hidden-sm-down waves-effect waves-dark" (click)="nuevaBusqueda()"
+                        href="javascript:void(0)"><i class="ti-search"></i></a>
+                    <div class="app-search" style="background-color: white;">
+                        <ejs-autocomplete 
+                        popupHeight='400px'                                                 
+                        cssClass="form-control"  [(value)]='value' (change)="buscar()"
+                            [fields]='fields' [dataSource]='facturas'
+                             placeholder="Buscar  por factura"
+                            style="padding-top: 20px;" [showClearButton]="false">
+                            <ng-template #noRecordsTemplate let-data="">
+                                <span class='norecord'> <b>NO</b> existen facturas de acuerdo a la búsqueda </span>
+                            </ng-template>
+                            <ng-template  #headerTemplate let-data>
+                                <!-- <table   class="table color-table inverse-table" style="margin:0 !important">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-3">Factura </th>
+                                            <th class="col-3">Folio</th>
+                                            <th class="col-6">Módulo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table> -->
+                            </ng-template>
+                            <ng-template #itemTemplate="" let-data="">                                
+                                <div class="row" >
+                                    <div class="col-3 "><h5 >Factura:{{data.referencia}}</h5></div>
+                                    <div class="col-3"><h5 class="m-b-0 text-info">Folio: {{data.folio}}</h5></div>
+                                    <div class="col-6"><h5 class="m-b-0 ">Módulo: {{data.modulo}}</h5></div>
+                                </div>
+                            </ng-template>
+                        </ejs-autocomplete>
+                        <a class="srh-btn">
+                            <i class="ti-close" (click)="cierraBusqueda()"></i>
+                        </a>
+                        <!-- <input type="text" #input (keyup.enter)="buscar(input.value)" [(ngModel)]="value" class="form-control" placeholder="Buscar">  -->
                     </div>
-                </li> -->
+                </li>
 
                 <!-- ============================================================== -->
                 <!-- Messages -->
                 <!-- ============================================================== -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-email"></i>
+                    <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-email"></i>
                         <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
                     </a>
                     <div class="dropdown-menu mailbox dropdown-menu-right animated fadeIn" aria-labelledby="2">
@@ -72,32 +110,49 @@
                                 <div class="message-center">
                                     <!-- Message -->
                                     <a href="#">
-                                        <div class="user-img"> <img src="assets/images/users/1.jpg" alt="user" class="img-circle"> <span class="profile-status online pull-right"></span> </div>
+                                        <div class="user-img"> <img src="assets/images/users/1.jpg" alt="user"
+                                                class="img-circle"> <span
+                                                class="profile-status online pull-right"></span> </div>
                                         <div class="mail-contnet">
-                                            <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:30 AM</span> </div>
+                                            <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span>
+                                            <span class="time">9:30 AM</span>
+                                        </div>
                                     </a>
                                     <!-- Message -->
                                     <a href="#">
-                                        <div class="user-img"> <img src="assets/images/users/2.jpg" alt="user" class="img-circle"> <span class="profile-status busy pull-right"></span> </div>
+                                        <div class="user-img"> <img src="assets/images/users/2.jpg" alt="user"
+                                                class="img-circle"> <span class="profile-status busy pull-right"></span>
+                                        </div>
                                         <div class="mail-contnet">
-                                            <h5>Sonu Nigam</h5> <span class="mail-desc">I've sung a song! See you at</span> <span class="time">9:10 AM</span> </div>
+                                            <h5>Sonu Nigam</h5> <span class="mail-desc">I've sung a song! See you
+                                                at</span> <span class="time">9:10 AM</span>
+                                        </div>
                                     </a>
                                     <!-- Message -->
                                     <a href="#">
-                                        <div class="user-img"> <img src="assets/images/users/3.jpg" alt="user" class="img-circle"> <span class="profile-status away pull-right"></span> </div>
+                                        <div class="user-img"> <img src="assets/images/users/3.jpg" alt="user"
+                                                class="img-circle"> <span class="profile-status away pull-right"></span>
+                                        </div>
                                         <div class="mail-contnet">
-                                            <h5>Arijit Sinh</h5> <span class="mail-desc">I am a singer!</span> <span class="time">9:08 AM</span> </div>
+                                            <h5>Arijit Sinh</h5> <span class="mail-desc">I am a singer!</span> <span
+                                                class="time">9:08 AM</span>
+                                        </div>
                                     </a>
                                     <!-- Message -->
                                     <a href="#">
-                                        <div class="user-img"> <img src="assets/images/users/4.jpg" alt="user" class="img-circle"> <span class="profile-status offline pull-right"></span> </div>
+                                        <div class="user-img"> <img src="assets/images/users/4.jpg" alt="user"
+                                                class="img-circle"> <span
+                                                class="profile-status offline pull-right"></span> </div>
                                         <div class="mail-contnet">
-                                            <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span> <span class="time">9:02 AM</span> </div>
+                                            <h5>Pavan kumar</h5> <span class="mail-desc">Just see the my admin!</span>
+                                            <span class="time">9:02 AM</span>
+                                        </div>
                                     </a>
                                 </div>
                             </li>
                             <li>
-                                <a class="nav-link text-center" href="javascript:void(0);"> <strong>See all e-Mails</strong> <i class="fa fa-angle-right"></i> </a>
+                                <a class="nav-link text-center" href="javascript:void(0);"> <strong>See all
+                                        e-Mails</strong> <i class="fa fa-angle-right"></i> </a>
                             </li>
                         </ul>
                     </div>
@@ -118,7 +173,9 @@
                 <!-- ============================================================== -->
                 <li class="nav-item dropdown">
                     <!-- <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img [src]="_usuarioService.usuario.img | imagen" alt="user" class="profile-pic" /></a> -->
-                    <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/av-6.png" alt="user" class="profile-pic" /></a>
+                    <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false"><img src="assets/images/users/av-6.png" alt="user"
+                            class="profile-pic" /></a>
                     <div class="dropdown-menu dropdown-menu-right animated fadeIn">
                         <ul class="dropdown-user">
                             <li>
@@ -126,21 +183,25 @@
                                     <!-- <div class="u-img"><img [src]="_usuarioService.usuario.img | imagen" alt="user"></div> -->
                                     <div class="u-img"><img src="assets/images/users/av-6.png" alt="user"></div>
                                     <div class="u-text">
-                                        <h4>{{_usuarioService.usuario.Nombre}}</h4>                                         
-                                        <span class="label label-rouded label-themecolor">RFC {{_usuarioService.usuario.RFC}}</span>
-                                        <span class="label label-rouded label-info">Máximo CR {{ _usuarioService.usuario.MontoMaxContraRecibo | currency }}</span>                                        
+                                        <h4>{{_usuarioService.usuario.Nombre}}</h4>
+                                        <span class="label label-rouded label-themecolor">RFC
+                                            {{_usuarioService.usuario.RFC}}</span>
+                                        <span class="label label-rouded label-info">Máximo CR
+                                            {{ _usuarioService.usuario.MontoMaxContraRecibo | currency }}</span>
                                         <!-- <a routerLink="/perfil" class="btn btn-rounded btn-danger btn-sm">View Profile</a> -->
                                     </div>
                                 </div>
                             </li>
                             <li role="separator" class="divider"></li>
-                            <li><a routerLinkActive="active" routerLink="/perfil"><i class="ti-user"></i> Mi perfil</a></li>
+                            <li><a routerLinkActive="active" routerLink="/perfil"><i class="ti-user"></i> Mi perfil</a>
+                            </li>
                             <!-- <li><a href="#"><i class="ti-wallet"></i> My Balance</a></li> -->
                             <!-- <li><a href="#"><i class="ti-email"></i> Inbox</a></li> -->
                             <li role="separator" class="divider"></li>
-                            <li><a href="#" routerLink="/account-settings"><i class="ti-settings" ></i> Settings</a></li>
+                            <li><a href="#" routerLink="/account-settings"><i class="ti-settings"></i> Settings</a></li>
                             <li role="separator" class="divider"></li>
-                            <li><a (click)="_usuarioService.logout()" class="pointer"><i class="fa fa-power-off"></i> Cerrar sesión</a></li>                            
+                            <li><a (click)="_usuarioService.logout()" class="pointer"><i class="fa fa-power-off"></i>
+                                    Cerrar sesión</a></li>
                         </ul>
                     </div>
                 </li>
