@@ -1,3 +1,4 @@
+import { SettingsService } from './settings.service';
 import { ResponseLogin, Usuario } from './../models/proveedor';
 import { environment } from './../../environments/environment';
 import { map } from 'rxjs/operators';
@@ -14,7 +15,8 @@ export class UsuarioService {
   usuario: Usuario = {};
   constructor(
     public http: HttpClient,
-    public router: Router
+    public router: Router,
+    public settingService: SettingsService
   ) {
     this.cargarStorage();
     
@@ -53,6 +55,7 @@ export class UsuarioService {
   cargarStorage() {
     if (localStorage.getItem('usuario')) {
       this.usuario = JSON.parse(localStorage.getItem('usuario'));
+      this.settingService.cargarAjustes();
     } else {
       this.usuario = null;
     }

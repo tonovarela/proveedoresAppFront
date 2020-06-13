@@ -52,6 +52,41 @@
       transform: rotate(360deg);
     }
   }
+
+
+
+ 
+  .rounded-success{
+    color:#60c794;
+    border-color: #60c794;        
+}
+.rounded-info{
+    color:#2693db;
+    border-color: #6099c7;        
+}
+.rounded-warning{
+    
+    color: #c90f2ec2;
+    border-color:  #c90f2ec2;
+    
+}
+.rounded-disabled{    
+    color: #57525242;        
+    
+}
+.rounded-icon{
+border:1px solid; 
+font-size: 18px;
+padding: 0 2px;
+/* width: 40px; */
+display: inline-block;
+text-align: center;
+border-radius: 20%;
+}
+
+
+
+
   
   .spinner-border {
     display: inline-block;

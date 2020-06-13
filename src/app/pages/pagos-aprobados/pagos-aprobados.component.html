@@ -1,23 +1,26 @@
 <app-loader *ngIf="cargando"></app-loader>
 <div class="row" *ngIf="!cargando">
   <div class="col-12">
-    <ejs-grid #grid id="grid" height='350'  [dataSource]="pagosAprobados " allowReordering='true' allowSelection="false"
+    <ejs-grid #grid id="grid" height='350'
+    (created)="created($event)"
+      [dataSource]="pagosAprobados " allowReordering='true' allowSelection="false"
       [selectionSettings]="selectOptions" [editSettings]='editSettings' allowPaging="true" allowFiltering="true"
       [filterSettings]='filterSettings' allowSorting="true" allowResizing='true' [pageSettings]="pageSettings"      
       (actionComplete)="actionComplete($event)"    
       >
-      <e-columns>
+      <e-columns>        
         <e-column field="movimientoDescripcion" headerText="Movimiento" width=40>
           <ng-template #template let-data>
             <a href="javascript:void(0);" 
-              (click)="verDetalle(data)"            
+              (click)="verDetalle(data,'')"            
             >{{data.movimientoDescripcion}}</a>            
           </ng-template>          
         </e-column>
-        <e-column field="folio" headerText=Folio width=30>          
-        </e-column>        
-        <e-column field="referencia" headerText="Factura" width=40>
-        </e-column>
+        <e-column field="folio" headerText=Folio width=20>          
+        </e-column>     
+        <e-column field="referencia" headerText=Factura width=20>          
+        </e-column>     
+              
         <e-column field="fechaEmision"     [filter]='filterMenu' headerText="Emisión" [format]='formatoptions' width=40>
           <ng-template #filterTemplate let-data > 
             <ejs-daterangepicker  locale="es" format='dd-MM-yyyy'   placeholder="Elija la fecha"  [(ngModel)]="fechaEmisionFilter"   (change)="cambioFechaEmision($event)"  >
@@ -32,19 +35,19 @@
         <e-column field="importe" headerText="Importe" width=30  >
           <ng-template #template let-data>
             {{data.importe | currency}}
+
           </ng-template>
         </e-column>
         <e-column field="moneda" headerText="Moneda" width=30>
         </e-column> 
         <e-column allowFiltering='false' headerText="XML" allowSelection="false" width='20'>
-          <ng-template #template let-data>
-            <div class="rounded-icon rounded-info"><i class="mdi mdi-file-xml"></i></div>            
+          <ng-template #template let-data  >
+            <div class="rounded-icon rounded-info" (click)="_modalUploadService.mostrarModal('xml',data)" ><i class="mdi mdi-file-xml"></i></div>            
           </ng-template>
         </e-column>
         <e-column allowFiltering='false' headerText="PDF" allowSelection="false" width='20'>
           <ng-template #template let-data>            
-              <div
-              class="rounded-icon rounded-warning"><i class="mdi mdi-file-pdf"></i></div>            
+              <div class="rounded-icon rounded-warning" (click)="_modalUploadService.mostrarModal('pdf',data)"><i class="mdi mdi-file-pdf"></i></div>            
           </ng-template>
         </e-column>
                
@@ -61,7 +64,7 @@
     </button>
   </div>
   <div class="modal-body">    
-    <app-detalle-pago [pago]="_pagoActual"></app-detalle-pago>            
+    <app-detalle-pago  [referencia]="_referencia" [pago]="_pagoActual"></app-detalle-pago>            
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary waves-effect" (click)="modal.close('Save click')">Cerrar</button>

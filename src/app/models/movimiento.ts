@@ -15,6 +15,7 @@ export interface Movimiento {
     solicitaContraRecibo?: boolean,
     tipo?:string  //Factura-Ingreso o  Pago
     usoCFDI?:string,
+    tipoCambio?:number,
     metodopago?:string,
     formaPago?:string
     
@@ -33,6 +34,7 @@ export interface Contrarecibo {
     montoMaximoContraRecibo?:number;
     tieneXML?:boolean;
     tienePDF?: boolean    
+    totalMovimientos?:number,
     solicitaContraRecibo?: boolean,
     detalle?:Movimiento[]
 
@@ -54,7 +56,9 @@ export interface PagoAprobado{
     solicitaContraRecibo?: boolean,
     tipo?:string  //Factura-Ingreso o  Pago    
     metodopago?:string,
+    usoCFDI?:string,
     formaPago?:string,
+    totalMovimientos?:number,
     detalle?: PagoDetalle[]
 }
 

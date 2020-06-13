@@ -30,6 +30,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   subscripcionMovMoneda: Subscription;
   gridInstance: Grid;
   subscriptionMovFile: Subscription;
+  subscription: Subscription;
   cargando: boolean = false;
   filtroCheck = false;
   editSettings: EditSettingsModel = { allowDeleting: false, allowEditing: false };
@@ -41,12 +42,12 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     //persistSelection: true, type: "Multiple",
     //checkboxOnly: true 
   };
-  
-  
 
 
 
-  
+
+
+
 
 
   monedasUnicas: boolean = true;
@@ -59,7 +60,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   public fechaVencimientoFilter: any;
   public contenedorFiltroFechaEmision: any = null;
   public contenedorFiltroFechaVencimiento: any = null;
-  public fecha:FechaDictionary=new FechaDictionary();
+  public fecha: FechaDictionary = new FechaDictionary();
 
 
   constructor(
@@ -73,7 +74,12 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.cargando=true;
+    this.subscription = this._usuarioService
+      .filtroGeneral      
+      .subscribe(x => {        
+        this.aplicarFiltroGeneral();
+      });
+    this.cargando = true;
     this.subscriptionMovFile = this._subirUsuarioService.notificacion.subscribe((mov: Movimiento) => {
       let _movimientos = this.movimientos.filter(movimiento => movimiento.movimientoID != mov.movimientoID);
       _movimientos.unshift(mov);
@@ -87,9 +93,9 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
       .obtenerPendientesCobro(this._usuarioService.usuario.Proveedor)
       .subscribe(movs => {
         this.movimientos = movs;
-        this.cargando=false;
-         //this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Pesos", 5));
-         //this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Dolares", 1));
+        this.cargando = false;
+        //this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Pesos", 5));
+        this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Dolares", 2));
         // this.movimientos.unshift({
         //   folio: 66666,
         //   solicitaContraRecibo: false,
@@ -106,15 +112,43 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
         // })
       });
 
-    //this._usuarioService.usuario.MontoMaxContraRecibo=5000; 
+    this._usuarioService.usuario.MontoMaxContraRecibo=100000; 
   }
 
 
-  actionComplete(args) {    
+
+
+  
+  created(e) {
+    this.aplicarFiltroGeneral();    
+  }
+
+
+  aplicarFiltroGeneral() {
+    if (this._usuarioService.filtroAplicar == null || this.grid == undefined) {
+      return;
+    }
+    if (this._usuarioService
+      .filtroAplicar
+      .modulo != "pendientes-cobro") {
+      return;
+    }
+    const folio = this._usuarioService
+      .filtroAplicar
+      .folio;
+    this.grid.filterSettings.columns = [
+      { "value": `${folio}`, "operator": "equal", "field": "folio", },
+    ];
+    this._usuarioService.filtroAplicar = null;
+
+  }
+
+
+  actionComplete(args) {
     if (args.requestType == "filterafteropen" && args.columnName == "fechaEmision") {
       args.filterModel.dlgObj.element.querySelector('.e-flm_optrdiv').hidden = true;
       const btn = (document.getElementsByClassName('e-primary e-flat')[0] as any);
-      btn.hidden= true;
+      btn.hidden = true;
       this.contenedorFiltroFechaEmision = args.filterModel.dlgObj.element
         //this.elementRef.nativeElement
         .querySelector('.e-flmenu-cancelbtn')
@@ -123,7 +157,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     if (args.requestType == "filterafteropen" && args.columnName == "fechaVencimiento") {
       args.filterModel.dlgObj.element.querySelector('.e-flm_optrdiv').hidden = true;
       const btn = (document.getElementsByClassName('e-primary e-flat')[0] as any);
-      btn.hidden= true;
+      btn.hidden = true;
       this.contenedorFiltroFechaVencimiento = args.filterModel.dlgObj.element
 
         //this.elementRef.nativeElement        
@@ -177,13 +211,14 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     }
     let movimientosPorGenerar = this.movimientos.filter(mov => mov.solicitaContraRecibo);
     const maxContrarecibo: number = this._usuarioService.usuario.MontoMaxContraRecibo;
-    const total: number = new TotalSaldoCRPipe().transform(movimientosPorGenerar);
+    const total: number = new TotalSaldoCRPipe().transform(movimientosPorGenerar,true);    
     this.cumpleSaldoContrarecibo = total < maxContrarecibo
   }
 
   ngOnDestroy(): void {
     this.subscriptionMovFile.unsubscribe();
     this.subscripcionMovMoneda.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
   //Evento del checkbox
@@ -198,10 +233,10 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   }
 
   async generarContraRecibo() {
-
+       
     if (!this.cumpleSaldoContrarecibo) {
       this._uiService.mostrarAlertaError("Cuota de contra-recibo excedido ",
-        `Solo se puede generar contra-recibo con un máximo de ${this._usuarioService.usuario.MontoMaxContraRecibo}`);
+        `Solo se puede generar contra-recibo con un máximo de ${this._usuarioService.usuario.MontoMaxContraRecibo} pesos` );
       return;
     }
     if (!this.monedasUnicas) {

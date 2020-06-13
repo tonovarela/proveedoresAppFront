@@ -1,3 +1,4 @@
+import { filter } from 'rxjs/operators';
 import { PdfMovimientosService } from './../../services/pdf-movimientos.service';
 import { UsuarioService } from './../../services/usuario.service';
 import { FacturaService } from './../../services/factura.service';
@@ -35,9 +36,7 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
   };
   contraRecibos: Contrarecibo[] = [];
   _contraRecibo: Contrarecibo = {};
-
-
-
+  _referencia:string="";
 
   public fechaEmisionFilter: any;
   public fechaVencimientoFilter: any;
@@ -45,27 +44,76 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
   public contenedorFiltroFechaVencimiento: any = null;
   public fecha: FechaDictionary = new FechaDictionary();
 
-
-
   constructor(
     public _modalUploadService: ModalUploadService,
     public _facturaService: FacturaService,
     private _usuarioService: UsuarioService,
     private modalService: NgbModal,
-    private _pdfService: PdfMovimientosService,
-    private renderer: Renderer2
-    //private elementRef: ElementRef
+    private _pdfService: PdfMovimientosService,    
   ) {
   }
-  verDetalle(contrarecibo: Contrarecibo) {
-    this._contraRecibo = contrarecibo;        
-    this._facturaService.obtenerDetalleContraRecibo(contrarecibo.movimientoID).subscribe(
-      (movs: Movimiento[]) => {
-        this._contraRecibo.detalle = movs;
-        this.modalService.open(this.detalle, { size: 'md' });      
+
+
+
+  ngOnInit(): void {
+    this.subscription = this._usuarioService
+      .filtroGeneral      
+      .subscribe(x => {        
+        this.aplicarFiltroGeneral();
+      });
+    this.cargando = true;
+    this._facturaService.obtenerContraRecibosPendientes(this._usuarioService.usuario.Proveedor)
+      .subscribe(movs => {
+        this.contraRecibos = movs;
+        this.cargando = false;
       });
   }
 
+  verDetalle(contrarecibo: Contrarecibo, referencia?:string) {
+
+    this._contraRecibo = contrarecibo;
+    if (referencia!=undefined){
+      this._referencia=referencia;
+    }
+    this.modalService.open(this.detalle, { size: 'md' });
+    
+  }
+
+
+  
+  aplicarFiltroGeneral() {
+    if (this._usuarioService.filtroAplicar == null || this.grid == undefined        ) {
+      return;
+    }
+    if (this._usuarioService.filtroAplicar.modulo!="contra-recibos") {
+      return;
+    }
+    const folio = this._usuarioService.filtroAplicar.folio;
+    this._referencia=this._usuarioService.filtroAplicar.referencia;
+    
+    this.grid.filterSettings.columns = [
+      { "value": `${folio}`, "operator": "equal", "field": "folio", },
+    ];      
+    this._contraRecibo = this.contraRecibos.find(x => x.folio == folio);    
+    
+    this.verDetalle(this._contraRecibo,this._referencia);
+    this._usuarioService.filtroAplicar = null;
+    //this._referencia='';
+  }
+
+  // verPDF(contrarecibo: Contrarecibo) {
+  // }
+  created(e) {
+    this.aplicarFiltroGeneral();    
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();    
+    
+  }
+
+
+
+  //#region funciones de Filtado Grid
   actionComplete(args) {
     if (args.requestType == "filterafteropen" && args.columnName == "fechaEmision") {
       args.filterModel.dlgObj.element.querySelector('.e-flm_optrdiv').hidden = true;
@@ -123,52 +171,7 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
       //this.grid.removeFilteredColsByField("fechaEmision");
     }
   }
-
-
-  aplicarFiltroGeneral() {
-     if (this._usuarioService.filtroAplicar==null || this.grid == undefined){
-       return;
-     }        
-     const folio =this._usuarioService.filtroAplicar.folio;
-
-      this.grid.filterSettings.columns = [
-        { "value": `${folio}`, "operator": "equal", "field": "folio", },
-      ];      
-      this._usuarioService.filtroAplicar=null;
-      this._contraRecibo= this.contraRecibos.find(x=>x.folio==folio);
-      this.verDetalle(this._contraRecibo);
-          
-  }
-
- 
-
-  ngOnInit(): void {
-
-    
-
-    this.subscription = this._usuarioService.filtroGeneral.subscribe(x => {
-      this.aplicarFiltroGeneral();
-    });
-    this.cargando = true;
-    this._facturaService.obtenerContraRecibosPendientes(this._usuarioService.usuario.Proveedor)
-      .subscribe(movs => {
-        this.contraRecibos = movs;
-        this.cargando = false;
-      });
-  }
-  verPDF(contrarecibo: Contrarecibo) {  
-  }
-
-  created(e) {    
-    this.aplicarFiltroGeneral();
-    console.log("Se termino de cargar");
-
-  }
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();    
-    //this.subscription.unsubscribe();
-    console.log("Adios");
-  }
+ //#endregion
 
 }
 

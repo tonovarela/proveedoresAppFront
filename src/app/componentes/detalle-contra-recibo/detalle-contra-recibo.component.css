@@ -1,12 +1,17 @@
-.table-detalle ,.table td, .table th{
-    padding: .2rem;
-    margin-bottom: 0px;
-}
 
-.card { 
- margin-bottom: 5px;
- padding: 2px;
-}
+.tableFixHead          { overflow-y: auto; max-height: 250px; font-size: 13px;line-height:.5}
+.tableFixHead thead th { position: sticky; top: 0; }
+
+/* Just common table stuff. Really. */
+table  { border-collapse: collapse; width: 100%; color:black }
+/* th, td { padding: 8px 16px; } */
+th     { background:#eee; }
+
+
 .bg-total{
     background-color: #2f3d4a!important ;
+}
+.movFiltrado{
+    font-weight: bold;
+    background-color: #d5d2e16b
 }

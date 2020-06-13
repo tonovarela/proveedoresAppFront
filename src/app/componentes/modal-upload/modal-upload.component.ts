@@ -1,29 +1,38 @@
+import { Subscription } from 'rxjs';
 import { SubirArchivoService } from './../../services/subir-archivo.service';
 import { UiService } from './../../services/ui.service';
 import { ModalUploadService } from './../../services/modal-upload.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-modal-upload',
   templateUrl: './modal-upload.component.html',
   styleUrls: ['./modal-upload.component.css']
 })
-export class ModalUploadComponent implements OnInit {
+export class ModalUploadComponent implements OnInit, OnDestroy {
   mensaje: string = "";
   errores:string[]=[];
   archivoSubir: File;
   archivoSubiendo:boolean =false;
+  
+   
 
   @ViewChild('archivo') archivoRef: ElementRef;
+
 
   
   constructor(public _modalUploadService: ModalUploadService,
     public _uiService: UiService,
     public _subirArchivoService: SubirArchivoService
   ) { }
+  
 
   ngOnInit(): void {
     
+  }
+
+  ngOnDestroy(): void {
+  
   }
   cerrarModal() {    
     this._modalUploadService.ocultarModal();
@@ -37,14 +46,14 @@ export class ModalUploadComponent implements OnInit {
     if (!this.archivoSubir) {      
       return;
     }
-    this.archivoSubiendo=true;
-  
+    this.archivoSubiendo=true;    
     this._subirArchivoService.revisarArchivo(this.archivoSubir,
                                             this._modalUploadService.tipoArchivo,
                                             this._modalUploadService.movimiento)
       .subscribe((response) => {
         this.archivoSubiendo=false;        
-        if (response['esIgual']) {          
+        if (response['esIgual']) {              
+          this.registrarBitacoraIntelisis(response["path"]);
           this._modalUploadService.ocultarModal();                 
           this.cerrarModal();
           this._uiService.mostrarAlertaSuccess("Listo",response["mensaje"]);
@@ -53,13 +62,16 @@ export class ModalUploadComponent implements OnInit {
           this.errores= response["errores"];
         }
       });
+
+      
   }
 
-  registrarBitacoraIntelisis(){
-    const rootPath="\\\\192.168.2.217\\intelisis\\CFD\\ContabilidadElectronica\\XML_PROV\\FACTURAS_PROVEEDORES\\";    
+  registrarBitacoraIntelisis(path:string){    
+    const id=this._modalUploadService.movimiento.movimientoID;
     if (this._modalUploadService.movimiento.tipo=="Factura-Ingreso"){
-       this._subirArchivoService
-       .anexarMovimientoIntelisis(rootPath,this._modalUploadService.movimiento.movimientoID);
+      this._subirArchivoService
+                              .anexarMovimientoIntelisis(path,id)
+                              .subscribe();             
     }
   }
 

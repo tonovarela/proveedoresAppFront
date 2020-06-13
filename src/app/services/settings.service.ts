@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,7 @@ export class SettingsService {
     temaUrl: 'assets/css/colors/default.css',
     tema: 'default'
   };
-  constructor() { 
+  constructor(private _router: Router,) { 
     this.cargarAjustes();
   }
 
@@ -30,6 +32,8 @@ export class SettingsService {
     // console.log('Guardando en el storage');
     localStorage.setItem('ajustes', JSON.stringify(this.ajustes));
   }
+
+  
 
 
 }

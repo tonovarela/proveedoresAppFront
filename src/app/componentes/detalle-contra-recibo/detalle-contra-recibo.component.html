@@ -1,21 +1,24 @@
-<div class="row">  
+<div class="row">
+  <div class="col-12">
+    <app-loader *ngIf="cargando"></app-loader>
+  </div>  
+</div>
+<div *ngIf="!cargando">
+<div class="row" >  
   <div class="col-10">    
     <h4>Aplica para los siguientes movimientos</h4>
   </div>
   <div class="col-2"><button   (click)="pdfDetalle()" type="button" class="btn btn-danger btn-circle btn-md"><i class="fa  fa-file-pdf-o"></i> </button>
     
     <!-- <button   (click)="excelDetalle()" style="margin-left: 2px;" type="button" class="btn btn-success btn-circle btn-md"><i class="fa   fa-file-excel-o"></i> </button>  -->
-  </div>
-  
-  
-    
+  </div>    
 </div>
 <div class="row"  >    
     <div class="col-12">      
       <div class="card">
         <div class="card-body">
-          <div class="table-responsive">
-            <table class="table  table-detalle color-bordered-table inverse-bordered-table">
+          <div class="table-responsive tableFixHead">
+            <table class="table color-table dark-table ">
               <thead>
                 <tr>
                   <th>Factura</th>
@@ -25,7 +28,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let movimiento of _contraRecibo.detalle">                  
+                <tr *ngFor="let movimiento of _contraRecibo.detalle" [ngClass]="movimientoFiltrado(movimiento)" >                  
                   <td>{{movimiento.referencia}} </td>                                    
                   <td>{{movimiento.fechaEmision | date:'dd-MM-yyyy'}}</td>                  
                   <td>{{movimiento.importe | currency}}</td>
@@ -39,8 +42,12 @@
     </div>      
   </div>
   <div class="row">
-    <div class="col-6"></div>
+    <div class="col-6">
+      <!-- <h6 class="text-themecolor pull-right" >Total C :{{ total  | currency}}</h6> -->
+    </div>
     <div class="col-6">      
-      <h2 class="text-info">Total  :{{ _contraRecibo.saldo | currency}}</h2>
+      <h6 class="text-themecolor pull-right">Total  :{{ _contraRecibo.saldo | currency}}</h6>
     </div>
   </div>
+
+</div>

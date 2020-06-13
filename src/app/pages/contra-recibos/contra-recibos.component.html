@@ -6,11 +6,18 @@
       [filterSettings]='filterSettings' allowSorting="true" allowResizing='true' [pageSettings]="pageSettings"
       (actionComplete)="actionComplete($event)">
       <e-columns>
-        <e-column field="movimientoDescripcion" headerText="Movimiento" width=40>
+        <e-column field="movimientoDescripcion" headerText="Movimiento" width=30>
           <ng-template #template let-data>
-            <a href="javascript:void(0);" (click)="verDetalle(data)">{{data.movimientoDescripcion}}</a>
+            <a href="javascript:void(0);" (click)="verDetalle(data,'')">{{data.movimientoDescripcion}}</a>
           </ng-template>
 
+        </e-column>
+        <e-column  field="totalMovimientos" headerText="# Facturas" width=20  >
+          <ng-template #template let-data>
+            <div class="text-center">
+              <span class="label label-rouded label-themecolor ">{{data.totalMovimientos}}</span>
+            </div>            
+          </ng-template>
         </e-column>
         <e-column field="folio" headerText=Folio width=30>
         </e-column>
@@ -69,7 +76,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-detalle-contra-recibo [contraRecibo]="_contraRecibo"></app-detalle-contra-recibo>
+    <app-detalle-contra-recibo [referencia]="_referencia"  [contraRecibo]="_contraRecibo"></app-detalle-contra-recibo>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary waves-effect" (click)="modal.close('Save click')">Cerrar</button>

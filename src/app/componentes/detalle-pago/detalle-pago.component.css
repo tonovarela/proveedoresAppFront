@@ -1,7 +1,12 @@
-.tableFixHead          { overflow-y: auto; height: 300px; font-size: 12px;}
+.tableFixHead          { overflow-y: auto; max-height: 300px; font-size: 13px;line-height:.5}
 .tableFixHead thead th { position: sticky; top: 0; }
 
 /* Just common table stuff. Really. */
-table  { border-collapse: collapse; width: 100%; color:black }
+table  { border-collapse: collapse; width: 100%; color:black;  }
 /* th, td { padding: 8px 16px; } */
 th     { background:#eee; }
+
+.movFiltrado{
+    font-weight: bold;
+    background-color: #d5d2e16b
+}

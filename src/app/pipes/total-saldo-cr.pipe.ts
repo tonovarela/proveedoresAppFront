@@ -7,11 +7,11 @@ import { Movimiento } from '../models/movimiento';
 })
 export class TotalSaldoCRPipe implements PipeTransform {
 
-  transform(movimientos: Movimiento[]): number {
-    let total = 0;
-    movimientos.forEach(mov => {
+  transform(movimientos: Movimiento[],incluyeTipoCambio=false): number {
+    let total = 0;    
+    movimientos.forEach(mov => {      
       if (mov.solicitaContraRecibo)
-        total += mov.importe;
+        total +=  incluyeTipoCambio?(mov.importe*mov.tipoCambio):(mov.importe) ;
     });
     return total;
   }

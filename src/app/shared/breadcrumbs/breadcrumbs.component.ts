@@ -10,7 +10,7 @@ import { filter, map } from 'rxjs/operators';
 })
 export class BreadcrumbsComponent implements OnInit {
   etiqueta: string;
-  constructor(private _router: Router, private _title: Title, private _meta: Meta) {
+  constructor(private _router: Router, private _title: Title, private _meta: Meta, ) {
     this.getDataRoute().subscribe(data => {
       this._title.setTitle(data.titulo);
       this.etiqueta = data.titulo;
@@ -24,6 +24,7 @@ export class BreadcrumbsComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
 
   getDataRoute() {
     return this._router.events.pipe(
