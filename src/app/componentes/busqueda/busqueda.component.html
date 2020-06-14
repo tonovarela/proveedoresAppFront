@@ -1,0 +1,22 @@
+<div [style.display]="!cargandoFacturas ? 'block' : 'none'">
+    <div class="card " id="contenedorBusqueda">
+        <div class="card-body" style="padding:0 1.2rem">
+            <ejs-autocomplete   popupHeight='400px' cssClass="form-control" [(value)]='value'
+            (keyup.enter)="buscar()" [fields]='fields' [dataSource]='facturasFiltradas'
+            placeholder="Buscar  por factura" autofill='true' 
+             >
+            <ng-template #noRecordsTemplate let-data="">
+                <span class='norecord'> <b>NO</b> existen facturas de acuerdo a la búsqueda </span>
+            </ng-template>
+            <ng-template #itemTemplate="" let-data="">
+                <div class="row" (click)="buscar(data)">
+                    <div class="col-3 ">
+                        <h5>Factura:{{data.referencia}}</h5>
+                    </div>
+                </div>
+            </ng-template>
+        </ejs-autocomplete>            
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>

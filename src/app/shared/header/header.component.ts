@@ -28,10 +28,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
 
+
   constructor(
     private _router: Router,
-    public _usuarioService: UsuarioService,
-    private router: Router,
+    public _usuarioService: UsuarioService,    
     private facturaService: FacturaService,
     @Inject(DOCUMENT) private document: Document
   ) { 
@@ -66,13 +66,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const proovedor = this._usuarioService.usuario.Proveedor.trim();
     this.cargandoFacturas = true;
 
-    this.facturaService
-      .obtenerFacturas(proovedor)
-      .subscribe((x: Factura[]) => {
-        this.facturas = x;        
-         this.filtrarFacturas(x);
-        this.cargandoFacturas = false;
-      });
+    // this.facturaService
+    //   .obtenerFacturas(proovedor)
+    //   .subscribe((x: Factura[]) => {
+    //     this.facturas = x;        
+    //      this.filtrarFacturas(x);
+    //     this.cargandoFacturas = false;
+    //   });
 
 
     
@@ -106,7 +106,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       const factura = r[0];
       this._usuarioService.filtroAplicar = factura;
       this._usuarioService.filtroGeneral.emit(true)
-      this.router.navigateByUrl(factura.modulo);
+      this._router.navigateByUrl(factura.modulo);
     }
     //this.value = "";
   }
