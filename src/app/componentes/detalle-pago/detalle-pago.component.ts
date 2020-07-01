@@ -1,3 +1,4 @@
+import { ExcelService } from './../../services/excel-service.service';
 import { FacturaService } from './../../services/factura.service';
 import { PdfMovimientosService } from './../../services/pdf-movimientos.service';
 import { PagoAprobado, PagoDetalle } from './../../models/movimiento';
@@ -14,7 +15,9 @@ export class DetallePagoComponent implements OnInit {
   total:number =0;
   cargando: boolean=false;
   constructor(private _pdfMovimientosService: PdfMovimientosService,
-              private _facturaService:FacturaService) { }
+              private _facturaService:FacturaService,
+              private _excelService:ExcelService
+              ) { }
 
   ngOnInit(): void {
     this.cargando=true;
@@ -45,5 +48,9 @@ export class DetallePagoComponent implements OnInit {
     this._pdfMovimientosService.detallePago(this._pago);
     //console.log(this._pago);
   }
+
+  exportarExcel(){    
+      this._excelService.exportAsExcelFile(this._pago.detalle,"pago");
+     }
 
 }

@@ -80,23 +80,19 @@ export class PdfMovimientosService {
             style: 'tablaMovimientos',
             table: {
               headerRows: 1,
-              widths: [30,"*", "*", 40,"*"],
+              widths: [30,300, 100,"*"],
               body: [
                 [
                   { text: '#', style: 'cabecera' },
                   { text: 'Contrarecibo', style: 'cabecera' },
-                  { text: 'Entrada', style: 'cabecera' },
-                  { text: 'Factura', style: 'cabecera' },
-                  // { text: 'Fecha ', style: 'cabecera' },
+                  { text: 'Factura', style: 'cabecera' },                  
                   { text: 'Total', style: 'cabecera' },
                 ],
                 ...pago.detalle.map(mov => {
                   return [
                     ++i,
-                    mov.numeroCR,
-                    mov.numE,
-                    mov.factura,                    
-                    // this._datePipe.transform(mov.fechaEmision, 'dd-MM-yyyy'),
+                     mov.numeroCR,
+                    mov.factura,                                        
                     this._currencyPipe.transform(mov.importe),
                   ];
                 })

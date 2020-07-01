@@ -1,4 +1,4 @@
-import { Movimiento, Contrarecibo, PagoDetalle, PagoAprobado, Factura } from './../models/movimiento';
+import { Movimiento, Contrarecibo, PagoDetalle, PagoAprobado, Factura, CR_Request } from './../models/movimiento';
 import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -32,18 +32,25 @@ export class FacturaService {
             usoCFDI: m["UsoCFDI"],
             metodopago: m["MetodoPago"],
             tipoCambio:Number(m["TipoCambio"]),
-            formaPago: m["FormaPago"],
+            formaPago: m["FormaPago"]  ,
             solicitaContraRecibo: false,
             tienePDF: m["PDF"] == "1" ? true : false,
             tieneXML: m["XML"] == "1" ? true : false,
+            CR:m["CR"]== "1" ? true : false  , //Intelisis decide si se  muestra el checkbox
             tipo: "Factura-Ingreso"
           };
           return mov;
         })),
-        map(movimientos => movimientos.sort((a: Movimiento, b: Movimiento) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime()))
+        //map(movimientos => movimientos.sort((a: Movimiento, b: Movimiento) => a.CR==b.CR?-1:1 )),        
+        map(movimientos => movimientos.sort((a: Movimiento, b: Movimiento) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime())),        
       );
   }
 
+
+   
+  generarContraRecibo(request:CR_Request){    
+   return this._http.post(`${this.URL_SERVICIOS}/facturas/generarcontrarecibo`,request);
+  }
 
 
   obtenerContraRecibosPendientes(proveedor) {
@@ -68,7 +75,7 @@ export class FacturaService {
           return mov;
         })
         ),
-        map(contrarecibos => contrarecibos.sort((a: Contrarecibo, b: Contrarecibo) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime()))
+        map(contrarecibos => contrarecibos.sort((a: Contrarecibo, b: Contrarecibo) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime())),        
       );
   }
 
@@ -88,8 +95,8 @@ export class FacturaService {
             fechaEmision: moment(m["FechaEmision"]).toDate(),
             fechaVencimiento: moment(m["Vencimiento"]).toDate(),
             moneda: m["Moneda"].trim(),                      
-            //tienePDF: m["PDF"] == "1" ? true : false,
-            //tieneXML: m["XML"] == "1" ? true : false,
+            tienePDF: m["PDF"] == "1" ? true : false,
+            tieneXML: m["XML"] == "1" ? true : false,
             tipo: "Pago"
           };
           return pago;
@@ -107,7 +114,7 @@ export class FacturaService {
         folio: (i + 1),
         solicitaContraRecibo: false,
         movimientoID: (i + 1),
-        movimientoDescripcion: "Movimiento Ficticio ",
+        movimientoDescripcion: "General entrada ",
         referencia: "59897" + (i + 1),
         moneda: moneda,
         tipoCambio:moneda=='Dolares'?20.6:1,
@@ -115,6 +122,7 @@ export class FacturaService {
         importe: Math.random() * (10000 - 50 + 1) + 50,
         tienePDF: true,
         tieneXML: true,
+        CR:true,
         fechaEmision: moment('2020-01-05').toDate(),
         fechaVencimiento: moment('2020-01-05').toDate()
       });

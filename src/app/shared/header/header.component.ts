@@ -38,9 +38,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.subscription = this.getDataRoute().subscribe(data => {
       this.moduloActivo = data.modulo;      
-      this.filtrarFacturas();      
-      //console.log(this.facturasFiltradas);
-      
+      this.filtrarFacturas();            
+    
     });
 
   }
@@ -50,7 +49,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-
 
   filtrarFacturas(facturas?:Factura[]) {
 
@@ -73,11 +71,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     //      this.filtrarFacturas(x);
     //     this.cargandoFacturas = false;
     //   });
-
-
-    
-
-
     fromEvent(this.document, 'keyup')
       .pipe(filter(x => x["keyCode"] == 27))
       .subscribe(x => {

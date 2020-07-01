@@ -10,8 +10,11 @@
             </ng-template>
             <ng-template #itemTemplate="" let-data="">
                 <div class="row" (click)="buscar(data)">
-                    <div class="col-3 ">
+                    <div class="col-6 " style="float: left;">
                         <h5>Factura:{{data.referencia}}</h5>
+                    </div>
+                    <div class="col-6 " style="float: left;">
+                        <h5>Folio:{{data.folio}}</h5>
                     </div>
                 </div>
             </ng-template>

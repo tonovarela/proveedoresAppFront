@@ -11,7 +11,7 @@ declare function iniciar_plugins();
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-   usuario = { usuario: "1065", password: "CIG9811174W2" };
+   usuario = { usuario: "", password: "" };
   constructor(private _usuarioService: UsuarioService,
               private _uiService: UiService,
               public router: Router              

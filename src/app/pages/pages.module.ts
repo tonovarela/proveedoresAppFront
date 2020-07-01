@@ -17,7 +17,7 @@ import { GridModule, PagerModule,DetailRowService, PageService, SortService, Fil
 import { CheckBoxModule } from '@syncfusion/ej2-angular-buttons';
 import { DateRangePickerModule } from '@syncfusion/ej2-angular-calendars';
 import { DatePickerAllModule } from '@syncfusion/ej2-angular-calendars';
-import { AutoCompleteModule } from '@syncfusion/ej2-angular-dropdowns';
+//import { AutoCompleteModule } from '@syncfusion/ej2-angular-dropdowns';
 
 import { PipesModule } from './../pipes/pipes.module';
 

@@ -12,10 +12,11 @@ export interface Movimiento {
     montoMaximoContraRecibo?:number;
     tieneXML?:boolean;
     tienePDF?: boolean    
+    CR?:boolean,
     solicitaContraRecibo?: boolean,
     tipo?:string  //Factura-Ingreso o  Pago
     usoCFDI?:string,
-    tipoCambio?:number,
+    tipoCambio?:number,    
     metodopago?:string,
     formaPago?:string
     
@@ -76,4 +77,28 @@ export interface Factura{
     referencia?:string,
     modulo?:string,
     folio?:string,    
+}
+
+
+ export interface  RevisionCP{
+   existeEnXML:boolean,
+   idDocumento:string,
+   importeRegistrado:number,
+   importeXML:number,
+   statusImporte:number
+ }
+
+
+
+export interface CR_Request{
+    proveedor?:string;
+    movimiento?:string;
+    movimientos?:MovCR[]
+
+}
+
+export interface MovCR{
+    referencia?:string;
+    folio?:number;
+    importe?:number;
 }

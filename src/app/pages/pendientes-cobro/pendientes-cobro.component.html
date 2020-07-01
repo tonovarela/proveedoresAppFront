@@ -37,7 +37,7 @@
       >
       <e-columns>
         <e-column field="movimientoID" headerText="ID" width=30>   </e-column>       
-        <e-column field="movimientoDescripcion" headerText="Movimiento" width=50></e-column>
+        <e-column field="movimientoDescripcion" headerText="Tipo" width=50></e-column>
         <e-column field="folio" headerText='Folio' width=30>
         </e-column>        
         <e-column field="referencia" headerText="Factura" width=40>
@@ -93,17 +93,17 @@
           </ng-template>
         </e-column>
 
-        <e-column allowFiltering='false' allowSelection="false" width='50'>
-          <ng-template #headerTemplate let-data>
+        <e-column field="CR" headerText="" [allowFiltering]='false'  [allowSorting]="true" allowSelection="false" width='50'>
+          <!-- <ng-template #headerTemplate let-data>
             <div>
               <ejs-checkbox [checked]='filtroCheck' cssClass="e-custom" [(ngModel)]="filtroCheck"
                 (change)="cambiarMovimientosFiltro()" label=""></ejs-checkbox> 
                
             </div>
-          </ng-template>
-          <ng-template #template let-data>
+          </ng-template> -->
+          <ng-template #template let-data>            
             <ejs-checkbox (change)="cambio(data)" cssClass="e-primary" [(ngModel)]="data.solicitaContraRecibo"
-              *ngIf="data.tienePDF && data.tieneXML" label=""></ejs-checkbox>
+              *ngIf="data.CR" label=""></ejs-checkbox>
           </ng-template>
         </e-column>
       </e-columns>

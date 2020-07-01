@@ -18,15 +18,31 @@ import 'rxjs/add/operator/delay';
 export class SubirArchivoService {
   public notificacion = new EventEmitter<Movimiento>();
 
-  //URL_SERVICE: string = 'http://192.168.5.28/proveedores';
-  URL_SERVICE: string = 'http://localhost:44382/';
-  //#436784
-  validarEstructura: boolean = false;
+  
+  URL_SERVICE: string = environment.URL_VALIDADORFILE;  
+  validarEstructura: boolean =true;
   constructor(private _http: HttpClient,
     private _usuarioService: UsuarioService) { }
 
-  revisarArchivo(archivo: File, tipo: string, movimiento: PagoAprobado | Movimiento) {
-    const url = `${this.URL_SERVICE}/api/factura/revisar${tipo}?validar=${this.validarEstructura}`;
+
+
+
+  public revisarArchivo(archivo: File, tipoArchivo: string, movimiento: PagoAprobado | Movimiento) {
+
+    if (movimiento.tipo == "Factura-Ingreso") {
+      return this.revisarPendientesCobro(movimiento, tipoArchivo, archivo);
+    }
+
+    if (movimiento.tipo == "Pago") {
+      return this.revisarPagosAprobados(movimiento, tipoArchivo, archivo);
+    }
+  }
+
+
+
+
+  private revisarPendientesCobro(movimiento: Movimiento, tipoArchivo: string, archivo: File): Observable<any> {
+    const url = `${this.URL_SERVICE}/api/pendientescobro/revisar${tipoArchivo}?validar=${this.validarEstructura}`;    
     const formData = new FormData();
     formData.append('archivo', archivo, archivo.name);
     formData.append('monto', movimiento.importe.toString());
@@ -40,45 +56,72 @@ export class SubirArchivoService {
     formData.append('proveedor', `${this._usuarioService.usuario.Proveedor.trim()}`);
     formData.append('tipo', `${movimiento.tipo}`);
     formData.append('moneda', `${movimiento.moneda}`);
-    
 
-    if (movimiento.tipo == "Pago") {
-      let fakeResponse = {
-        ok: true,
-        esIgual: false,
-        errores: ["Varela 1", "Varela 2", "Varela 3"],
-        mensaje: `Esta es una respuesta fake del documento ${tipo}, Pendiente por definir la validación`
-      };          
-      return Observable.of(fakeResponse).delay(2000);
-    }
-    return this._http.post(url, formData, { reportProgress: true }).pipe(
-      map(resp => {
-        if (resp['esIgual']) {
-          if (tipo == "xml") {
-            movimiento.tieneXML = true;
-          } else {
-            movimiento.tienePDF = true;
+    return this._http.post(url, formData, { reportProgress: true })
+      .pipe(
+        map(resp => {
+          if (resp['esIgual']) {
+            if (tipoArchivo == "xml") {
+              movimiento.tieneXML = true;
+            } else {
+              movimiento.tienePDF = true;
+            }
+            this.notificacion.emit(movimiento);
           }
-          this.notificacion.emit(movimiento);
-        }
-        return resp;
-      }),
+          return resp;
+        })
+      );
 
-    );
   }
 
 
+  private revisarPagosAprobados(movimiento: Movimiento, tipoArchivo: string, archivo: File): Observable<any> {
+    const url = `${this.URL_SERVICE}/api/pagosaprobados/revisar${tipoArchivo}?validar=${this.validarEstructura}`;
+    const formData = new FormData();
+    formData.append('archivo', archivo, archivo.name);
+    formData.append('monto', movimiento.importe.toString());
+    formData.append('rfc', this._usuarioService.usuario.RFC);    
+    formData.append('movimiento', `${movimiento.movimientoDescripcion}-${movimiento.folio}`.trim());
+    formData.append('folio', `${movimiento.folio}`.trim());    
+    formData.append('idMovimiento', movimiento.movimientoID.toString());
+    formData.append('proveedor', `${this._usuarioService.usuario.Proveedor.trim()}`);
+    formData.append('tipo', `${movimiento.tipo}`);
+    formData.append('moneda', `${movimiento.moneda}`);
+
+    return this._http.post(url, formData, { reportProgress: true })
+      .pipe(
+        map(resp => {
+          if (resp['esIgual']) {
+            if (tipoArchivo == "xml") {
+              movimiento.tieneXML = true;
+            } else {
+              movimiento.tienePDF = true;
+            }
+            this.notificacion.emit(movimiento);
+          }
+          return resp;
+        })
+      );
+    
+  }
 
 
-  anexarMovimientoIntelisis(pathArchivo, id) {
+  anexarMovimientoIntelisis(pathArchivo, id, rama) {
+
+// let fakeResponse = {
+//       ok: true,
+//       esIgual: false,
+//       errores: ["Varela 1", "Varela 2", "Varela 3"],
+//       mensaje: `Esta es una respuesta fake del documento , Pendiente por definir la validación`
+//     };
+//     return Observable.of(fakeResponse).delay(500);    
     return this._http.post(`${environment.URL_SERVICIOS}/facturas/registro/documento`,
-      { path: `${pathArchivo}`, id });
+      { path: `${pathArchivo}`, id,rama });
   }
 
   //Revisa validez ante el SAT
   validarXML(archivo: File) {
     const url = `${this.URL_SERVICE}/api/factura/validar`;
-    console.log(url);
     const formData = new FormData();
     formData.append('archivo', archivo, archivo.name);
     return this._http.post(url, formData, { reportProgress: true });

@@ -1,5 +1,5 @@
 # ProveedoresApp
-
+#set NODE_OPTIONS=--max_old_space_size=4096
 Este proyecto fue generado con  Angular CLI version 9.0.3
 
 ## Development server

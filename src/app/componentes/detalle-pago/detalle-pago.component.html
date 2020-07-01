@@ -8,9 +8,12 @@
   <div class="col-10">
     <h4>Aplica para los siguientes movimientos</h4>
   </div>
-  <div class="col-2">
-    <button (click)="verPdf()" type="button" class="btn btn-danger btn-circle btn-md"><i class="fa  fa-file-pdf-o"></i>
-    </button>
+  <div class="col-1">
+    <button (click)="verPdf()" type="button" class="btn btn-danger btn-circle btn-md"><i class="fa  fa-file-pdf-o"></i>    
+    </button>    
+  </div>
+  <div class="col-1">
+    <button (click)="exportarExcel()" type="button" class="btn btn-success btn-circle btn-md"><i class="fa  fa-file-excel-o"></i></button>
   </div>
 </div>
 <div class="row">
@@ -21,20 +24,18 @@
         <div class="table-responsive tableFixHead">
           <table class="table color-table dark-table ">
             <thead>
-              <tr>
-                <!-- <th>MovPago</th> -->
+              <tr>                
                 <th>#ContraRecibo</th>
-                <th>#Entrada</th>
+                <!-- <th>#Entrada</th> -->
                 <th>Factura</th>
                 <th>Fecha</th>
                 <th>Total</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let movimiento of _pago.detalle" [ngClass]="movimientoFiltrado(movimiento)">
-                <!-- <td>{{movimiento.movPago}} </td>                                     -->
+              <tr *ngFor="let movimiento of _pago.detalle" [ngClass]="movimientoFiltrado(movimiento)">                
                 <td>{{movimiento.numeroCR}} </td>
-                <td>{{movimiento.numE}} </td>
+                <!-- <td>{{movimiento.numE}} </td> -->
                 <td>{{movimiento.factura}} </td>
                 <td>{{movimiento.fechaEmision | date:'dd-MM-yyyy'}}</td>
                 <td>{{movimiento.importe | currency}}</td>
@@ -50,10 +51,10 @@
 <div class="row">
 
   <div class="col-5">
-    <!-- <h6 class="text-themecolor pull-right" >Total C :{{ total  | currency}}</h6> -->
+    <h4 class="text-themecolor pull-right" >#Facturas: {{ _pago.detalle.length }}</h4>
   </div>
   <div class="col-5">
-    <h6 class="text-themecolor pull-right">Total :{{ _pago.importe | currency}}</h6>
+    <h4 class="text-themecolor pull-right">Total :{{ _pago.importe | currency}}</h4>
   </div>
 </div>
 </div>

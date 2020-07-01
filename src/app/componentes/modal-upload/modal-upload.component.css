@@ -2,3 +2,7 @@
     padding: 10px;
     font-size: 13px;
 }
+
+.modal-dialog{
+max-width: 600px!important;
+}

@@ -1,4 +1,7 @@
+
+
 <app-loader *ngIf="cargando"></app-loader>
+
 
 <div *ngIf="!cargando">
   <app-busqueda moduloActivo='pagos-aprobados'></app-busqueda>
@@ -9,6 +12,8 @@
         allowPaging="true" allowFiltering="true" [filterSettings]='filterSettings' allowSorting="true"
         allowResizing='true' [pageSettings]="pageSettings" (actionComplete)="actionComplete($event)">
         <e-columns>
+          <e-column field="movimientoID" headerText="ID" width=20>
+          </e-column>
           <e-column field="movimientoDescripcion" headerText="Movimiento" width=40>
             <ng-template #template let-data>
               <a href="javascript:void(0);" (click)="verDetalle(data,'')">{{data.movimientoDescripcion}}</a>
@@ -16,8 +21,8 @@
           </e-column>
           <e-column field="folio" headerText=Folio width=20>
           </e-column>
-          <e-column field="referencia" headerText=Factura width=20>
-          </e-column>
+          <!-- <e-column field="referencia" headerText=Factura width=20>
+          </e-column> -->
 
           <e-column field="fechaEmision" [filter]='filterMenu' headerText="Emisión" [format]='formatoptions' width=40>
             <ng-template #filterTemplate let-data>
@@ -41,14 +46,17 @@
           </e-column>
           <e-column allowFiltering='false' headerText="XML" allowSelection="false" width='20'>
             <ng-template #template let-data>
-              <div class="rounded-icon rounded-info" (click)="_modalUploadService.mostrarModal('xml',data)"><i
-                  class="mdi mdi-file-xml"></i></div>
+
+              <div *ngIf="!data.tieneXML" (click)="_modalUploadService.mostrarModal('xml',data)"
+              class="rounded-icon rounded-info"><i class="mdi mdi-file-xml"></i></div>
+            <div *ngIf="data.tieneXML" class="rounded-icon rounded-success"><i class="fa fa-check-circle-o"></i></div>              
             </ng-template>
           </e-column>
           <e-column allowFiltering='false' headerText="PDF" allowSelection="false" width='20'>
-            <ng-template #template let-data>
-              <div class="rounded-icon rounded-warning" (click)="_modalUploadService.mostrarModal('pdf',data)"><i
-                  class="mdi mdi-file-pdf"></i></div>
+            <ng-template #template let-data>            
+              <div *ngIf="!data.tienePDF" (click)="_modalUploadService.mostrarModal('pdf',data)"
+              class="rounded-icon rounded-warning"><i class="mdi mdi-file-pdf"></i></div>
+             <div *ngIf="data.tienePDF" class="rounded-icon rounded-success"><i class="fa fa-check-circle-o"></i></div>
             </ng-template>
           </e-column>
 

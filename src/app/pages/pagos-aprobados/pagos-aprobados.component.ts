@@ -9,6 +9,8 @@ import { Grid, EditSettingsModel, PageSettingsModel, FilterSettingsModel } from 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FechaDictionary } from 'src/app/utils/dates';
 import { Subscription } from 'rxjs';
+import { SubirArchivoService } from 'src/app/services/subir-archivo.service';
+import { filter } from 'rxjs/operators';
 
 
 
@@ -26,6 +28,7 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
   @ViewChild('detalle') detalle: any;
   gridInstance: Grid;
   subscription: Subscription;
+  subscriptionNotification: Subscription;
   cargando: boolean = false;
   filtroCheck = false;
   editSettings: EditSettingsModel = { allowDeleting: false, allowEditing: false };
@@ -53,7 +56,8 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
   constructor(private _facturaService: FacturaService,
     private _usuarioService: UsuarioService,
     private modalService: NgbModal,
-    public _modalUploadService: ModalUploadService
+    public _modalUploadService: ModalUploadService,
+    public _subirArchivoService: SubirArchivoService
   ) { }
 
 
@@ -63,16 +67,28 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
       .subscribe(x => {
         this.aplicarFiltroGeneral();
       });
+
+    this.subscriptionNotification = this._subirArchivoService.notificacion
+      .pipe(filter((x: Movimiento) => x.tipo == "Pago"))
+      .subscribe(mov => {
+        this.pagosAprobados.forEach(movimiento => {
+          if (movimiento.movimientoID == mov.movimientoID)
+            movimiento = mov;
+        }
+        );        
+      })
+
+
     this.cargando = true;
     this._facturaService
       .obtenerPagosAprobados(this._usuarioService.usuario.Proveedor)
       .subscribe((pagos: PagoAprobado[]) => {
         this.pagosAprobados = pagos;
-        this.pagosAprobados.forEach(x=>x.totalMovimientos=0);
+        this.pagosAprobados.forEach(x => x.totalMovimientos = 0);
         this.cargando = false;
       });
     //this.obtenerPagosFicticios();
-    this.cargando=false;
+    ///this.cargando=false;
   }
 
 
@@ -122,8 +138,8 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
       { "value": `${folio}`, "operator": "equal", "field": "folio", },
     ];
     this._pagoActual = this.pagosAprobados.find(x => x.folio == folio);
-    if (this._pagoActual!=undefined){
-      this.verDetalle(this._pagoActual, referencia);      
+    if (this._pagoActual != undefined) {
+      this.verDetalle(this._pagoActual, referencia);
     }
     this._usuarioService.filtroAplicar = null;
   }
@@ -171,6 +187,7 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.subscriptionNotification.unsubscribe();
   }
 
 

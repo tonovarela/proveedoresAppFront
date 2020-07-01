@@ -1,10 +1,11 @@
+import { CurrencyPipe } from '@angular/common';
 import { TotalSaldoCRPipe } from './../../pipes/total-saldo-cr.pipe';
 import { UiService } from './../../services/ui.service';
 import { SubirArchivoService } from './../../services/subir-archivo.service';
 import { UsuarioService } from './../../services/usuario.service';
 import { FacturaService } from './../../services/factura.service';
 import { ModalUploadService } from './../../services/modal-upload.service';
-import { Movimiento } from './../../models/movimiento';
+import { Movimiento, MovCR, CR_Request } from './../../models/movimiento';
 import { Component, OnInit, ViewChild, OnDestroy, EventEmitter } from '@angular/core';
 import { L10n } from '@syncfusion/ej2-base'
 import { EditSettingsModel, PageSettingsModel, FilterSettingsModel, Grid, IFilter } from '@syncfusion/ej2-angular-grids';
@@ -12,6 +13,7 @@ import { setSpinner } from '@syncfusion/ej2-popups';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { FechaDictionary } from 'src/app/utils/dates';
+import { filter } from 'rxjs/operators';
 
 
 
@@ -43,14 +45,8 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     //checkboxOnly: true 
   };
 
-
-
-
-
-
-
-
   monedasUnicas: boolean = true;
+  movimientosDescripcionUnica = true;
   cumpleSaldoContrarecibo: boolean = true;
   movimientos: Movimiento[] = [];
 
@@ -65,6 +61,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
   constructor(
     private _subirUsuarioService: SubirArchivoService,
+    private _currencyPipe: CurrencyPipe,
     public _modalUploadService: ModalUploadService,
     private _facturaService: FacturaService,
     private _uiService: UiService,
@@ -75,52 +72,42 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this._usuarioService
-      .filtroGeneral      
-      .subscribe(x => {        
+      .filtroGeneral
+      .subscribe(x => {
         this.aplicarFiltroGeneral();
       });
     this.cargando = true;
-    this.subscriptionMovFile = this._subirUsuarioService.notificacion.subscribe((mov: Movimiento) => {
-      let _movimientos = this.movimientos.filter(movimiento => movimiento.movimientoID != mov.movimientoID);
-      _movimientos.unshift(mov);
-      this.movimientos = _movimientos;
-    });
+
+
+    this.subscriptionMovFile = this._subirUsuarioService.notificacion
+      .pipe(filter((x: Movimiento) => x.tipo == "Factura-Ingreso"))
+      .subscribe((mov: Movimiento) => {
+        this.movimientos.forEach(movimiento => {
+          if (movimiento.movimientoID == mov.movimientoID)
+            movimiento = mov;
+        }
+        );
+      });
+
     this.subscripcionMovMoneda = this.movimientosCR_$.subscribe(() => {
       this.validarReglasContraRecibo();
     });
+    this.cargaInfoPendientesCobro();    
+  }
 
+
+  cargaInfoPendientesCobro() {
     this._facturaService
       .obtenerPendientesCobro(this._usuarioService.usuario.Proveedor)
       .subscribe(movs => {
         this.movimientos = movs;
         this.cargando = false;
-        //this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Pesos", 5));
-        this.movimientos = this.movimientos.concat(this._facturaService.obtenerMovimientosFicticios("Dolares", 2));
-        // this.movimientos.unshift({
-        //   folio: 66666,
-        //   solicitaContraRecibo: false,
-        //   movimientoID: 6985,
-        //   movimientoDescripcion: "Movimiento Ficticio ",
-        //   referencia: "59897",
-        //   moneda: 'Pesos',
-        //   saldo: 1004.40,
-        //   importe: 3004.40,
-        //   tienePDF: false,
-        //   tieneXML: false,
-        //   fechaEmision: moment('2020-01-05').toDate(),
-        //   fechaVencimiento: moment('2020-01-05').toDate()
-        // })
       });
-
-    this._usuarioService.usuario.MontoMaxContraRecibo=100000; 
   }
 
 
-
-
-  
   created(e) {
-    this.aplicarFiltroGeneral();    
+    this.aplicarFiltroGeneral();
   }
 
 
@@ -201,17 +188,28 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   }
 
 
+
   validarReglasContraRecibo() {
+    let movimientosPorGenerar = this.movimientos.filter(mov => mov.solicitaContraRecibo);
     if (!this.tieneMonedasUnicas()) {
       this.monedasUnicas = false;
       this._uiService.mostrarToasterWarning("Monedas",
-        "Para generar contrarecibo se necesitan movimiento con el mismo tipo de moneda");
+        "Para generar contra-recibo se necesitan movimiento con el mismo tipo de moneda");
     } else {
       this.monedasUnicas = true;
     }
-    let movimientosPorGenerar = this.movimientos.filter(mov => mov.solicitaContraRecibo);
+    if (!this.tieneMovimientosDescripcionUnica() && movimientosPorGenerar.length > 0) {
+      this.movimientosDescripcionUnica = false;
+      this._uiService.mostrarToasterWarning("Movimientos",
+        "Para generar contra-recibo es necesario seleccionar movimientos del mismo tipo");
+    } else {
+      this.movimientosDescripcionUnica = true;
+    }
+
+
+
     const maxContrarecibo: number = this._usuarioService.usuario.MontoMaxContraRecibo;
-    const total: number = new TotalSaldoCRPipe().transform(movimientosPorGenerar,true);    
+    const total: number = new TotalSaldoCRPipe().transform(movimientosPorGenerar, true);
     this.cumpleSaldoContrarecibo = total < maxContrarecibo
   }
 
@@ -233,10 +231,10 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   }
 
   async generarContraRecibo() {
-       
+
     if (!this.cumpleSaldoContrarecibo) {
       this._uiService.mostrarAlertaError("Cuota de contra-recibo excedido ",
-        `Solo se puede generar contra-recibo con un máximo de ${this._usuarioService.usuario.MontoMaxContraRecibo} pesos` );
+        `Solo se puede generar contra-recibo con un total máximo de ${this._currencyPipe.transform(this._usuarioService.usuario.MontoMaxContraRecibo)} pesos`);
       return;
     }
     if (!this.monedasUnicas) {
@@ -244,24 +242,55 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
         `Solo puede generar un contra-recibo con facturas con el mismo tipo de moneda`);
       return;
     }
+
+    if (!this.movimientosDescripcionUnica) {
+      this._uiService.mostrarAlertaError("Descripción movimientos ",
+        `Para generar contrarecibo es necesario seleccionar movimientos del mismo tipo`);
+      return;
+    }
     const resultado = await this._uiService.mostrarAlertaConfirmacion("Confirmación",
-      `Confirma generar el contrar-recibo de las facturas seleccionadas?`);
+      `Confirma generar el contrar-recibo de las facturas seleccionadas?`, 'Si, generar contrarecibo', 'No');
     if (!resultado.value)
       return
 
     this.cargando = true;
     //Movimientos para generar contrarecibo
-    // let movimientosPorGenerar = this.movimientos.filter(mov => mov.solicitaContraRecibo);
+    const movimientosPorGenerar = this.movimientos
+      .filter(mov => mov.solicitaContraRecibo);
+    const usuario = this._usuarioService.usuario;
 
-    setTimeout(() => {
-      this.cargando = false;
-      this._uiService.mostrarAlertaSuccess("Listo",
-        "Se ha generado el contrarecibo");
-    }, 3000);
+
+    let movimientosRequest: MovCR[] = movimientosPorGenerar
+      .map((m: Movimiento) => {
+        return {
+          folio: m.folio,
+          referencia: m.referencia,
+          importe: m.importe
+        };
+      });
+
+    const request: CR_Request = {
+      proveedor: usuario.Proveedor,
+      movimientos: movimientosRequest,
+      movimiento: movimientosPorGenerar[0].movimientoDescripcion
+    };
+
+    this.cargando = true;
+    this._facturaService.generarContraRecibo(request).subscribe(x => {
+      const data = x["data"];
+      //this.cargando = false;
+      this._uiService.mostrarAlertaSuccess("Listo", `Se ha generado el contrarecibo ${data[0]["MOVID"]}`);
+      this.cargaInfoPendientesCobro();
+    });
+
+    // setTimeout(() => {
+    //   this.cargando = false;
+
+
   }
 
 
-  public tieneMonedasUnicas() {
+  tieneMonedasUnicas() {
     let monedas = [];
     this.movimientos.forEach(x => {
       if (x.solicitaContraRecibo) {
@@ -273,9 +302,19 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     return unique.length <= 1;
   }
 
+  tieneMovimientosDescripcionUnica() {
+    let movimientosPorGenerar = this.movimientos.filter(mov => mov.solicitaContraRecibo);
+    let movsUnicos = new Set();
+    const p = movimientosPorGenerar.forEach(x => {
+      movsUnicos.add(x.movimientoDescripcion.trim());
+    });
+    return movsUnicos.size == 1;
+  }
+
+
   cambiarMovimientosFiltro() {
     this.grid.getCurrentViewRecords().forEach((x: Movimiento) => {
-      if (x.tienePDF && x.tieneXML) {
+      if (x.CR == true && x.tieneXML == true && x.tienePDF == true) {
         x.solicitaContraRecibo = !this.filtroCheck;
       }
     });

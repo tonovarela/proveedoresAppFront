@@ -101,8 +101,7 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
     //this._referencia='';
   }
 
-  // verPDF(contrarecibo: Contrarecibo) {
-  // }
+
   created(e) {
     this.aplicarFiltroGeneral();    
   }

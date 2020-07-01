@@ -18,9 +18,17 @@
                         <ul>
                             <li class="text-justify" *ngFor="let error of errores">
                                 {{error}}
-                            </li>
-                        </ul>
+                            </li>                                                                                                 
+                        </ul>                        
+                        <button type="button" *ngIf="detalleErroresCP.length>0" (click)="exportarReporteErrores()" class="btn btn-primary btn-xs waves-effect waves-light"><span class="btn-label"><i class="fa fa-file-excel-o"></i></span>Ver resumen de errores en los movimientos</button>                                
                     </div>
+
+                
+                    <!-- <div class="alert alert-warning" *ngIf="detalleErroresCP.length>0">
+                        Los errores en los movimientos <br>se muestran en el siguiente archivo
+                        <button type="button" class="btn btn-success btn-circle" (click)="exportarReporteErrores()"><i class="fa fa-file-excel-o"></i> </button>
+                    
+                    </div> -->
 
                     <app-loader *ngIf="archivoSubiendo"></app-loader>
                 </div>

@@ -18,19 +18,19 @@ export class UiService {
   }
 
   mostrarToasterWarning(titulo, mensaje) {
-    const toaster = this.toastr.warning(mensaje, titulo, { progressBar: true, timeOut: 2000, progressAnimation: 'increasing' });
+    const toaster = this.toastr.warning(mensaje, titulo, { progressBar: true, timeOut: 4000, progressAnimation: 'increasing',positionClass:"toast-top-center" });
 
 
   }
 
-  mostrarAlertaConfirmacion(titulo, mensaje): Promise<SweetAlertResult> {
+  mostrarAlertaConfirmacion(titulo, mensaje,labelAceptar='Aceptar',labelCancelar='Cancelar'): Promise<SweetAlertResult> {
     return swal.fire({
       title: titulo,
       text: mensaje,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: labelAceptar,
+      cancelButtonText: labelCancelar,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       reverseButtons: true
