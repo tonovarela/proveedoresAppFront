@@ -50,6 +50,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   cumpleSaldoContrarecibo: boolean = true;
   movimientos: Movimiento[] = [];
 
+ 
 
 
   public fechaEmisionFilter: any;
@@ -92,16 +93,17 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     this.subscripcionMovMoneda = this.movimientosCR_$.subscribe(() => {
       this.validarReglasContraRecibo();
     });
-    this.cargaInfoPendientesCobro();    
+    this.cargaInfoPendientesCobro();
   }
 
 
   cargaInfoPendientesCobro() {
+    
     this._facturaService
       .obtenerPendientesCobro(this._usuarioService.usuario.Proveedor)
       .subscribe(movs => {
         this.movimientos = movs;
-        this.cargando = false;
+        this.cargando = false;        
       });
   }
 

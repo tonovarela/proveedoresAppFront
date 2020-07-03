@@ -18,7 +18,6 @@
 </div>
 <div class="row">
   <div class="col-12">
-
     <div class="card">
       <div class="card-body">
         <div class="table-responsive tableFixHead">
@@ -33,7 +32,9 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let movimiento of _pago.detalle" [ngClass]="movimientoFiltrado(movimiento)">                
+              <tr *ngFor="let movimiento of _pago.detalle" 
+              [ngClass]="movimientoFiltrado(movimiento)"
+              >                
                 <td>{{movimiento.numeroCR}} </td>
                 <!-- <td>{{movimiento.numE}} </td> -->
                 <td>{{movimiento.factura}} </td>

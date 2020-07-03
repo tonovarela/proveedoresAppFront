@@ -1,71 +1,73 @@
 <app-loader *ngIf="cargando"></app-loader>
 <div *ngIf="!cargando">
   <app-busqueda moduloActivo='contra-recibos'></app-busqueda>
-<div class="row" >
-  <div class="col-12">
-    <ejs-grid #grid id="grid" height='350' [dataSource]="contraRecibos " allowReordering='true' allowSelection="false"
-      [selectionSettings]="selectOptions" (created)="created($event)" [editSettings]='editSettings' allowPaging="true" allowFiltering="true"
-      [filterSettings]='filterSettings' allowSorting="true" allowResizing='true' [pageSettings]="pageSettings"
-      (actionComplete)="actionComplete($event)">
-      <e-columns>
-        <e-column field="movimientoDescripcion" headerText="Movimiento" width=30>
-          <ng-template #template let-data>
-            <a href="javascript:void(0);" (click)="verDetalle(data,'')">{{data.movimientoDescripcion}}</a>
-          </ng-template>
+  <div class="row">
+    <div class="col-12">
+      <ejs-grid #grid id="grid" height='250' [dataSource]="contraRecibos " allowReordering='true' allowSelection="false"
+        [selectionSettings]="selectOptions" (created)="created($event)" [editSettings]='editSettings' allowPaging="true"
+        allowFiltering="true" [filterSettings]='filterSettings' allowSorting="true" allowResizing='true'
+        [pageSettings]="pageSettings" (actionComplete)="actionComplete($event)">
+        <e-columns>
+          <e-column field="movimientoDescripcion" headerText="Movimiento" width=30>
+            <ng-template #template let-data>
+              <a href="javascript:void(0);" (click)="verDetalle(data,'')">{{data.movimientoDescripcion}}</a>
+            </ng-template>
 
-        </e-column>
-        <e-column  field="totalMovimientos" headerText="# Facturas" width=20  >
-          <ng-template #template let-data>
-            <div class="text-center">
-              <span class="label label-rouded label-themecolor ">{{data.totalMovimientos}}</span>
-            </div>            
-          </ng-template>
-        </e-column>
-        <e-column field="folio" headerText=Folio width=30>
-        </e-column>
-        <!-- <e-column field="referencia" headerText="Factura" width=40>
+          </e-column>
+          <e-column field="totalMovimientos" headerText="# Facturas" width=20>
+            <ng-template #template let-data>
+              <div class="text-center">
+                <span class="label label-rouded label-themecolor ">{{data.totalMovimientos}}</span>
+              </div>
+            </ng-template>
+          </e-column>
+          <e-column field="folio" headerText=Folio width=30>
+          </e-column>
+          <!-- <e-column field="referencia" headerText="Factura" width=40>
         </e-column> -->
-        <e-column field="fechaEmision" [filter]='filterMenu' headerText="Emisión" [format]='formatoptions' width=40>
-          <ng-template #filterTemplate let-data>
-            <ejs-daterangepicker locale="es" format='dd-MM-yyyy' placeholder="Elija la fecha"
-              [(ngModel)]="fechaEmisionFilter" (change)="cambioFechaEmision($event)">
-              <e-presets>
-                <e-preset label="Esta semana" [start]='fecha.weekStart' [end]='fecha.weekEnd'></e-preset>
-                <e-preset label="Este mes" [start]='fecha.monthStart' [end]='fecha.monthEnd'></e-preset>
-                <e-preset label="Anterior mes" [start]='fecha.lastStart' [end]='fecha.lastEnd'></e-preset>
-              </e-presets>
-            </ejs-daterangepicker>
-          </ng-template>
-        </e-column>
-        <e-column field="fechaVencimiento" [filter]='filterMenu' headerText="Vencimiento" [format]='formatoptions'
-          width=40>
-          <ng-template #filterTemplate let-data>
-            <ejs-daterangepicker format='dd-MM-yyyy' placeholder="Elija la fecha" [(ngModel)]="fechaVencimientoFilter"
-              (change)="cambioFechaVencimiento($event)">
-              <e-presets>
-                <e-preset label="Esta semana" [start]='fecha.weekStart' [end]='fecha.weekEnd'></e-preset>
-                <e-preset label="Este mes" [start]='fecha.monthStart' [end]='fecha.monthEnd'></e-preset>
-                <e-preset label="Anterior mes" [start]='fecha.lastStart' [end]='fecha.lastEnd'></e-preset>
-              </e-presets>
-            </ejs-daterangepicker>
-          </ng-template>
-        </e-column>
-        <e-column field="importe" headerText="Importe" width=30>
-          <ng-template #template let-data>
-            {{data.importe | currency}}
-          </ng-template>
-        </e-column>
-        <e-column field="moneda" headerText="Moneda" width=30>
-        </e-column>
-        <!-- <e-column  headerText="Detalle" width=30>
+          <e-column field="fechaEmision" [filter]='filterMenu' headerText="Emisión" [format]='formatoptions' width=40>
+            <ng-template #filterTemplate let-data>
+              <ejs-daterangepicker locale="es" format='dd-MM-yyyy' placeholder="Elija la fecha"
+                [(ngModel)]="fechaEmisionFilter" (change)="cambioFechaEmision($event)">
+                <e-presets>
+                  <e-preset label="Esta semana" [start]='fecha.weekStart' [end]='fecha.weekEnd'></e-preset>
+                  <e-preset label="Este mes" [start]='fecha.monthStart' [end]='fecha.monthEnd'></e-preset>
+                  <e-preset label="Anterior mes" [start]='fecha.lastStart' [end]='fecha.lastEnd'></e-preset>
+                </e-presets>
+              </ejs-daterangepicker>
+            </ng-template>
+          </e-column>
+          <e-column field="fechaVencimiento" [filter]='filterMenu' headerText="Vencimiento" [format]='formatoptions'
+            width=40>
+            <ng-template #filterTemplate let-data>
+              <ejs-daterangepicker format='dd-MM-yyyy' placeholder="Elija la fecha" [(ngModel)]="fechaVencimientoFilter"
+                (change)="cambioFechaVencimiento($event)">
+                <e-presets>
+                  <e-preset label="Esta semana" [start]='fecha.weekStart' [end]='fecha.weekEnd'></e-preset>
+                  <e-preset label="Este mes" [start]='fecha.monthStart' [end]='fecha.monthEnd'></e-preset>
+                  <e-preset label="Anterior mes" [start]='fecha.lastStart' [end]='fecha.lastEnd'></e-preset>
+                </e-presets>
+              </ejs-daterangepicker>
+            </ng-template>
+          </e-column>
+          <e-column field="importe" headerText="Importe" width=30>
+            <ng-template #template let-data>
+              {{data.importe | currency}}
+            </ng-template>
+          </e-column>
+          <e-column field="moneda" headerText="Moneda" width=30>
+          </e-column>
+          <!-- <e-column  headerText="Detalle" width=30>
           <ng-template #template let-data>
             <i class="fa fa-file-pdf-o  text-danger detalle" (click)="verPDF(data)"></i> 
           </ng-template>
         </e-column> -->
-      </e-columns>
-    </ejs-grid>
+        </e-columns>
+      </ejs-grid>
+      <hr>
+      <app-totales [movimientos]="contraRecibos"></app-totales>
+    </div>
   </div>
-</div>
 
 </div>
 
@@ -81,7 +83,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-detalle-contra-recibo [referencia]="_referencia"  [contraRecibo]="_contraRecibo"></app-detalle-contra-recibo>
+    <app-detalle-contra-recibo [referencia]="_referencia" [contraRecibo]="_contraRecibo"></app-detalle-contra-recibo>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary waves-effect" (click)="modal.close('Save click')">Cerrar</button>

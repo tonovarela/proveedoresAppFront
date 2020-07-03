@@ -52,29 +52,37 @@
                 <!-- ============================================================== -->
                 <!-- Search -->
                 <!-- ============================================================== -->
-                <li  class="nav-item hidden-xs-down search-box"> <a                        
+                <li class="nav-item hidden-xs-down ">
+                    <a class="nav-link hidden-sm-down waves-effect waves-dark" href="javascript:void(0)"
+                        style="color:white"
+                        *ngIf="!(_settingService.ajustes.tema==='default-dark')">{{_usuarioService.usuario.Nombre}}</a>
+                    <a class="nav-link hidden-sm-down waves-effect waves-dark" href="javascript:void(0)"
+                        style="color:black"
+                        *ngIf="(_settingService.ajustes.tema==='default-dark')">{{_usuarioService.usuario.Nombre}}</a>
+                </li>
+                <li class="nav-item hidden-xs-down search-box"> <a
                         class="nav-link hidden-sm-down waves-effect waves-dark" (click)="nuevaBusqueda()"
-                        href="javascript:void(0)"><i  *ngIf="!cargandoFacturas && facturasFiltradas.length>0" class="ti-search"></i></a>
+                        href="javascript:void(0)"><i *ngIf="!cargandoFacturas && facturasFiltradas.length>0"
+                            class="ti-search"></i></a>
                     <div class="app-search" style="background-color: white;">
-                        <ejs-autocomplete 
-                        popupHeight='400px'                                                 
-                        cssClass="form-control"
-                        [(value)]='value'
-                        (keyup.enter)="buscar()"                         
-                        [fields]='fields'
-                        [dataSource]='facturasFiltradas'
-                        placeholder="Buscar  por factura"
-                        autofill='true'                        
-                        style="padding-top: 20px;"
-                        [showClearButton]="false">
+                        <ejs-autocomplete popupHeight='400px' cssClass="form-control" [(value)]='value'                        
+                            (keyup.enter)="buscar()" [fields]='fields' [dataSource]='facturasFiltradas'
+                            placeholder="Buscar  por factura" autofill='true' style="padding-top: 20px;"
+                            [showClearButton]="false">
                             <ng-template #noRecordsTemplate let-data="">
                                 <span class='norecord'> <b>NO</b> existen facturas de acuerdo a la búsqueda </span>
-                            </ng-template>                            
-                            <ng-template #itemTemplate="" let-data="">                                
-                                <div class="row" (click)="buscar(data)" >
-                                    <div class="col-3 "><h5 >Factura:{{data.referencia}}</h5></div>
-                                    <div class="col-3"><h5 class="m-b-0 text-info">Folio: {{data.folio}}</h5></div>
-                                    <div class="col-6"><h5 class="m-b-0 ">Módulo: {{data.modulo}}</h5></div>
+                            </ng-template>
+                            <ng-template #itemTemplate="" let-data="">
+                                <div class="row" (click)="buscar(data)">
+                                    <div class="col-3 ">
+                                        <h5>Factura:{{data.referencia}}</h5>
+                                    </div>
+                                    <div class="col-3">
+                                        <h5 class="m-b-0 text-info">Folio: {{data.folio}}</h5>
+                                    </div>
+                                    <div class="col-6">
+                                        <h5 class="m-b-0 ">Módulo: {{data.modulo}}</h5>
+                                    </div>
                                 </div>
                             </ng-template>
                         </ejs-autocomplete>
@@ -85,8 +93,8 @@
                     </div>
                 </li>
 
-               
-             
+
+
 
                 <!-- ============================================================== -->
                 <!-- Language -->
@@ -110,7 +118,7 @@
                                     <!-- <div class="u-img"><img [src]="_usuarioService.usuario.img | imagen" alt="user"></div> -->
                                     <div class="u-img"><img src="assets/images/users/av-6.png" alt="user"></div>
                                     <div class="u-text">
-                                        <h4>{{_usuarioService.usuario.Nombre}}</h4>
+                                        <!-- <h4>{{_usuarioService.usuario.Nombre}}</h4> -->
                                         <span class="label label-rouded label-themecolor">RFC
                                             {{_usuarioService.usuario.RFC}}</span>
                                         <span class="label label-rouded label-info">Máximo CR

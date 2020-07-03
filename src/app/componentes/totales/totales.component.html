@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col-4"></div>  
+    <div class="col-4" >
+        <div class="card"*ngIf="totalOtraMoneda>0">
+            <div class="card-body">
+                <div class="d-flex no-block">
+                    <div class="align-self-center">
+                        <h6 class="text-muted m-t-10 m-b-0">Total USD </h6>
+                        <h2 class="m-t-5 m-l-30">{{totalOtraMoneda | currency}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-4" >
+        <div class="card" *ngIf="totalPesos>0">
+            <div class="card-body">
+                <div class="d-flex no-block">
+                    <div class="align-self-center">
+                        <h6 class="text-muted m-t-10 m-b-0">Total MXN </h6>
+                        <h2 class="m-t-5 m-l-30">{{totalPesos | currency}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

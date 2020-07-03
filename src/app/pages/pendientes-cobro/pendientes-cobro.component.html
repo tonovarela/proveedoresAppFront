@@ -2,20 +2,19 @@
 <div id="registroContrarecibo" *ngIf=" (movimientos | numFacturasCR) >0 && !cargando">
   <div class="card " id="contenedorContraRecibo">
     <div class="card-body" style="padding:0 1.2rem">
-      <div class="d-flex no-block">      
-        <div class="m-r-20 align-self-center" style="float:left">          
-            <h6 class="text-muted m-t-10 m-b-0 "># Facturas</h6>
-            <h2 class="m-t-1 "> {{movimientos | numFacturasCR }} </h2>         
-        </div>      
-        <div  style="float:left;">          
-            <h6 class="text-muted m-t-10 m-b-0 ">Total seleccionado </h6>
-            <h2 *ngIf="monedasUnicas" class="m-t-0">{{movimientos | totalSaldoCR | currency}} </h2>          
-            <i *ngIf="!monedasUnicas " class="m-t-0 fa fa-exclamation text-danger fa-2x"> </i>                      
+      <div class="d-flex no-block">
+        <div class="m-r-20 align-self-center" style="float:left">
+          <h6 class="text-muted m-t-10 m-b-0 "># Facturas</h6>
+          <h2 class="m-t-1 "> {{movimientos | numFacturasCR }} </h2>
         </div>
-        <div >          
-          <div style="float:left" >             
-            <button class="btn btn-block btn-outline btn-secondary m-t-30 m-l-30 font-14 "
-              *ngIf="monedasUnicas"
+        <div style="float:left;">
+          <h6 class="text-muted m-t-10 m-b-0 ">Total seleccionado </h6>
+          <h2 *ngIf="monedasUnicas" class="m-t-0">{{movimientos | totalSaldoCR | currency}} </h2>
+          <i *ngIf="!monedasUnicas " class="m-t-0 fa fa-exclamation text-danger fa-2x"> </i>
+        </div>
+        <div>
+          <div style="float:left">
+            <button class="btn btn-block btn-outline btn-secondary m-t-30 m-l-30 font-14 " *ngIf="monedasUnicas"
               (click)="generarContraRecibo()">Generar contra-recibo </button>
           </div>
         </div>
@@ -23,50 +22,47 @@
     </div>
   </div>
   <div style="clear: both;"></div>
-</div> 
-
-<div class="row"  *ngIf="!cargando">    
-  
-  <div class="col-12">    
-    <ejs-grid #grid id="grid" height='350' 
-    (created)="created($event)"
-     [dataSource]="movimientos" allowReordering='true' allowSelection="false"
-      [selectionSettings]="selectOptions" [editSettings]='editSettings' allowPaging="true" [allowFiltering]="true"
-      [filterSettings]='filterSettings' allowSorting="true" allowResizing='true' [pageSettings]="pageSettings"
-      (actionComplete)="actionComplete($event)" 
-      >
-      <e-columns>
-        <e-column field="movimientoID" headerText="ID" width=30>   </e-column>       
+</div>
+<div class="row" *ngIf="!cargando">
+  <div class="col-12">
+    <ejs-grid #grid id="grid" height='250' (created)="created($event)" [dataSource]="movimientos" allowReordering='true'
+      allowSelection="false" [selectionSettings]="selectOptions" [editSettings]='editSettings' allowPaging="true"
+      [allowFiltering]="true" [filterSettings]='filterSettings' allowSorting="true" allowResizing='true'
+      [pageSettings]="pageSettings" (actionComplete)="actionComplete($event)">
+      <e-columns>        
+        <!-- <e-column field="movimientoID" headerText="ID" width=50></e-column> -->
         <e-column field="movimientoDescripcion" headerText="Tipo" width=50></e-column>
         <e-column field="folio" headerText='Folio' width=30>
-        </e-column>        
+        </e-column>
         <e-column field="referencia" headerText="Factura" width=40>
         </e-column>
-        <e-column field="fechaEmision"   [filter]='filterMenu'   headerText="Emisión" [format]='formatoptions' width=40>         
-          <ng-template #filterTemplate let-data > 
-            <ejs-daterangepicker  format='dd-MM-yyyy'  placeholder="Elija la fecha"  [(ngModel)]="fechaEmisionFilter"   (change)="cambioFechaEmision($event)"  >
+        <e-column field="fechaEmision" [filter]='filterMenu' headerText="Emisión" [format]='formatoptions' width=40>
+          <ng-template #filterTemplate let-data>
+            <ejs-daterangepicker format='dd-MM-yyyy' placeholder="Elija la fecha" [(ngModel)]="fechaEmisionFilter"
+              (change)="cambioFechaEmision($event)">
               <e-presets>
                 <e-preset label="Esta semana" [start]='fecha.weekStart' [end]='fecha.weekEnd'></e-preset>
                 <e-preset label="Este mes" [start]='fecha.monthStart' [end]='fecha.monthEnd'></e-preset>
-                <e-preset label="Anterior mes" [start]='fecha.lastStart' [end]='fecha.lastEnd'></e-preset>                                
+                <e-preset label="Anterior mes" [start]='fecha.lastStart' [end]='fecha.lastEnd'></e-preset>
               </e-presets>
             </ejs-daterangepicker>
-          </ng-template>             
+          </ng-template>
         </e-column>
-        <e-column field="fechaVencimiento"  [filter]='filterMenu'  headerText="Vencimiento" [format]='formatoptions'
-          width=40> 
-          <ng-template #filterTemplate let-data > 
-            <ejs-daterangepicker  format='dd-MM-yyyy' placeholder="Elija la fecha"  [(ngModel)]="fechaVencimientoFilter"   (change)="cambioFechaVencimiento($event)"  >
+        <!-- <e-column field="fechaVencimiento" [filter]='filterMenu' headerText="Vencimiento" [format]='formatoptions'
+          width=40>
+          <ng-template #filterTemplate let-data>
+            <ejs-daterangepicker format='dd-MM-yyyy' placeholder="Elija la fecha" [(ngModel)]="fechaVencimientoFilter"
+              (change)="cambioFechaVencimiento($event)">
               <e-presets>
                 <e-preset label="Esta semana" [start]='fecha.weekStart' [end]='fecha.weekEnd'></e-preset>
                 <e-preset label="Este mes" [start]='fecha.monthStart' [end]='fecha.monthEnd'></e-preset>
-                <e-preset label="Anterior mes" [start]='fecha.lastStart' [end]='fecha.lastEnd'></e-preset>                                
+                <e-preset label="Anterior mes" [start]='fecha.lastStart' [end]='fecha.lastEnd'></e-preset>
               </e-presets>
             </ejs-daterangepicker>
-          </ng-template>                    
-        </e-column>
-        
-        <e-column  headerText="Importe" width=50>
+          </ng-template>
+        </e-column> -->
+
+        <e-column headerText="Importe" width=50>
           <ng-template #template let-data>
             {{data.importe | currency}}
           </ng-template>
@@ -78,14 +74,14 @@
         </e-column> -->
         <e-column field="moneda" headerText="Moneda" width=30>
         </e-column>
-        <e-column field="tieneXML"  [allowFiltering]='false' headerText="XML" allowSelection="false" width='30'>
+        <e-column field="tieneXML" [allowFiltering]='false' headerText="XML" allowSelection="false" width='30'>
           <ng-template #template let-data>
             <div *ngIf="!data.tieneXML" (click)="_modalUploadService.mostrarModal('xml',data)"
               class="rounded-icon rounded-info"><i class="mdi mdi-file-xml"></i> </div>
             <div *ngIf="data.tieneXML" class="rounded-icon rounded-success"><i class="fa fa-check-circle-o"></i> </div>
           </ng-template>
         </e-column>
-        <e-column  field="tienePDF" [allowFiltering]='false' headerText="PDF" allowSelection="false" width='30'>
+        <e-column field="tienePDF" [allowFiltering]='false' headerText="PDF" allowSelection="false" width='30'>
           <ng-template #template let-data>
             <div *ngIf="!data.tienePDF" (click)="_modalUploadService.mostrarModal('pdf',data)"
               class="rounded-icon rounded-warning"><i class="mdi mdi-file-pdf"></i></div>
@@ -93,7 +89,8 @@
           </ng-template>
         </e-column>
 
-        <e-column field="CR" headerText="" [allowFiltering]='false'  [allowSorting]="true" allowSelection="false" width='50'>
+        <e-column field="CR" headerText="" [allowFiltering]='false' [allowSorting]="true" allowSelection="false"
+          width='50'>
           <!-- <ng-template #headerTemplate let-data>
             <div>
               <ejs-checkbox [checked]='filtroCheck' cssClass="e-custom" [(ngModel)]="filtroCheck"
@@ -101,16 +98,15 @@
                
             </div>
           </ng-template> -->
-          <ng-template #template let-data>            
+          <ng-template #template let-data>
             <ejs-checkbox (change)="cambio(data)" cssClass="e-primary" [(ngModel)]="data.solicitaContraRecibo"
               *ngIf="data.CR" label=""></ejs-checkbox>
           </ng-template>
         </e-column>
       </e-columns>
-
     </ejs-grid>
-
-
+    <hr>
+    <app-totales [movimientos]="movimientos"></app-totales>
 
   </div>
 </div>

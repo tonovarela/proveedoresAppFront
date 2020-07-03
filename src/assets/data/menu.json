@@ -1,7 +1,7 @@
 [{
     "icono": "fa fa-money",
-    "titulo": "Pendientes cobro",     
-    "url": "/pendientes-cobro"
+    "titulo": "Facturas emitidas",     
+    "url": "/facturas-emitidas"
   },
   {
     "icono": "fa fa-file-text-o",

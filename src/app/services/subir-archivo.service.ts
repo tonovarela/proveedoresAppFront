@@ -20,6 +20,7 @@ export class SubirArchivoService {
 
   
   URL_SERVICE: string = environment.URL_VALIDADORFILE;  
+  //"http://localhost:44382";  
   validarEstructura: boolean =true;
   constructor(private _http: HttpClient,
     private _usuarioService: UsuarioService) { }
@@ -51,6 +52,7 @@ export class SubirArchivoService {
     formData.append('metodoPago', movimiento.metodopago);
     formData.append('formaPago', movimiento.formaPago);
     formData.append('usoCFDI', movimiento.usoCFDI);
+    formData.append('factura', movimiento.referencia);
     formData.append('idMovimiento', movimiento.movimientoID.toString());
     formData.append('movimiento', `${movimiento.movimientoDescripcion}-${movimiento.folio}`.trim());
     formData.append('proveedor', `${this._usuarioService.usuario.Proveedor.trim()}`);
@@ -82,6 +84,7 @@ export class SubirArchivoService {
     formData.append('monto', movimiento.importe.toString());
     formData.append('rfc', this._usuarioService.usuario.RFC);    
     formData.append('movimiento', `${movimiento.movimientoDescripcion}-${movimiento.folio}`.trim());
+    formData.append('factura', '');
     formData.append('folio', `${movimiento.folio}`.trim());    
     formData.append('idMovimiento', movimiento.movimientoID.toString());
     formData.append('proveedor', `${this._usuarioService.usuario.Proveedor.trim()}`);

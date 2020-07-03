@@ -1,3 +1,4 @@
+import { SettingsService } from './../../services/settings.service';
 import { FacturaService } from './../../services/factura.service';
 import { UsuarioService } from './../../services/usuario.service';
 import { Component, OnInit, ViewChild, Inject, OnDestroy } from '@angular/core';
@@ -25,17 +26,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   facturas: Factura[] = [];
   facturasFiltradas: Factura[] = [];
   private subscription: Subscription;
+  obscuro:boolean;
 
 
 
 
   constructor(
     private _router: Router,
+    public _settingService:SettingsService,
     public _usuarioService: UsuarioService,    
     private facturaService: FacturaService,
     @Inject(DOCUMENT) private document: Document
   ) { 
-
+    
+     
     this.subscription = this.getDataRoute().subscribe(data => {
       this.moduloActivo = data.modulo;      
       this.filtrarFacturas();            
@@ -45,6 +49,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
 
+  
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -89,8 +94,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   buscar(mov?) {
-
+   
     if (mov != undefined) {
+   
       this.value = mov.referencia;
     }
     const r = this.facturasFiltradas.filter(x => x.referencia == this.value);

@@ -7,11 +7,11 @@
   <app-busqueda moduloActivo='pagos-aprobados'></app-busqueda>
   <div class="row">
     <div class="col-12">
-      <ejs-grid #grid id="grid" height='350' (created)="created($event)" [dataSource]="pagosAprobados "
+      <ejs-grid #grid id="grid" height='250' (created)="created($event)" [dataSource]="pagosAprobados "
         allowReordering='true' allowSelection="false" [selectionSettings]="selectOptions" [editSettings]='editSettings'
         allowPaging="true" allowFiltering="true" [filterSettings]='filterSettings' allowSorting="true"
         allowResizing='true' [pageSettings]="pageSettings" (actionComplete)="actionComplete($event)">
-        <e-columns>
+        <e-columns>          
           <e-column field="movimientoID" headerText="ID" width=20>
           </e-column>
           <e-column field="movimientoDescripcion" headerText="Movimiento" width=40>
@@ -19,7 +19,7 @@
               <a href="javascript:void(0);" (click)="verDetalle(data,'')">{{data.movimientoDescripcion}}</a>
             </ng-template>
           </e-column>
-          <e-column field="folio" headerText=Folio width=20>
+          <e-column field="folio" headerText="Folio" width=20>
           </e-column>
           <!-- <e-column field="referencia" headerText=Factura width=20>
           </e-column> -->
@@ -62,6 +62,9 @@
 
         </e-columns>
       </ejs-grid>
+
+      <hr>
+    <app-totales [movimientos]="pagosAprobados"></app-totales>
     </div>
   </div>
 </div>

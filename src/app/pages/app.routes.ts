@@ -18,12 +18,12 @@ const pagesRoutes: Routes = [
                 //canActivate : [VerificaTokenGuard],
                 data: { titulo: 'Dashboard' }
             },
-            { path: 'pendientes-cobro', component: PendientesCobroComponent, data: { titulo: "Pendientes de cobro",modulo:"pendientes-cobro" } },
+            { path: 'facturas-emitidas', component: PendientesCobroComponent, data: { titulo: "Facturas emitidas",modulo:"pendientes-cobro" } },
             { path: 'contra-recibos', component: ContraRecibosComponent, data: { titulo: "Contra recibos pendientes",modulo:"contra-recibos" } },
             { path: 'pagos-aprobados', component: PagosAprobadosComponent, data: { titulo: "Pagos aprobados" ,modulo:"pagos-aprobados"} },
             { path: 'account-settings', component:AccountSettingsComponent,data:{titulo:"Settings" ,modulo:"#"}  },
             { path: 'perfil', component:PerfilComponent,data:{titulo:"Perfil",modulo:"#" }  },
-            { path: '', redirectTo: '/pendientes-cobro', pathMatch: 'full' }
+            { path: '', redirectTo: '/facturas-emitidas', pathMatch: 'full' }
         ]
     }
 ];

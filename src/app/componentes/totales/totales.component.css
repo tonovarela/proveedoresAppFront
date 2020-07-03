@@ -1,0 +1,13 @@
+.card{
+    
+border: solid 1px  #d9d6d4;   
+border-radius: 5px;
+/* 
+border-style: solid;
+border-color: #d9d6d4; */
+/* border-width: 1px; */
+
+}
+.card-body{
+    padding:0 0 0 2.0rem;    
+}

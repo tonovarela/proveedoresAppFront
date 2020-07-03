@@ -8,6 +8,7 @@ import { DetallePagoComponent } from './detalle-pago/detalle-pago.component';
 import { BusquedaComponent } from './busqueda/busqueda.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { TotalesComponent } from './totales/totales.component';
 
 
 @NgModule({
@@ -16,14 +17,16 @@ import { RouterModule } from '@angular/router';
     ModalUploadComponent,
     DetalleContraReciboComponent,
     DetallePagoComponent,
-    BusquedaComponent
+    BusquedaComponent,
+    TotalesComponent
   ],
   exports:[
    LoaderComponent,
    ModalUploadComponent,
    DetalleContraReciboComponent,
    DetallePagoComponent,
-   BusquedaComponent
+   BusquedaComponent,
+   TotalesComponent
   ],
   imports: [
     CommonModule,
