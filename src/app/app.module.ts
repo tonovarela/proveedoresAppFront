@@ -9,7 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { NopagefoundComponent } from './shared/nopagefound/nopagefound.component';
 import { APP_ROUTES } from './app.Routes';
 import { HttpClientModule } from '@angular/common/http';
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
@@ -30,6 +30,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     CheckBoxModule,
     APP_ROUTES,
     NgbModule,
+    CommonModule
   ],
   providers: [CurrencyPipe,DatePipe],
   bootstrap: [AppComponent]

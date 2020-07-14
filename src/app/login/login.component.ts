@@ -27,13 +27,11 @@ export class LoginComponent implements OnInit {
   ingresar(form: NgForm) {
     const usuario = { usuario:form.value.usuario, password: form.value.password };
     this._usuarioService.login(usuario).subscribe((resp: ResponseLogin) => {
-      if (resp.validacion == false) {
-        //console.log("Login incorrecto");
+      if (resp.validacion == false) {        
         this._uiService.mostrarAlertaError("Acceso","Login incorrecto");
               
-      } else {
-        //console.log("Login correcto");
-        this.router.navigate(['/pendientes-cobro']);
+      } else {        
+      this.router.navigate(['/']);
       }
 
     });

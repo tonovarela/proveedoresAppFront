@@ -31,6 +31,7 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { PagesComponent } from './pages.component';
 
 import { ComponentesModule } from './../componentes/componentes.module';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { ComponentesModule } from './../componentes/componentes.module';
     PAGESROUTES,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule,
+    BrowserModule,
+    //CommonModule,
     GridAllModule,
     GridModule,
     DatePickerAllModule,

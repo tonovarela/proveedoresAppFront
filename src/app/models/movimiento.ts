@@ -16,9 +16,12 @@ export interface Movimiento {
     solicitaContraRecibo?: boolean,
     tipo?:string  //Factura-Ingreso o  Pago
     usoCFDI?:string,
-    tipoCambio?:number,    
-    metodopago?:string,
-    formaPago?:string
+    usoCDFIDesc?:string,
+    tipoCambio?:number,
+    metodopago?:string,    
+    metodoPagoDesc?:string,
+    formaPago?:string,
+    formaPagoDesc?:string,
     
 }
 

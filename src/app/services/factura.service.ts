@@ -30,9 +30,12 @@ export class FacturaService {
             fechaVencimiento: moment(m["Vencimiento"]).toDate(),
             moneda: m["Moneda"].trim(),
             usoCFDI: m["UsoCFDI"],
+            usoCDFIDesc:m["DescUsoCFDI"],
             metodopago: m["MetodoPago"],
+            metodoPagoDesc:m["DescMetodoPago"],
             tipoCambio:Number(m["TipoCambio"]),
             formaPago: m["FormaPago"]  ,
+            formaPagoDesc: m["DescFormaPago"]  ,
             solicitaContraRecibo: false,
             tienePDF: m["PDF"] == "1" ? true : false,
             tieneXML: m["XML"] == "1" ? true : false,
@@ -107,28 +110,28 @@ export class FacturaService {
   }
 
 
-  obtenerMovimientosFicticios(moneda, total) {
-    let movimientos = [];
-    for (let i = moneda == "Pesos" ? total : 0; i < (moneda == "Pesos" ? total : 0) + total; i++) {
-      movimientos.push({
-        folio: (i + 1),
-        solicitaContraRecibo: false,
-        movimientoID: (i + 1),
-        movimientoDescripcion: "General entrada ",
-        referencia: "59897" + (i + 1),
-        moneda: moneda,
-        tipoCambio:moneda=='Dolares'?20.6:1,
-        saldo: Math.random() * (10000 - 50 + 1) + 50,
-        importe: Math.random() * (10000 - 50 + 1) + 50,
-        tienePDF: true,
-        tieneXML: true,
-        CR:true,
-        fechaEmision: moment('2020-01-05').toDate(),
-        fechaVencimiento: moment('2020-01-05').toDate()
-      });
-    }
-    return movimientos;
-  }
+  // obtenerMovimientosFicticios(moneda, total) {
+  //   let movimientos = [];
+  //   for (let i = moneda == "Pesos" ? total : 0; i < (moneda == "Pesos" ? total : 0) + total; i++) {
+  //     movimientos.push({
+  //       folio: (i + 1),
+  //       solicitaContraRecibo: false,
+  //       movimientoID: (i + 1),
+  //       movimientoDescripcion: "General entrada ",
+  //       referencia: "59897" + (i + 1),
+  //       moneda: moneda,
+  //       tipoCambio:moneda=='Dolares'?20.6:1,
+  //       saldo: Math.random() * (10000 - 50 + 1) + 50,
+  //       importe: Math.random() * (10000 - 50 + 1) + 50,
+  //       tienePDF: true,
+  //       tieneXML: true,
+  //       CR:true,
+  //       fechaEmision: moment('2020-01-05').toDate(),
+  //       fechaVencimiento: moment('2020-01-05').toDate()
+  //     });
+  //   }
+  //   return movimientos;
+  // }
 
   obtenerDetalleContraRecibo(folio) {
     return this._http

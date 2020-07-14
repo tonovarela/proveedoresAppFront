@@ -19,8 +19,7 @@ export class SubirArchivoService {
   public notificacion = new EventEmitter<Movimiento>();
 
   
-  URL_SERVICE: string = environment.URL_VALIDADORFILE;  
-  //"http://localhost:44382";  
+  URL_SERVICE: string = environment.URL_VALIDADORFILE;    
   validarEstructura: boolean =true;
   constructor(private _http: HttpClient,
     private _usuarioService: UsuarioService) { }
@@ -50,8 +49,11 @@ export class SubirArchivoService {
     formData.append('rfc', this._usuarioService.usuario.RFC);
     formData.append('condicionesPago', "------");
     formData.append('metodoPago', movimiento.metodopago);
+    formData.append('metodoPagoDesc', movimiento.metodoPagoDesc);
     formData.append('formaPago', movimiento.formaPago);
+    formData.append('formaPagoDesc', movimiento.formaPagoDesc);
     formData.append('usoCFDI', movimiento.usoCFDI);
+    formData.append('usoCFDIDesc', movimiento.usoCDFIDesc);
     formData.append('factura', movimiento.referencia);
     formData.append('idMovimiento', movimiento.movimientoID.toString());
     formData.append('movimiento', `${movimiento.movimientoDescripcion}-${movimiento.folio}`.trim());

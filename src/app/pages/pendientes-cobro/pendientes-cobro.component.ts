@@ -102,7 +102,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     this._facturaService
       .obtenerPendientesCobro(this._usuarioService.usuario.Proveedor)
       .subscribe(movs => {
-        this.movimientos = movs;
+        this.movimientos = movs;        
         this.cargando = false;        
       });
   }

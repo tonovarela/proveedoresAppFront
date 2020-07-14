@@ -1,3 +1,4 @@
+import { BrowserModule } from '@angular/platform-browser';
 import { LoaderComponent } from './loader/loader.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -18,7 +19,7 @@ import { TotalesComponent } from './totales/totales.component';
     DetalleContraReciboComponent,
     DetallePagoComponent,
     BusquedaComponent,
-    TotalesComponent
+   TotalesComponent
   ],
   exports:[
    LoaderComponent,
@@ -27,11 +28,12 @@ import { TotalesComponent } from './totales/totales.component';
    DetallePagoComponent,
    BusquedaComponent,
    TotalesComponent
-  ],
-  imports: [
+  ],  
+  imports: [    
+    BrowserModule,
     CommonModule,
     FormsModule,
-    RouterModule,
+    RouterModule,    
     AutoCompleteModule
   ]
 })
