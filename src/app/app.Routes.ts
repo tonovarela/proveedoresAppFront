@@ -2,7 +2,6 @@ import { PagesComponent } from './pages/pages.component';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { NopagefoundComponent } from './shared/nopagefound/nopagefound.component';
-import { PagesModule } from './pages/pages.module';
 import { LoginGuard } from './services/guards/usuario.guard';
 
 

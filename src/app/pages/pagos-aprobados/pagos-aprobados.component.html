@@ -12,8 +12,8 @@
         allowPaging="true" allowFiltering="true" [filterSettings]='filterSettings' allowSorting="true"
         allowResizing='true' [pageSettings]="pageSettings" (actionComplete)="actionComplete($event)">
         <e-columns>          
-          <e-column field="movimientoID" headerText="ID" width=20>
-          </e-column>
+          <!-- <e-column field="movimientoID" headerText="ID" width=20>
+          </e-column> -->
           <e-column field="movimientoDescripcion" headerText="Movimiento" width=40>
             <ng-template #template let-data>
               <a href="javascript:void(0);" (click)="verDetalle(data,'')">{{data.movimientoDescripcion}}</a>

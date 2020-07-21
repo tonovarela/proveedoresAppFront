@@ -19,7 +19,8 @@ export class SubirArchivoService {
   public notificacion = new EventEmitter<Movimiento>();
 
   
-  URL_SERVICE: string = environment.URL_VALIDADORFILE;    
+  URL_SERVICE: string =environment.URL_VALIDADORFILE;    
+  //"http://localhost:44382"  
   validarEstructura: boolean =true;
   constructor(private _http: HttpClient,
     private _usuarioService: UsuarioService) { }
@@ -55,6 +56,7 @@ export class SubirArchivoService {
     formData.append('usoCFDI', movimiento.usoCFDI);
     formData.append('usoCFDIDesc', movimiento.usoCDFIDesc);
     formData.append('factura', movimiento.referencia);
+    formData.append('folio', movimiento.folio.toString());
     formData.append('idMovimiento', movimiento.movimientoID.toString());
     formData.append('movimiento', `${movimiento.movimientoDescripcion}-${movimiento.folio}`.trim());
     formData.append('proveedor', `${this._usuarioService.usuario.Proveedor.trim()}`);
