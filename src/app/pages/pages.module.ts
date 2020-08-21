@@ -32,6 +32,8 @@ import { PagesComponent } from './pages.component';
 
 import { ComponentesModule } from './../componentes/componentes.module';
 import { BrowserModule } from '@angular/platform-browser';
+import { PagosProgramadosComponent } from './pagos-programados/pagos-programados.component';
+import { ComunicadosComponent } from './comunicados/comunicados.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,8 @@ import { BrowserModule } from '@angular/platform-browser';
     ContraRecibosComponent,
     PagosAprobadosComponent,
     AccountSettingsComponent,
-    PerfilComponent
+    PerfilComponent,    
+    PagosProgramadosComponent, ComunicadosComponent
   ],
   providers: [ PageService,SortService,DetailRowService, FilterService,ReorderService,ResizeService,SelectionService,ToolbarService,EditService],
   imports: [  

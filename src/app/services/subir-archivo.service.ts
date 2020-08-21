@@ -20,7 +20,7 @@ export class SubirArchivoService {
 
   
   URL_SERVICE: string =environment.URL_VALIDADORFILE;    
-  //"http://localhost:44382"  
+  //"http://localhost:44382" ;
   validarEstructura: boolean =true;
   constructor(private _http: HttpClient,
     private _usuarioService: UsuarioService) { }
@@ -29,6 +29,10 @@ export class SubirArchivoService {
 
 
   public revisarArchivo(archivo: File, tipoArchivo: string, movimiento: PagoAprobado | Movimiento) {
+
+    if (tipoArchivo=="*"){
+      return this.subirAnexoMovimiento(movimiento, tipoArchivo, archivo);
+    }
 
     if (movimiento.tipo == "Factura-Ingreso") {
       return this.revisarPendientesCobro(movimiento, tipoArchivo, archivo);
@@ -40,6 +44,35 @@ export class SubirArchivoService {
   }
 
 
+  private subirAnexoMovimiento(movimiento: PagoAprobado | Movimiento,tipoArchivo:string,archivo:File){
+    
+    const url = `${this.URL_SERVICE}/api/anexo`;    
+    const formData = new FormData();    
+    formData.append('tipo', movimiento.tipo);  
+    formData.append('idMovimiento', movimiento.movimientoID.toString());  
+    formData.append('archivo', archivo, archivo.name);        
+    if (archivo.size>3145729){
+      let fakeResponse = {
+      ok: true,
+      esIgual: false,
+      errores: [],
+      mensaje: `Archivo muy grande,debe de pesar menos de 3MB`
+    };     
+    return Observable.of(fakeResponse).delay(500);       
+    }
+    return this._http.post(url, formData, { reportProgress: true })
+    .pipe(
+      map(resp => {   
+        movimiento.estaActualizando=true; 
+        if (resp["esIgual"]){
+          this.notificacion.emit(movimiento);    
+        }        
+        return resp;
+      })
+    );
+    
+    
+  }
 
 
   private revisarPendientesCobro(movimiento: Movimiento, tipoArchivo: string, archivo: File): Observable<any> {
@@ -114,14 +147,7 @@ export class SubirArchivoService {
 
 
   anexarMovimientoIntelisis(pathArchivo, id, rama) {
-
-// let fakeResponse = {
-//       ok: true,
-//       esIgual: false,
-//       errores: ["Varela 1", "Varela 2", "Varela 3"],
-//       mensaje: `Esta es una respuesta fake del documento , Pendiente por definir la validación`
-//     };
-//     return Observable.of(fakeResponse).delay(500);    
+  
     return this._http.post(`${environment.URL_SERVICIOS}/facturas/registro/documento`,
       { path: `${pathArchivo}`, id,rama });
   }

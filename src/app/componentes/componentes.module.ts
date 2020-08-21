@@ -10,6 +10,7 @@ import { BusquedaComponent } from './busqueda/busqueda.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TotalesComponent } from './totales/totales.component';
+import { AnexoIconoComponent } from './anexo-icono/anexo-icono.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { TotalesComponent } from './totales/totales.component';
     DetalleContraReciboComponent,
     DetallePagoComponent,
     BusquedaComponent,
-   TotalesComponent
+   TotalesComponent,
+   AnexoIconoComponent
   ],
   exports:[
    LoaderComponent,
@@ -27,7 +29,8 @@ import { TotalesComponent } from './totales/totales.component';
    DetalleContraReciboComponent,
    DetallePagoComponent,
    BusquedaComponent,
-   TotalesComponent
+   TotalesComponent,
+   AnexoIconoComponent
   ],  
   imports: [    
     BrowserModule,

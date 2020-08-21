@@ -62,7 +62,7 @@ export class PdfMovimientosService {
         margin: [0, 0, 0, 10]
       },
       {
-        text: `Total de Contra recibos: ${pago.detalle.length}`,
+        text: `Total de facturas: ${pago.detalle.length}`,
         fontSize: 11,
         bold: true,
         alignment: 'right',

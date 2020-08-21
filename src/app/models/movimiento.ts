@@ -14,7 +14,7 @@ export interface Movimiento {
     tienePDF?: boolean    
     CR?:boolean,
     solicitaContraRecibo?: boolean,
-    tipo?:string  //Factura-Ingreso o  Pago
+    tipo?:string  //Factura-Ingreso , Pago o Contra-recibo
     usoCFDI?:string,
     usoCDFIDesc?:string,
     tipoCambio?:number,
@@ -22,6 +22,8 @@ export interface Movimiento {
     metodoPagoDesc?:string,
     formaPago?:string,
     formaPagoDesc?:string,
+    anexos?:Anexo[],
+    estaActualizando?:boolean
     
 }
 
@@ -39,8 +41,11 @@ export interface Contrarecibo {
     tieneXML?:boolean;
     tienePDF?: boolean    
     totalMovimientos?:number,
+    tipo?:string,
     solicitaContraRecibo?: boolean,
-    detalle?:Movimiento[]
+    detalle?:Movimiento[],
+    anexos?:Anexo[],
+    estaActualizando?:boolean
 
 }
 
@@ -63,7 +68,10 @@ export interface PagoAprobado{
     usoCFDI?:string,
     formaPago?:string,
     totalMovimientos?:number,
-    detalle?: PagoDetalle[]
+    detalle?: PagoDetalle[],
+    anexos?:Anexo[],
+    estaActualizando?:boolean
+    
 }
 
 export interface PagoDetalle{
@@ -104,4 +112,18 @@ export interface MovCR{
     referencia?:string;
     folio?:number;
     importe?:number;
+}
+
+
+export interface RespuestaAnexo{
+    total?:number,
+    anexos?:Anexo[]
+}
+
+export interface Anexo{
+    id?:string,
+    url?:string,
+    tipo?:string,
+    nombre?:string,
+    fecha_registro?:string
 }

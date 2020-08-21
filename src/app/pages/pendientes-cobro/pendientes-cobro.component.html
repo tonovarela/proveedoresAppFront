@@ -1,28 +1,50 @@
 <app-loader *ngIf="cargando"></app-loader>
-<div id="registroContrarecibo" *ngIf=" (movimientos | numFacturasCR) >0 && !cargando">
-  <div class="card " id="contenedorContraRecibo">
-    <div class="card-body" style="padding:0 1.2rem">
-      <div class="d-flex no-block">
-        <div class="m-r-20 align-self-center" style="float:left">
-          <h6 class="text-muted m-t-10 m-b-0 "># Facturas</h6>
-          <h2 class="m-t-1 "> {{movimientos | numFacturasCR }} </h2>
+
+<div *ngIf="!_usuarioService.usuario.PuedeGenerarContraRecibo" >  
+  <div class="alert avisoCP">      
+    <h3 class="text-warning"><i class="fa fa-exclamation-circle"></i> Importante</h3> 
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10">
+          <p>No se puede generar contra-recibos debido a que tiene complemento de pago pendientes.</p>
         </div>
-        <div style="float:left;">
-          <h6 class="text-muted m-t-10 m-b-0 ">Total seleccionado </h6>
-          <h2 *ngIf="monedasUnicas" class="m-t-0">{{movimientos | totalSaldoCR | currency}} </h2>
-          <i *ngIf="!monedasUnicas " class="m-t-0 fa fa-exclamation text-danger fa-2x"> </i>
+        <div class="col-md-2">
+          <button (click)="irPagosAprobados()" class="btn btn-warning btn-xs">Ver detalle</button>      
         </div>
-        <div>
-          <div style="float:left">
-            <button class="btn btn-block btn-outline btn-secondary m-t-30 m-l-30 font-14 " *ngIf="monedasUnicas"
-              (click)="generarContraRecibo()">Generar contra-recibo </button>
+      </div>
+    </div>    
+    
+    
+  </div>
+</div>
+<div *ngIf="_usuarioService.usuario.PuedeGenerarContraRecibo">
+  <div class="registroContrarecibo" *ngIf="(movimientos | numFacturasCR) >0 && !cargando">
+    <div class="card " id="contenedorContraRecibo">    
+      <div class="card-body" style="padding:0 1.2rem" *ngIf="_usuarioService.usuario.PuedeGenerarContraRecibo">      
+        <div class="d-flex no-block"  >
+          <div class="m-r-20 align-self-center" style="float:left">
+            <h6 class="text-muted m-t-10 m-b-0 "># Facturas</h6>
+            <h2 class="m-t-1 "> {{movimientos | numFacturasCR }} </h2>
+          </div>
+          <div style="float:left;">
+            <h6 class="text-muted m-t-10 m-b-0 ">Total seleccionado </h6>
+            <h2 *ngIf="monedasUnicas" class="m-t-0">{{movimientos | totalSaldoCR | currency}} </h2>
+            <i *ngIf="!monedasUnicas " class="m-t-0 fa fa-exclamation text-danger fa-2x"> </i>
+          </div>
+          <div>
+            <div style="float:left">
+              
+              <button   class="btn btn-block btn-outline btn-secondary m-t-30 m-l-30 font-14 " *ngIf="monedasUnicas"
+                (click)="generarContraRecibo()">Generar contra-recibo </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <div style="clear: both;"></div>
   </div>
-  <div style="clear: both;"></div>
 </div>
+
 <div class="row" *ngIf="!cargando">
   <div class="col-12">
     <ejs-grid #grid id="grid" height='250' (created)="created($event)" [dataSource]="movimientos" allowReordering='true'
@@ -89,7 +111,7 @@
           </ng-template>
         </e-column>
 
-        <e-column field="CR" headerText="" [allowFiltering]='false' [allowSorting]="true" allowSelection="false"
+        <e-column field="CR" headerText="" [allowFiltering]='false'  [allowSorting]="true" allowSelection="false"
           width='50'>
           <!-- <ng-template #headerTemplate let-data>
             <div>
@@ -99,11 +121,53 @@
             </div>
           </ng-template> -->
           <ng-template #template let-data>
-            <ejs-checkbox (change)="cambio(data)" cssClass="e-primary" [(ngModel)]="data.solicitaContraRecibo"
+            <ejs-checkbox (change)="cambio(data)" [disabled]="!_usuarioService.usuario.PuedeGenerarContraRecibo" cssClass="e-primary" [(ngModel)]="data.solicitaContraRecibo"
               *ngIf="data.CR" label=""></ejs-checkbox>
           </ng-template>
         </e-column>
       </e-columns>
+      <ng-template *ngIf="_usuarioService.usuario.PuedeAnexarDocumento" #detailTemplate let-data>
+        <div class="container" style="background: #6a6b6f1c;">
+          <div class="row">
+            <div class="col-md-2">
+              <div class="m-t-10">
+                <button class="btn btn-info btn-xs  " (click)="_modalUploadService.mostrarModal('*',data)"><i
+                    class="fa fa-plus"></i></button>
+              </div>
+            </div>
+            <div class="col-md-10">
+              <div class="m-t-10" *ngIf="data.estaActualizando">
+                <app-loader></app-loader>
+              </div>
+              <div class="m-t-10" *ngIf="data.anexos.length==0 && !data.estaActualizando">
+                 <h6  class="text-themecolor">Sin documentos asociados a este movimiento</h6>                
+              </div>
+              <div class="m-t-10" *ngIf="data.anexos.length > 0 && !data.estaActualizando ">
+                <div class="comment-widgets m-b-20">
+                  <h5>Archivos anexos</h5>
+                  <!-- Comment Row -->
+                  <div class="d-flex flex-row comment-row" *ngFor="let anexo of data.anexos">
+                    <app-anexo-icono [tipo]="anexo.tipo"></app-anexo-icono>                      
+                      <div class="comment-text w-200">                            
+                          <a href="{{URL}}{{anexo.url}}" >{{anexo.nombre}}</a>                            
+                      </div>
+                      <div class="comment-text w-100">                            
+                        <div class="comment-footer">                            
+                          <span class="date">{{anexo.fecha_registro | date: 'dd/MM/y, hh:mm a' }}</span>
+                           <span class="action-icons">
+                                      <!-- <a href="javascript:void(0)"><i class="mdi mdi-pencil-circle"></i></a>
+                                      <a href="javascri pt:void(0)"><i class="mdi mdi-checkbox-marked-circle"></i></a> -->
+                                      <a href="javascript:void(0)" (click)="borrarAnexo(anexo,data)"><i class="fa fa-close"></i></a>    
+                                  </span>
+                      </div>                            
+                      </div>
+                  </div>                                    
+              </div>                  
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
     </ejs-grid>
     <hr>
     <app-totales [movimientos]="movimientos"></app-totales>

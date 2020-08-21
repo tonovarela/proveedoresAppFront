@@ -48,13 +48,10 @@ export class FacturaService {
         map(movimientos => movimientos.sort((a: Movimiento, b: Movimiento) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime())),        
       );
   }
-
-
    
   generarContraRecibo(request:CR_Request){    
    return this._http.post(`${this.URL_SERVICIOS}/facturas/generarcontrarecibo`,request);
   }
-
 
   obtenerContraRecibosPendientes(proveedor) {
     return this._http
@@ -69,6 +66,7 @@ export class FacturaService {
             referencia: m["Referencia"],
             saldo: Number(m["Saldo"]),
             importe: Number(m["Importe"]),
+            tipo:"Contra-recibo",
             totalMovimientos:Number(m["NoFacturas"]),
             fechaEmision: moment(m["FechaEmision"]).toDate(),
             fechaVencimiento: moment(m["Vencimiento"]).toDate(),
@@ -109,6 +107,27 @@ export class FacturaService {
 
   }
 
+  obtenerPagosProgramados(proveedor) {
+    return this._http.get<PagoAprobado[]>(`${this.URL_SERVICIOS}/facturas/pagosprogramados/${proveedor}`)
+      .pipe(
+        map(resp => resp["data"]),
+        map(data => data.map(m => {
+          let pago: PagoAprobado = {
+            movimientoID: m["ID"],
+            folio: m["Folio"],
+            movimientoDescripcion: m["Movimiento"],
+            referencia: m["Referencia"],            
+            importe: Number(m["Importe"]),
+            fechaEmision: moment(m["FechaEmision"]).toDate(),            
+            moneda: m["Moneda"].trim(),                                  
+            tipo: "Pago"
+          };
+          return pago;
+        })),
+        map(movimientos => movimientos.sort((a: PagoAprobado, b: PagoAprobado) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime()))
+      );
+
+  }
 
   // obtenerMovimientosFicticios(moneda, total) {
   //   let movimientos = [];
@@ -179,6 +198,8 @@ export class FacturaService {
 
   }
 
+
+  
 
 
   obtenerFacturas(cliente) {

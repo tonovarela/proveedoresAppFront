@@ -1,7 +1,9 @@
+import { ComunicadosComponent } from './comunicados/comunicados.component';
 import { LoginGuard } from './../services/guards/usuario.guard';
 import { PerfilComponent } from './perfil/perfil.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PagosAprobadosComponent } from './pagos-aprobados/pagos-aprobados.component';
+import { PagosProgramadosComponent } from './pagos-programados/pagos-programados.component';
 import { ContraRecibosComponent } from './contra-recibos/contra-recibos.component';
 import { PendientesCobroComponent } from './pendientes-cobro/pendientes-cobro.component';
 import { PagesComponent } from './pages.component';
@@ -18,9 +20,11 @@ const pagesRoutes: Routes = [
                 //canActivate : [VerificaTokenGuard],
                 data: { titulo: 'Dashboard' }
             },
+            { path: 'comunicados', component:ComunicadosComponent, data: { titulo: "Comunicados",modulo:"comunicados" } },
             { path: 'facturas-emitidas', component: PendientesCobroComponent, data: { titulo: "Facturas emitidas",modulo:"pendientes-cobro" } },
             { path: 'contra-recibos', component: ContraRecibosComponent, data: { titulo: "Contra recibos pendientes",modulo:"contra-recibos" } },
             { path: 'pagos-aprobados', component: PagosAprobadosComponent, data: { titulo: "Pagos aprobados" ,modulo:"pagos-aprobados"} },
+            { path: 'pagos-programados', component: PagosProgramadosComponent, data: { titulo: "Pagos programados" ,modulo:"pagos-programados"} },
             { path: 'account-settings', component:AccountSettingsComponent,data:{titulo:"Settings" ,modulo:"#"}  },
             { path: 'perfil', component:PerfilComponent,data:{titulo:"Perfil",modulo:"#" }  },
             { path: '', redirectTo: '/facturas-emitidas', pathMatch: 'full' }

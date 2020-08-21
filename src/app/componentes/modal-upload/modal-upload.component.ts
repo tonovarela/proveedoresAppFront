@@ -65,8 +65,10 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
                                             this._modalUploadService.movimiento)
       .subscribe((response) => {
         this.archivoSubiendo=false;        
-        if (response['esIgual']) {              
-          this.registrarBitacoraIntelisis(response["path"]);
+        if (response['esIgual']) {   
+          if (this._modalUploadService.tipoArchivo!="*"){
+            this.registrarBitacoraIntelisis(response["path"]);
+          }          
           this._modalUploadService.ocultarModal();                 
           this.cerrarModal();
           this._uiService.mostrarAlertaSuccess("Listo",response["mensaje"]);
@@ -94,7 +96,7 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
     }
     if (this._modalUploadService.movimiento.tipo=="Pago"){
       this._subirArchivoService
-                              .anexarMovimientoIntelisis(path,id,'DNI')
+                              .anexarMovimientoIntelisis(path,id,'DIN')
                               .subscribe();             
     }
   }
@@ -133,18 +135,20 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
       return;
     }
 
+  
+    if (archivo.type.indexOf(this._modalUploadService.tipoArchivo) < 0 ) {
+      this.mensaje = `El archivo debe de ser de  tipo ${this._modalUploadService.tipoArchivo} `;      
+    }
 
-    if (archivo.type.indexOf(this._modalUploadService.tipoArchivo) < 0) {
-      this.mensaje = `El archivo debe de ser de  tipo ${this._modalUploadService.tipoArchivo} `;
+    if (this._modalUploadService.tipoArchivo==="*"){
+      this.mensaje="";
+    }
+
+    if (this.mensaje.length>0){
       return;
     }
     this.archivoSubir = archivo;
-    // this.imagenSubir = archivo;
-    // const reader = new FileReader();
-    // const urlImagenTemp = reader.readAsDataURL(archivo);
-    // reader.onloadend = ()  => {
-    // this.imagenTemp = reader.result;
-    // };
+    
 
   }
 

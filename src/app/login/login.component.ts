@@ -24,6 +24,10 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  irAvisoPrivacidad(){
+    window.open('https://www.litoprocess.com/aviso-de-privacidad/', '_blank');
+  }
+
   ingresar(form: NgForm) {
     const usuario = { usuario:form.value.usuario, password: form.value.password };
     this._usuarioService.login(usuario).subscribe((resp: ResponseLogin) => {

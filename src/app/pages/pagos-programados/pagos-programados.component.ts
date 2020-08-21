@@ -1,36 +1,32 @@
-import { AnexoService } from './../../services/anexo.service';
-
-import { ModalUploadService } from './../../services/modal-upload.service';
-import { Movimiento, Contrarecibo, PagoAprobado, PagoDetalle, Anexo } from './../../models/movimiento';
-
-import { UsuarioService } from './../../services/usuario.service';
-import { FacturaService } from './../../services/factura.service';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Grid, EditSettingsModel, PageSettingsModel, FilterSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FechaDictionary } from 'src/app/utils/dates';
 import { Subscription } from 'rxjs';
-import { SubirArchivoService } from 'src/app/services/subir-archivo.service';
+
+import { FechaDictionary } from '../../../app/utils/dates';
+
+import { Anexo, PagoAprobado, Movimiento, Contrarecibo } from '../../../app/models/movimiento';
+
+
+import { ModalUploadService } from '../../../app/services/modal-upload.service';
+import { SubirArchivoService } from '../../../app/services/subir-archivo.service';
+import { AnexoService } from 'src/app/services/anexo.service';
+import { FacturaService } from '../../../app/services/factura.service';
+import { UsuarioService } from '../../../app/services/usuario.service';
+
 import { filter } from 'rxjs/operators';
 
-import {parentsUntil} from "@syncfusion/ej2-angular-grids";
-
-
-
-
 @Component({
-  selector: 'app-pagos-aprobados',
-  templateUrl: './pagos-aprobados.component.html',
-  styleUrls: ['./pagos-aprobados.component.css']
+  selector: 'app-pagos-programados',
+  templateUrl: './pagos-programados.component.html',
+  styleUrls: ['./pagos-programados.component.css']
 })
-export class PagosAprobadosComponent implements OnInit, OnDestroy {
-
-
+export class PagosProgramadosComponent implements OnInit {
   @ViewChild('grid') grid: Grid;
   @ViewChild('detalle') detalle: any;
   gridInstance: Grid;
   subscription: Subscription;
-  subscriptionNotification: Subscription;
+  // subscriptionNotification: Subscription;
   cargando: boolean = false;
   filtroCheck = false;
   editSettings: EditSettingsModel = { allowDeleting: false, allowEditing: false };
@@ -45,7 +41,7 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
 
   public row: any;
 
-  pagosAprobados: PagoAprobado[] = [];
+  pagosProgramados: PagoAprobado[] = [];
   _pagoActual: PagoAprobado = null;
   _referencia: string = "";
 
@@ -60,7 +56,8 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
     private _usuarioService: UsuarioService,
     private modalService: NgbModal,
     public _modalUploadService: ModalUploadService,
-    public _subirArchivoService: SubirArchivoService,   
+    public _subirArchivoService: SubirArchivoService,
+    public _anexoService: AnexoService
   ) { }
 
 
@@ -71,75 +68,37 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
         this.aplicarFiltroGeneral();
       });
 
-    this.subscriptionNotification = this._subirArchivoService.notificacion
-      .pipe(filter((x: Movimiento) => x.tipo == "Pago"))
-      .subscribe(mov => {        
-        this.pagosAprobados.forEach(movimiento => {
-          if (movimiento.movimientoID == mov.movimientoID){
-            movimiento = mov;
-            // if (movimiento.estaActualizando){              
-            //   movimiento.estaActualizando=false;
-            //   this.cargarAnexos(movimiento);
-            // }            
-          }
+    // this.subscriptionNotification = this._subirArchivoService.notificacion
+    //   .pipe(filter((x: Movimiento) => x.tipo == "Pago"))
+    //   .subscribe(mov => {        
+    //     this.pagosProgramados.forEach(movimiento => {
+    //       if (movimiento.movimientoID == mov.movimientoID){
+    //         movimiento = mov;            
+    //       }
             
-        }
-        );        
-      })
-
+    //     }
+    //     );        
+    //   })
 
     this.cargando = true;
     this._facturaService
-      .obtenerPagosAprobados(this._usuarioService.usuario.Proveedor)
+      .obtenerPagosProgramados(this._usuarioService.usuario.Proveedor)
       .subscribe((pagos: PagoAprobado[]) => {
-        
-        this.pagosAprobados = pagos;
-        this.pagosAprobados.forEach(x => {x.totalMovimientos = 0; x.anexos=[]});
+        this.pagosProgramados = pagos;
+        this.pagosProgramados.forEach(x => {x.totalMovimientos = 0; x.anexos=[]});
         this.cargando = false;
-      });
-    //this.obtenerPagosFicticios();
-    ///this.cargando=false;
+      });    
   }
 
 
-  referenciasFicticias(total) {
-    const t = total;
-    let resultado: any[] = [];
-    for (let index = 0; index < t; index++) {
-      const element = Math.trunc(Math.random() * (10000 - 50 + 1) + 50);
-      resultado.push(element.toString())
-    }
-    return resultado;
-  }
+ 
 
-  // obtenerPagosFicticios() {
-  //   for (let i = 0; i < 20; i++) {
-  //     const r = this.referenciasFicticias(Math.random() * (50 - 5 + 1) + 5);
-  //     this.pagosAprobados.push(
-  //       {
-  //         movimientoID: 1000,
-  //         folio: 152261,
-  //         movimientoDescripcion: `Pago Ficticio ${i}`,
-  //         referencia: r.join(","),
-  //         totalMovimientos: r.length,
-  //         saldo: 100000000,
-  //         importe: Math.random() * (100000 - 50 + 1) + 50,
-  //         fechaEmision: new Date(),
-  //         fechaVencimiento: new Date(),
-  //         moneda: 'Pesos',
-  //         tipo: "Pago"
-  //       }
-  //     )
-  //   }
-
-
-  // }
 
   aplicarFiltroGeneral() {
     if (this._usuarioService.filtroAplicar == null || this.grid == undefined) {
       return;
-    }
-    if (this._usuarioService.filtroAplicar.modulo != "pagos-aprobados") {
+    }    
+    if (this._usuarioService.filtroAplicar.modulo != "pagos-programados") {
       return;
     }
     const folio = this._usuarioService.filtroAplicar.folio;
@@ -147,7 +106,7 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
     this.grid.filterSettings.columns = [
       { "value": `${folio}`, "operator": "equal", "field": "folio", },
     ];
-    this._pagoActual = this.pagosAprobados.find(x => x.folio == folio);
+    this._pagoActual = this.pagosProgramados.find(x => x.folio == folio);
     if (this._pagoActual != undefined) {
       this.verDetalle(this._pagoActual, referencia);
     }
@@ -190,21 +149,19 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
   }
 
 
-
   created(e) {
     this.aplicarFiltroGeneral();
-
-   
+    
   
   }
 
   
+
+
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-    this.subscriptionNotification.unsubscribe();
+    // this.subscriptionNotification.unsubscribe();
   }
-
-
 
 }

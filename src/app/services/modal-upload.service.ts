@@ -8,7 +8,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 export class ModalUploadService {
   public tipoArchivo: string;  
   public movimiento: Movimiento;
-
+  
   public oculto: string = 'oculto';
 
   constructor() { }
@@ -16,13 +16,13 @@ export class ModalUploadService {
 
   ocultarModal() {
     this.oculto = 'oculto';    
-    this.tipoArchivo = null;
+    this.tipoArchivo = null;    
     this.movimiento=null;
 
   }
 
-  mostrarModal(tipoArchivo: string, movimiento: Movimiento) {
-    this.oculto = '';
+  mostrarModal(tipoArchivo: string, movimiento: Movimiento ) {
+    this.oculto = '';    
     this.movimiento=movimiento;
     this.tipoArchivo = tipoArchivo;      
   }
