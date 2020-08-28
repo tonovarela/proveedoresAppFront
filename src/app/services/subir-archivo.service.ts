@@ -19,7 +19,8 @@ export class SubirArchivoService {
   public notificacion = new EventEmitter<Movimiento>();
 
   
-  URL_SERVICE: string =environment.URL_VALIDADORFILE;    
+  URL_SERVICE: string =
+  environment.URL_VALIDADORFILE;    
   //"http://localhost:44382" ;
   validarEstructura: boolean =true;
   constructor(private _http: HttpClient,
@@ -146,10 +147,14 @@ export class SubirArchivoService {
   }
 
 
-  anexarMovimientoIntelisis(pathArchivo, id, rama) {
+  anexarMovimientoIntelisis(pathArchivo, movimiento:Movimiento, rama) {
   
     return this._http.post(`${environment.URL_SERVICIOS}/facturas/registro/documento`,
-      { path: `${pathArchivo}`, id,rama });
+      { path: `${pathArchivo}`, id:movimiento.movimientoID,
+                                movID:movimiento.folio,
+                                movimientoDescripcion: movimiento.movimientoDescripcion,
+                                rama}
+                                );
   }
 
   //Revisa validez ante el SAT

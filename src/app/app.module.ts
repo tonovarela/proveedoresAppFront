@@ -12,6 +12,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { CurrencyPipe, DatePipe, CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { ToolbarService, LinkService, ImageService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
+
+
 
 @NgModule({
   declarations: [
@@ -20,18 +23,19 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NopagefoundComponent,    
   ],
   imports: [        
-    BrowserModule,
+    //BrowserModule,
     HttpClientModule,
     FormsModule,        
     ReactiveFormsModule,
     PagesModule,
     FormsModule,
-    CheckBoxModule,
+    CheckBoxModule,    
     APP_ROUTES,
     NgbModule,
     CommonModule
   ],
-  providers: [CurrencyPipe,DatePipe],
+  
+  providers: [CurrencyPipe,DatePipe,ToolbarService, LinkService, ImageService, HtmlEditorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

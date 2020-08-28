@@ -1,3 +1,5 @@
+import { DisponibilidadComponent } from './comunicados/disponibilidad/disponibilidad.component';
+import { DetalleComponent } from './comunicados/detalle/detalle.component';
 import { ComunicadosComponent } from './comunicados/comunicados.component';
 import { LoginGuard } from './../services/guards/usuario.guard';
 import { PerfilComponent } from './perfil/perfil.component';
@@ -21,6 +23,9 @@ const pagesRoutes: Routes = [
                 data: { titulo: 'Dashboard' }
             },
             { path: 'comunicados', component:ComunicadosComponent, data: { titulo: "Comunicados",modulo:"comunicados" } },
+            { path: 'comunicados/agregar', component:DetalleComponent, data: { titulo: "Comunicado",modulo:"comunicados" } },
+            { path: 'comunicados/editar/:id', component:DetalleComponent, data: { titulo: "Comunicado",modulo:"comunicados" } },
+            { path: 'comunicados/disponibilidad/:id', component:DisponibilidadComponent, data: { titulo: "Comunicado",modulo:"comunicados" } },
             { path: 'facturas-emitidas', component: PendientesCobroComponent, data: { titulo: "Facturas emitidas",modulo:"pendientes-cobro" } },
             { path: 'contra-recibos', component: ContraRecibosComponent, data: { titulo: "Contra recibos pendientes",modulo:"contra-recibos" } },
             { path: 'pagos-aprobados', component: PagosAprobadosComponent, data: { titulo: "Pagos aprobados" ,modulo:"pagos-aprobados"} },

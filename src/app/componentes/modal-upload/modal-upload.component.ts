@@ -88,17 +88,21 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
   }
 
   registrarBitacoraIntelisis(path:string){    
-    const id=this._modalUploadService.movimiento.movimientoID;
+    const movimiento=this._modalUploadService.movimiento;
+    let rama =""
     if (this._modalUploadService.movimiento.tipo=="Factura-Ingreso"){
-      this._subirArchivoService
-                              .anexarMovimientoIntelisis(path,id,'CXP')
-                              .subscribe();             
+      rama='CXP';
     }
     if (this._modalUploadService.movimiento.tipo=="Pago"){
-      this._subirArchivoService
-                              .anexarMovimientoIntelisis(path,id,'DIN')
-                              .subscribe();             
+      rama='DIN';
+    }        
+    if (rama==""){
+      return;
     }
+      this._subirArchivoService
+                              .anexarMovimientoIntelisis(path,movimiento,rama)
+                              .subscribe();             
+  
   }
 
 

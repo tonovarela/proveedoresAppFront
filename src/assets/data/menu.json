@@ -14,15 +14,15 @@
     "icono": "fa fa-file-text-o",
     "titulo": "Contra-recibos pendientes",
     "url": "/contra-recibos"
+  },  
+  {
+    "icono": "mdi mdi-timetable",
+    "titulo": "Pagos programados",
+    "url": "/pagos-programados"
   },
   {
     "icono": "fa fa-credit-card ",
     "titulo": "Pagos aprobados",
     "url": "/pagos-aprobados"
-  },
-  {
-    "icono": "mdi mdi-timetable",
-    "titulo": "Pagos programados",
-    "url": "/pagos-programados"
-  } 
+  }
 ]

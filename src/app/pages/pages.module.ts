@@ -1,12 +1,9 @@
 
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';    
-
 import { ToastrModule } from 'ngx-toastr';  
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 import { SharedModule } from './../shared/shared.module';
 
 
@@ -34,6 +31,14 @@ import { ComponentesModule } from './../componentes/componentes.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { PagosProgramadosComponent } from './pagos-programados/pagos-programados.component';
 import { ComunicadosComponent } from './comunicados/comunicados.component';
+import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { DetalleComponent } from './comunicados/detalle/detalle.component';
+import { CommonModule } from '@angular/common';
+
+import es from '@angular/common/locales/es';
+import { registerLocaleData } from '@angular/common';
+import { DisponibilidadComponent } from './comunicados/disponibilidad/disponibilidad.component';
+registerLocaleData(es);
 
 @NgModule({
   declarations: [
@@ -44,15 +49,20 @@ import { ComunicadosComponent } from './comunicados/comunicados.component';
     PagosAprobadosComponent,
     AccountSettingsComponent,
     PerfilComponent,    
-    PagosProgramadosComponent, ComunicadosComponent
+    PagosProgramadosComponent,
+    ComunicadosComponent,
+    DetalleComponent,
+    DisponibilidadComponent
   ],
-  providers: [ PageService,SortService,DetailRowService, FilterService,ReorderService,ResizeService,SelectionService,ToolbarService,EditService],
+  providers: [ 
+    //{provide:LOCALE_ID,useValue:"es-MX"},
+  PageService,SortService,DetailRowService, FilterService,ReorderService,ResizeService,SelectionService,ToolbarService,EditService],
   imports: [  
     SharedModule,  
     PAGESROUTES,
     FormsModule,
     ReactiveFormsModule,
-    BrowserModule,
+    //BrowserModule,
     //CommonModule,
     GridAllModule,
     GridModule,
@@ -61,8 +71,9 @@ import { ComunicadosComponent } from './comunicados/comunicados.component';
     ComponentesModule,
      PagerModule,
      PipesModule,
+     RichTextEditorModule,
      BrowserAnimationsModule, 
-     DateRangePickerModule,             
+     DateRangePickerModule,       
      ToastrModule.forRoot({
        preventDuplicates:true
      }),
