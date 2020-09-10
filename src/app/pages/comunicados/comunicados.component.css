@@ -1,3 +1,14 @@
+.tools{
+    
+    border: 1px solid #0b060614;
+}
+
+.card-body{
+    flex: 1 1 auto;
+    padding: 0.6rem;
+    overflow-x: hidden;
+}
+
 .container-posting{
     background-color:#aaa6ac42;    
 }
@@ -12,8 +23,11 @@
  margin-bottom: 5px;
 }
 
-#postTitle{
+.postTitle{
     color:black;
+    margin-left: 50px;
+    font-weight: 400;
+
 }
 .profile-pic {
     border-radius: 200px;

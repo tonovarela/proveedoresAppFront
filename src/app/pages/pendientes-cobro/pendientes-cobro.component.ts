@@ -79,7 +79,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.URL = environment.URL_VALIDADORFILE;
-    this._usuarioService.usuario.PuedeAnexarDocumento=true;
+    this._usuarioService.usuario.PuedeAnexarDocumento=false;
     this._usuarioService.usuario.PuedeGenerarContraRecibo=true;
     this.subscription = this._usuarioService
       .filtroGeneral

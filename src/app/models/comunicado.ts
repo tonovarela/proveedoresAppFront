@@ -3,6 +3,8 @@ export interface Comunicado {
     titulo?:string;    
     mensaje?: string;
     fecha_registro?:Date,
+    fecha_inicio?:Date,
+    fecha_fin?:Date,
     fecha_actualizacion?:Date,
     visible?:boolean,
     general?:boolean

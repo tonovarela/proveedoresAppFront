@@ -19,10 +19,10 @@ export class SubirArchivoService {
   public notificacion = new EventEmitter<Movimiento>();
 
   
-  URL_SERVICE: string =
-  environment.URL_VALIDADORFILE;    
-  //"http://localhost:44382" ;
+  URL_SERVICE: string =environment.URL_VALIDADORFILE;    
+  //"http://localhost:44382";
   validarEstructura: boolean =true;
+  beta:boolean=false;
   constructor(private _http: HttpClient,
     private _usuarioService: UsuarioService) { }
 
@@ -77,7 +77,7 @@ export class SubirArchivoService {
 
 
   private revisarPendientesCobro(movimiento: Movimiento, tipoArchivo: string, archivo: File): Observable<any> {
-    const url = `${this.URL_SERVICE}/api/pendientescobro/revisar${tipoArchivo}?validar=${this.validarEstructura}`;    
+    const url = `${this.URL_SERVICE}/api/pendientescobro/revisar${tipoArchivo}?validar=${this.validarEstructura}&beta=${this.beta}`;    
     const formData = new FormData();
     formData.append('archivo', archivo, archivo.name);
     formData.append('monto', movimiento.importe.toString());
@@ -116,7 +116,7 @@ export class SubirArchivoService {
 
 
   private revisarPagosAprobados(movimiento: Movimiento, tipoArchivo: string, archivo: File): Observable<any> {
-    const url = `${this.URL_SERVICE}/api/pagosaprobados/revisar${tipoArchivo}?validar=${this.validarEstructura}`;
+    const url = `${this.URL_SERVICE}/api/pagosaprobados/revisar${tipoArchivo}?validar=${this.validarEstructura}&beta=${this.beta}`;
     const formData = new FormData();
     formData.append('archivo', archivo, archivo.name);
     formData.append('monto', movimiento.importe.toString());

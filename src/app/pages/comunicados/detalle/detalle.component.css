@@ -1,4 +1,10 @@
-.btn-disable {
+.e-input-group{
+  background-color: white;
+  border: 1px solid #9d9c9c82!important;
+  height: 35px;
+}
+
+.btn-disable {  
   cursor: not-allowed;
   pointer-events: none;
   color: #c0c0c0;

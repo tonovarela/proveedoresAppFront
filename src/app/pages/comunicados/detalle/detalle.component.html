@@ -3,40 +3,56 @@
         <div class="control-wrapper">
             <div class="default-section">
                 <app-loader *ngIf="cargando"></app-loader>
-                <div class="row">
 
-                    <div class="col-md-8">
-                        
-                    </div>
-                    <div class="col-md-4">
-                        
-                            <div class="btn-group m-b-10 m-r-30" role="group" >                                                                
-                                <button type="button" class="btn btn-danger  m-r-10" (click)="cancelar()"><i class="fa fa-close"></i> Cancelar</button>                                
-                                <button type="button" *ngIf="!edicion" 
-                                  class="btn"
-                                  [ngClass]="{'btn-success':  comunicado.titulo!='' , 'btn-disable': comunicado.titulo==''}"
-                                   (click)="agregar()" ><i class="fa fa-save"></i> Guardar</button>
-                                <button type="button" *ngIf="edicion" class="btn " 
-                                [ngClass]="{'btn-success':  comunicado.titulo!='' , 'btn-disable': comunicado.titulo==''}"
-                                (click)="actualizar()"><i class="fa fa-save"></i> Actualizar</button>
-                            </div>                                                                                                        
-                    </div>                                                                            
-                </div>
+
+                <hr>
 
                 <div id="createpostholder">
-                
-                    <form   novalidate="novalidate">
-                        <div class="form-group">
-                            <input type="text"  id="titulo"  maxlength="100" placeholder="Titulo" [(ngModel)]="comunicado.titulo" name="titulo"class="form-control" />
-                        </div>  
-                        
-                        <ejs-richtexteditor   id='blogRTE' [enableResize]="true"
+
+                    <form novalidate="novalidate">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <input type="text" id="titulo" maxlength="100" placeholder="Titulo"
+                                        [(ngModel)]="comunicado.titulo" name="titulo" class="form-control" />
+                                </div>
+
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group form-inline">
+                                    <label class="control-label   " style="margin-right: 10px;">Vigencia</label>
+                                    <ejs-daterangepicker [(value)]='fecha' placeholder="Seleccione la fecha de vigencia"
+                                        [allowEdit]=false></ejs-daterangepicker>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <ejs-richtexteditor id='blogRTE' [enableResize]="true"
+                        height="320px"
                             [insertImageSettings]='insertImageSettings' [toolbarSettings]='tools'
-                            (created)="rteCreated()"  [(value)]="comunicado.mensaje" #blogRTE
+                            (created)="rteCreated()" [(value)]="comunicado.mensaje" #blogRTE
                             placeholder='Escribe un comunicado'>
                         </ejs-richtexteditor>
 
                     </form>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-8">
+
+                    </div>
+                    <div class="col-md-4">
+
+                        <div class="btn-group m-b-10 m-r-30" role="group">
+                            <button type="button" class="btn btn-danger  m-r-10" (click)="cancelar()"><i
+                                    class="fa fa-close"></i> Cancelar</button>
+                            <button type="button" *ngIf="!edicion" class="btn" [ngClass]="validarCampos()"
+                                (click)="agregar()"><i class="fa fa-save"></i> Guardar</button>
+                            <button type="button" *ngIf="edicion" class="btn " [ngClass]="validarCampos()"
+                                (click)="actualizar()"><i class="fa fa-save"></i> Actualizar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

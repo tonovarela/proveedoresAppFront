@@ -8,8 +8,8 @@
                             class="right-side-toggle waves-effect waves-light btn-success btn btn-circle  pull-right m-l-10"><i
                                 class="mdi mdi-message-plus text-white font-20"></i></button>
                     </div>
-                    <div >
-                        
+                    <div>
+
                         <div class="table-responsive" *ngFor="let comunicado of comunicados">
                             <div class="post card">
                                 <div class="card-body collapse show">
@@ -22,72 +22,74 @@
                                                 </td>
                                                 <td>
                                                     <div class="authorname">Administración - CXP</div>
+                                                    <div class="detailsAnswer" >
+                                                        Vigente del
+                                                        {{comunicado.fecha_inicio | date:'dd-MM-y'}} a
+                                                        {{comunicado.fecha_fin | date:'dd-MM-y'}}
+                                                    </div>
                                                     <div class="detailsAnswer">Fecha de registro:
-                                                        {{comunicado.fecha_registro | date:'d MMMM, y, h:mm:ss a '}}
+                                                        {{comunicado.fecha_registro | date:'dd-MM-y, h:mm:ss a '}}
                                                     </div>
-                                                    <div class="detailsAnswer" *ngIf="comunicado.fecha_actualizacion">
-                                                        Última
-                                                        actualización:
-                                                        {{comunicado.fecha_actualizacion | date:'d MMMM, y, h:mm:ss a '}}
-                                                    </div>
+
                                                 </td>
                                             </table>
 
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="card-body">
-                                                <div class="btn-group m-b-10 m-r-10" role="group">                                                    
+                                            <div class="card-body tools">
+                                                <div class="btn-group m-b-10 m-r-10" role="group">
                                                     <button type="button " class="btn btn-xs"
                                                         [ngClass]="{'btn-success': !comunicado.general, 'btn-outline-secondary': comunicado.general}"
                                                         (click)="cambiarDisponibilidad(comunicado,false)">
-                                                        <i class="fa fa-user font-18"></i>Selecto</button>
-                                                        <button type="button " class="btn btn-xs"
+                                                        <i class="fa fa-user font-18" data-toggle="tooltip"
+                                                            title="Al seleccionar esta opción este comunicado sera visible solo para los proveedores seleccionados"></i>Algunos</button>
+                                                    <button type="button " class="btn btn-xs"
                                                         [ngClass]="{'btn-success': comunicado.general, 'btn-outline-secondary': !comunicado.general}"
                                                         (click)="cambiarDisponibilidad(comunicado,true)"><i
-                                                            class="fa fa-users font-18"></i>Todos</button>
+                                                            class="fa fa-users font-18" data-toggle="tooltip"
+                                                            title="Al seleccionar esta opción este comunicado sera visible para todos los proveedores"></i>Todos</button>
                                                 </div>
                                                 <div class="btn-group m-b-10 m-r-10" role="group">
                                                     <button type="button" class="btn  btn-xs"
-                                                        [ngClass]="{'btn-success':comunicado.visible,'btn-outline-secondary':!comunicado.visible}"
+                                                        [ngClass]="{'btn-primary':comunicado.visible,'btn-outline-secondary':!comunicado.visible}"
                                                         (click)="cambiarVisible(comunicado)">
                                                         <i [ngClass]="{'fa-eye':comunicado.visible,'fa-eye-slash':!comunicado.visible}"
                                                             class="fa font-18"></i></button>
                                                 </div>
                                                 <div class="btn-group m-b-10 m-r-10" role="group">
-                                                    <button type="button" class="btn btn-xs btn-outline-secondary "
+                                                    <button type="button" *ngIf="!comunicado.visible"
+                                                        class="btn btn-xs btn-outline-secondary "
                                                         (click)="editarComunicado(comunicado)"><i
                                                             class="fa fa-edit font-18"></i></button>
-                                                    <button type="button" class="btn btn-xs btn-outline-secondary"
+                                                    <!-- <button type="button" class="btn btn-xs btn-outline-secondary"
                                                         (click)="borrarComunicado(comunicado)"><i
-                                                            class="fa fa-trash font-18"></i></button>
+                                                            class="fa fa-trash font-18"></i></button> -->
                                                 </div>
-
                                                 <!-- <div class="btn-group m-b-10 m-r-10" role="group">
                                                     <button type="button" class="btn waves-effect waves-light btn-outline-warning  btn-xs">
                                                         <i class="mdi mdi-email-alert font-16"></i></button>
                                                 </div> -->
-                                                
+
                                             </div>
                                         </div>
                                     </div>
 
-                                    <a href="javascript:void(0)" (click)="verDetalle(comunicado)" id="postTitle" class="card-text font-14">{{comunicado.titulo}}</a>
-                                    
+                                    <a href="javascript:void(0)"
+                                    (click)="mostrarModalDetalle(comunicado)"
+                                        class="postTitle card-text font-14">{{comunicado.titulo}}</a>
+
                                 </div>
 
 
-                                <div class="container-posting">
+                                <!-- <div class="container-posting">
                                     <div class="posting"  [innerHtml]="comunicado.mensaje | safe:'html'">
                                     </div>
-                                </div>
-                                
+                                </div> -->
+
                             </div>
-                         
+
                         </div>
                         <div class="answer">
-
-
-
                             <!-- <table>
                                 <tbody>
                                     <tr>
@@ -153,3 +155,26 @@
         </div>
     </div>
 </div>
+
+
+
+<ng-template #detalleComunicado let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Vista del comunicado </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-loader *ngIf="cargandoDetalleComunicado"></app-loader>
+        <div  *ngIf="!cargandoDetalleComunicado">
+            {{comunicado.titulo}}
+            <div class="posting" style="width:100%; overflow: auto;" [innerHtml]="comunicado.mensaje | safe:'html'">
+            </div>
+            <div class="separator"></div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary waves-effect" (click)="modal.close('Save click')">Cerrar</button>
+    </div>
+</ng-template>

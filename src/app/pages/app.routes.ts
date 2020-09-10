@@ -23,9 +23,9 @@ const pagesRoutes: Routes = [
                 data: { titulo: 'Dashboard' }
             },
             { path: 'comunicados', component:ComunicadosComponent, data: { titulo: "Comunicados",modulo:"comunicados" } },
-            { path: 'comunicados/agregar', component:DetalleComponent, data: { titulo: "Comunicado",modulo:"comunicados" } },
-            { path: 'comunicados/editar/:id', component:DetalleComponent, data: { titulo: "Comunicado",modulo:"comunicados" } },
-            { path: 'comunicados/disponibilidad/:id', component:DisponibilidadComponent, data: { titulo: "Comunicado",modulo:"comunicados" } },
+            { path: 'comunicados/agregar', component:DetalleComponent, data: { titulo: "Agregar comunicado",modulo:"comunicados" } },
+            { path: 'comunicados/editar/:id', component:DetalleComponent, data: { titulo: "Editar comunicado",modulo:"comunicados" } },
+            { path: 'comunicados/disponibilidad/:id', component:DisponibilidadComponent, data: { titulo: "Comunicado por proveedor",modulo:"comunicados" } },
             { path: 'facturas-emitidas', component: PendientesCobroComponent, data: { titulo: "Facturas emitidas",modulo:"pendientes-cobro" } },
             { path: 'contra-recibos', component: ContraRecibosComponent, data: { titulo: "Contra recibos pendientes",modulo:"contra-recibos" } },
             { path: 'pagos-aprobados', component: PagosAprobadosComponent, data: { titulo: "Pagos aprobados" ,modulo:"pagos-aprobados"} },
