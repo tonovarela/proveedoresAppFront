@@ -17,6 +17,7 @@ export class ComunicadosComponent implements OnInit {
     comunicados: Comunicado[] = [];
     comunicado:Comunicado={};
     cargandoDetalleComunicado=false;
+    cargandoComunicados=false;
 
     @ViewChild('detalleComunicado') detalleComunicado: any;
     constructor(private router: Router,
@@ -30,9 +31,10 @@ export class ComunicadosComponent implements OnInit {
     }
 
     cargarComunicados() {
+        this.cargandoComunicados=true;
         this._comunicadoService.listar().subscribe(x => {
-
             this.comunicados = x;
+            this.cargandoComunicados=false;
         });
     }
 

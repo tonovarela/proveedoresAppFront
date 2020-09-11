@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  URL_SERVICIOS:"https://sistemas.litoprocess.com/proveedores/api",
+  URL_SERVICIOS:"https://sistemas.litoprocess.com/proveedoresbeta/api",
   URL_VALIDADORFILE:"https://sistemas.litoprocess.com/proveedor"
 };
 

@@ -2,27 +2,32 @@
   {
     "icono": "mdi mdi-newspaper",
     "titulo": "Comunicados",
-    "url": "/comunicados"
+    "url": "/comunicados",
+    "admin":true
   }
   ,
   {
     "icono": "fa fa-money",
     "titulo": "Facturas emitidas",
-    "url": "/facturas-emitidas"
+    "url": "/facturas-emitidas",
+    "admin":false
   },
   {
     "icono": "fa fa-file-text-o",
     "titulo": "Contra-recibos pendientes",
-    "url": "/contra-recibos"
+    "url": "/contra-recibos",
+    "admin":false
   },  
   {
     "icono": "mdi mdi-timetable",
     "titulo": "Pagos programados",
-    "url": "/pagos-programados"
+    "url": "/pagos-programados",
+    "admin":false
   },
   {
     "icono": "fa fa-credit-card ",
     "titulo": "Pagos aprobados",
-    "url": "/pagos-aprobados"
+    "url": "/pagos-aprobados",
+    "admin":false
   }
 ]

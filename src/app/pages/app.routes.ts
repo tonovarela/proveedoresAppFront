@@ -1,3 +1,5 @@
+import { ProveedorGuard } from './../services/guards/proveedor.guard';
+
 import { DisponibilidadComponent } from './comunicados/disponibilidad/disponibilidad.component';
 import { DetalleComponent } from './comunicados/detalle/detalle.component';
 import { ComunicadosComponent } from './comunicados/comunicados.component';
@@ -11,6 +13,7 @@ import { PendientesCobroComponent } from './pendientes-cobro/pendientes-cobro.co
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { Routes, RouterModule } from '@angular/router';
+import { VerificaAdminGuard } from '../services/guards/verifica-admin.guard';
 const pagesRoutes: Routes = [
     {
         path: '', component: PagesComponent,
@@ -18,18 +21,17 @@ const pagesRoutes: Routes = [
         children: [
             {
                 path: 'dashboard',
-                component: DashboardComponent,
-                //canActivate : [VerificaTokenGuard],
+                component: DashboardComponent,            
                 data: { titulo: 'Dashboard' }
             },
-            { path: 'comunicados', component:ComunicadosComponent, data: { titulo: "Comunicados",modulo:"comunicados" } },
-            { path: 'comunicados/agregar', component:DetalleComponent, data: { titulo: "Agregar comunicado",modulo:"comunicados" } },
-            { path: 'comunicados/editar/:id', component:DetalleComponent, data: { titulo: "Editar comunicado",modulo:"comunicados" } },
-            { path: 'comunicados/disponibilidad/:id', component:DisponibilidadComponent, data: { titulo: "Comunicado por proveedor",modulo:"comunicados" } },
-            { path: 'facturas-emitidas', component: PendientesCobroComponent, data: { titulo: "Facturas emitidas",modulo:"pendientes-cobro" } },
-            { path: 'contra-recibos', component: ContraRecibosComponent, data: { titulo: "Contra recibos pendientes",modulo:"contra-recibos" } },
-            { path: 'pagos-aprobados', component: PagosAprobadosComponent, data: { titulo: "Pagos aprobados" ,modulo:"pagos-aprobados"} },
-            { path: 'pagos-programados', component: PagosProgramadosComponent, data: { titulo: "Pagos programados" ,modulo:"pagos-programados"} },
+            { path: 'comunicados', component:ComunicadosComponent, data: { titulo: "Comunicados",modulo:"comunicados" },canActivate:[VerificaAdminGuard] },
+            { path: 'comunicados/agregar', component:DetalleComponent, data: { titulo: "Agregar comunicado",modulo:"comunicados" } ,canActivate:[VerificaAdminGuard]},
+            { path: 'comunicados/editar/:id', component:DetalleComponent, data: { titulo: "Editar comunicado",modulo:"comunicados" } ,canActivate:[VerificaAdminGuard]},
+            { path: 'comunicados/disponibilidad/:id', component:DisponibilidadComponent, data: { titulo: "Comunicado por proveedor",modulo:"comunicados" },canActivate:[VerificaAdminGuard] },
+            { path: 'facturas-emitidas', component: PendientesCobroComponent, data: { titulo: "Facturas emitidas",modulo:"pendientes-cobro" } ,canActivate:[ProveedorGuard]},
+            { path: 'contra-recibos', component: ContraRecibosComponent, data: { titulo: "Contra recibos pendientes",modulo:"contra-recibos" },canActivate:[ProveedorGuard] },
+            { path: 'pagos-aprobados', component: PagosAprobadosComponent, data: { titulo: "Pagos aprobados" ,modulo:"pagos-aprobados"} ,canActivate:[ProveedorGuard]},
+            { path: 'pagos-programados', component: PagosProgramadosComponent, data: { titulo: "Pagos programados" ,modulo:"pagos-programados"} ,canActivate:[ProveedorGuard]},
             { path: 'account-settings', component:AccountSettingsComponent,data:{titulo:"Settings" ,modulo:"#"}  },
             { path: 'perfil', component:PerfilComponent,data:{titulo:"Perfil",modulo:"#" }  },
             { path: '', redirectTo: '/facturas-emitidas', pathMatch: 'full' }

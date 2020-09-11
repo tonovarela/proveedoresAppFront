@@ -12,8 +12,8 @@ import { ProveedorAsignado } from '../models/proveedorAsignado';
 })
 export class ComunicadoService {
   URL =
-    //environment.URL_VALIDADORFILE;
-    "http://localhost:44382";
+    environment.URL_VALIDADORFILE;
+    //"http://localhost:44382";
   comunicados: Comunicado[] = [];
   asignacion:Comunicado ={};
 

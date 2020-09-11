@@ -17,7 +17,7 @@
                 </li>
                 <li class="nav-devider"></li>
                 <li class="nav-small-cap"></li>
-                <li *ngFor="let menu of _sidebarService.menu | async"  routerLinkActive="active" >                    
+                <li *ngFor="let menu of menu$ |  async"  routerLinkActive="active" >                    
                     <a class="waves-effect waves-dark"    [routerLink]="menu.url">
                         <i [class]="menu.icono" ></i>
                         <span class="hide-menu" style="font-size: 11px" >{{menu.titulo}}                            
