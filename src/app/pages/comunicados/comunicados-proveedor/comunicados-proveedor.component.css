@@ -1,0 +1,11 @@
+ 
+
+.comment-text p {
+    max-height: 50px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.round{
+    background: #eaeaea;
+}

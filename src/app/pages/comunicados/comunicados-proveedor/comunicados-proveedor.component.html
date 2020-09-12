@@ -1,1 +1,29 @@
-<p>comunicados-proveedor works!</p>
+
+<app-loader *ngIf="cargando"></app-loader>
+<!-- <ul>
+    <li *ngFor="let comunicado of comunicados"> {{comunicado.titulo}}</li>
+</ul> -->
+
+<div class="card">
+    
+    <!-- ============================================================== -->
+    <!-- Comment widgets -->
+    <!-- ============================================================== -->
+    <div class="comment-widgets m-b-20" >
+        <!-- Comment Row -->
+        <div class="d-flex flex-row comment-row  m-b-20"  *ngFor="let comunicado of comunicados" >
+            <div class="p-2"><span class="round"><img src="assets/images/logoLito.png" alt="user" width="50"></span></div>
+            <div class=" w-100">
+                <h5>Departamento de Administración</h5>
+                <div class="comment-footer">
+                    <span class="date">{{comunicado.fecha_registro | date:'dd-MM-y, h:mm:ss a '}}</span>                    
+                </div>
+                <p class="m-b-5 m-t-10">{{comunicado.titulo}}</p>
+                <div [innerHtml]="comunicado.mensaje | safe:'html'" class="cuerpoAviso"></div>     
+            </div>
+                        
+        </div>    
+        
+    </div>
+</div>
+

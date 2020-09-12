@@ -24,6 +24,13 @@ export class ComunicadoService {
     return this.http.post(`${this.URL}/api/comunicado`, comunicado);
   }
 
+
+   porProveedor(proveedor:string){
+    return this.http.get(`${this.URL}/api/comunicado/proveedor/${proveedor}`).pipe(
+      map(x=>x["comunicados"])
+    );
+   }
+
   marcarVistos(proveedor: string) {
     return this.http.get(`${this.URL}/api/comunicado/comunicadosvistos/${proveedor}`);
   }
