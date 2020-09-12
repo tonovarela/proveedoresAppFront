@@ -9,3 +9,9 @@ export interface Comunicado {
     visible?:boolean,
     general?:boolean
 }
+
+
+export interface ResponseComunicadosPorLeer{
+     comunicadosPendientes?:Comunicado[],
+     total?:number
+}

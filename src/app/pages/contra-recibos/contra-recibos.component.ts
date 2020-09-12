@@ -10,6 +10,7 @@ import { Subscription, fromEvent } from 'rxjs';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FechaDictionary } from 'src/app/utils/dates';
 import { ActivatedRoute } from '@angular/router';
+import { ComunicadoService } from 'src/app/services/comunicado.service';
 
 
 
@@ -49,13 +50,15 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
     public _facturaService: FacturaService,
     private _usuarioService: UsuarioService,
     private modalService: NgbModal,
-    private _pdfService: PdfMovimientosService,    
+    private _pdfService: PdfMovimientosService,
+    private _comunicadoService:ComunicadoService    
   ) {
   }
 
 
 
   ngOnInit(): void {
+    this._comunicadoService.verificarNotificacion.emit(true);
     this.subscription = this._usuarioService
       .filtroGeneral      
       .subscribe(x => {        

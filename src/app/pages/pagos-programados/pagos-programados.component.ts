@@ -1,3 +1,4 @@
+import { ComunicadoService } from 'src/app/services/comunicado.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Grid, EditSettingsModel, PageSettingsModel, FilterSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -26,7 +27,6 @@ export class PagosProgramadosComponent implements OnInit {
   @ViewChild('detalle') detalle: any;
   gridInstance: Grid;
   subscription: Subscription;
-  // subscriptionNotification: Subscription;
   cargando: boolean = false;
   filtroCheck = false;
   editSettings: EditSettingsModel = { allowDeleting: false, allowEditing: false };
@@ -57,11 +57,13 @@ export class PagosProgramadosComponent implements OnInit {
     private modalService: NgbModal,
     public _modalUploadService: ModalUploadService,
     public _subirArchivoService: SubirArchivoService,
-    public _anexoService: AnexoService
+    public _anexoService: AnexoService,
+    private _comunicadoService:ComunicadoService
   ) { }
 
 
   ngOnInit(): void {
+    this._comunicadoService.verificarNotificacion.emit(true);
     this.subscription = this._usuarioService
       .filtroGeneral
       .subscribe(x => {

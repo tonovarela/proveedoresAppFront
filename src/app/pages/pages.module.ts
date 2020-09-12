@@ -38,6 +38,8 @@ import { CommonModule } from '@angular/common';
 import es from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
 import { DisponibilidadComponent } from './comunicados/disponibilidad/disponibilidad.component';
+
+import { ComunicadosProveedorComponent } from './comunicados/comunicados-proveedor/comunicados-proveedor.component';
 registerLocaleData(es);
 
 @NgModule({
@@ -52,7 +54,8 @@ registerLocaleData(es);
     PagosProgramadosComponent,
     ComunicadosComponent,
     DetalleComponent,
-    DisponibilidadComponent
+    DisponibilidadComponent,    
+    ComunicadosProveedorComponent
   ],
   providers: [ 
     //{provide:LOCALE_ID,useValue:"es-MX"},

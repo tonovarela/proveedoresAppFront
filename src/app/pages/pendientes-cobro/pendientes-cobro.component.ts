@@ -1,3 +1,4 @@
+import { ComunicadoService } from 'src/app/services/comunicado.service';
 import { environment } from './../../../environments/environment';
 import { Router } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
@@ -73,12 +74,14 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     private _facturaService: FacturaService,
     private _uiService: UiService,
     public _usuarioService: UsuarioService,
-    public _anexoService: AnexoService
+    public _anexoService: AnexoService,
+    private _comunicadoService:ComunicadoService
   ) {
   }
 
   ngOnInit(): void {
-    this.URL = environment.URL_VALIDADORFILE;
+    this._comunicadoService.verificarNotificacion.emit(true);
+    this.URL = environment.URL_VALIDADORFILE;    
     this._usuarioService.usuario.PuedeAnexarDocumento=false;
     this._usuarioService.usuario.PuedeGenerarContraRecibo=true;
     this.subscription = this._usuarioService

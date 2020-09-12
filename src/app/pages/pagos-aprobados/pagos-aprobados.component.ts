@@ -1,20 +1,20 @@
-import { AnexoService } from './../../services/anexo.service';
-
-import { ModalUploadService } from './../../services/modal-upload.service';
-import { Movimiento, Contrarecibo, PagoAprobado, PagoDetalle, Anexo } from './../../models/movimiento';
 
 import { UsuarioService } from './../../services/usuario.service';
 import { FacturaService } from './../../services/factura.service';
+import { ModalUploadService } from './../../services/modal-upload.service';
+import { ComunicadoService } from './../../services/comunicado.service';
+import { SubirArchivoService } from './../../services/subir-archivo.service';
+
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Grid, EditSettingsModel, PageSettingsModel, FilterSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FechaDictionary } from 'src/app/utils/dates';
 import { Subscription } from 'rxjs';
-import { SubirArchivoService } from 'src/app/services/subir-archivo.service';
+
 import { filter } from 'rxjs/operators';
 
-import {parentsUntil} from "@syncfusion/ej2-angular-grids";
 
+import { Movimiento, Contrarecibo, PagoAprobado, PagoDetalle, Anexo } from './../../models/movimiento';
 
 
 
@@ -60,11 +60,13 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
     private _usuarioService: UsuarioService,
     private modalService: NgbModal,
     public _modalUploadService: ModalUploadService,
-    public _subirArchivoService: SubirArchivoService,   
+    public _subirArchivoService: SubirArchivoService,  
+    private _comunicadoService:ComunicadoService 
   ) { }
 
 
   ngOnInit(): void {
+    this._comunicadoService.verificarNotificacion.emit(true);
     this.subscription = this._usuarioService
       .filtroGeneral
       .subscribe(x => {

@@ -2,7 +2,7 @@
 
 import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Comunicado } from '../models/comunicado';
 import { map } from 'rxjs/operators';
 import { ProveedorAsignado } from '../models/proveedorAsignado';
@@ -11,30 +11,35 @@ import { ProveedorAsignado } from '../models/proveedorAsignado';
   providedIn: 'root'
 })
 export class ComunicadoService {
-  URL =
-    environment.URL_VALIDADORFILE;
-    //"http://localhost:44382";
+  public verificarNotificacion = new EventEmitter<boolean>();
+  URL = environment.URL_VALIDADORFILE;
+  //"http://localhost:44382";
   comunicados: Comunicado[] = [];
-  asignacion:Comunicado ={};
-
+  asignacion: Comunicado = {};
+  
   constructor(private http: HttpClient) { }
 
-   
   agregar(comunicado: Comunicado) {
 
     return this.http.post(`${this.URL}/api/comunicado`, comunicado);
   }
 
+  marcarVistos(proveedor: string) {
+    return this.http.get(`${this.URL}/api/comunicado/comunicadosvistos/${proveedor}`);
+  }
 
-  cambiarDisponibilidadProveedor(proveedorAsignado:ProveedorAsignado,idComunicado:string){
+  obtenerPendientesPorLeer(proveedor: string) {
+    return this.http.get(`${this.URL}/api/comunicado/porleer/${proveedor}`);
+  }
 
 
-       
-    return this.http.post(`${this.URL}/api/comunicado/${idComunicado}/cambiarDisponibilidadProveedor`,{Proveedor: proveedorAsignado.proveedor.trim(),
-                                                                                              Nombre: proveedorAsignado.nombre,
-                                                                                              RFC: proveedorAsignado.rfc,
-                                                                                              asignado:proveedorAsignado.asignado==false?0:1
-                                                                                              });
+  cambiarDisponibilidadProveedor(proveedorAsignado: ProveedorAsignado, idComunicado: string) {
+    return this.http.post(`${this.URL}/api/comunicado/${idComunicado}/cambiarDisponibilidadProveedor`, {
+      Proveedor: proveedorAsignado.proveedor.trim(),
+      Nombre: proveedorAsignado.nombre,
+      RFC: proveedorAsignado.rfc,
+      asignado: proveedorAsignado.asignado == false ? 0 : 1
+    });
   }
 
   obtenerDisponibilidadProveedor(idComunicado) {
@@ -43,7 +48,7 @@ export class ComunicadoService {
         const proveedores = x["proveedores"];
 
         return proveedores.map(proveedor => {
-          proveedor.proveedor=proveedor.proveedor.trim()
+          proveedor.proveedor = proveedor.proveedor.trim()
           proveedor.asignado = proveedor.asignado == "1" ? true : false;
           return proveedor;
         });
@@ -53,7 +58,7 @@ export class ComunicadoService {
 
 
   listar() {
-    //console.log(`${this.URL}/api/comunicado`);
+
     return this.http.get(`${this.URL}/api/comunicado`).pipe(
       map(x => {
         this.comunicados = x["comunicados"];

@@ -5,6 +5,13 @@ Email: niravjoshi87@gmail.com
 File: js
 */
 
+
+function mostrarNotificaciones() {
+    $(function () {
+        $("#notifications").click();
+    });
+}
+
 function iniciar_pluginCheck() {
     $(function () {
         'use_strict';
@@ -19,7 +26,7 @@ function cerrarBusqueda() {
     $(function () {
         "use strict";
         //$(".search-box a, .search-box .app-search .srh-btn").on('click', function () {
-            $(".app-search").hide(200);
+        $(".app-search").hide(200);
         //});
     });
 }

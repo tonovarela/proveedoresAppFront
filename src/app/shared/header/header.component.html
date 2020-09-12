@@ -93,9 +93,41 @@
                     </div>
                 </li>
 
-
-
-
+                <li class="nav-item dropdown " *ngIf="!_usuarioService.esAdmin()" >                    
+                    <a  class="nav-link dropdown-toggle waves-effect waves-dark" href="javascript: void(0);"
+                     id="notifications" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-message"></i>
+                        <div class="notify" *ngIf="tienePendienteComunicadosPendientes"> <span class="heartbit"></span> <span class="point"></span> </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right mailbox animated bounce">                         
+                        <ul>
+                            <li>
+                                <div class="drop-title">Notificaciones</div>
+                            </li>
+                            <li>
+                                <div class="message-center">                                    
+                                    <a *ngIf="comunicadosPendientesPorLeer.length==0">
+                                        <div  >
+                                            <div class="btn btn-success btn-circle notificacion" >
+                                                <i class="mdi mdi-check-circle-outline"></i></div>
+                                            <div class="mail-contnet">
+                                                <h5>No hay nuevas notificaciones </h5> <span class="mail-desc"></span> <span class="time"></span> </div>                                     
+                                        </div>                                    
+                                    </a>
+                                    <!-- Message -->
+                                    <a href="#" routerLink="/comunicados/proveedor"  *ngFor="let comunicado of comunicadosPendientesPorLeer">
+                                        <div class="btn btn-warning btn-circle notificacion" >
+                                            <i class="fa fa-bullhorn"></i></div>
+                                        <div class="mail-contnet">
+                                            <h5>Aviso </h5> <span class="mail-desc">{{comunicado.titulo}}</span> <span class="time">{{comunicado.fecha_registro  | date:'dd-MM-y, h:mm:ss a'    }}</span> </div>
+                                    </a>                                    
+                                </div>
+                            </li>
+                            <li>
+                                <a class="nav-link text-center" routerLink="/comunicados/proveedor" href="javascript:void(0);"> <strong>Ver todos </strong> <i class="fa fa-angle-right"></i> </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <!-- ============================================================== -->
                 <!-- Language -->
                 <!-- ============================================================== -->
