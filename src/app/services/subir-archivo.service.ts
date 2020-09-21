@@ -17,7 +17,6 @@ import 'rxjs/add/operator/delay';
 })
 export class SubirArchivoService {
   public notificacion = new EventEmitter<Movimiento>();
-
   
   URL_SERVICE: string =environment.URL_VALIDADORFILE;    
   //"http://localhost:44382";
@@ -95,7 +94,8 @@ export class SubirArchivoService {
     formData.append('movimiento', `${movimiento.movimientoDescripcion}-${movimiento.folio}`.trim());
     formData.append('proveedor', `${this._usuarioService.usuario.Proveedor.trim()}`);
     formData.append('tipo', `${movimiento.tipo}`);
-    formData.append('moneda', `${movimiento.moneda}`);
+    formData.append('moneda', `${movimiento.moneda}`);    
+    formData.append('fechaEmision',movimiento.fechaEmision.toLocaleString() );
 
     return this._http.post(url, formData, { reportProgress: true })
       .pipe(
@@ -128,6 +128,9 @@ export class SubirArchivoService {
     formData.append('proveedor', `${this._usuarioService.usuario.Proveedor.trim()}`);
     formData.append('tipo', `${movimiento.tipo}`);
     formData.append('moneda', `${movimiento.moneda}`);
+    formData.append('fechaEmision',movimiento.fechaEmision.toLocaleString() );
+
+
 
     return this._http.post(url, formData, { reportProgress: true })
       .pipe(

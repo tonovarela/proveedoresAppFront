@@ -21,7 +21,9 @@
                             <div class="col-4">
                                 <div class="form-group form-inline">
                                     <label class="control-label   " style="margin-right: 10px;">Vigencia</label>
-                                    <ejs-daterangepicker [(value)]='fecha' placeholder="Seleccione la fecha de vigencia"
+                                    <ejs-daterangepicker
+                                    [min]='today'
+                                     [(value)]='fecha' placeholder="Seleccione la fecha de vigencia"
                                         [allowEdit]=false></ejs-daterangepicker>
                                 </div>
 
@@ -30,6 +32,7 @@
 
                         <ejs-richtexteditor id='blogRTE' [enableResize]="true"
                         height="320px"
+                        
                             [insertImageSettings]='insertImageSettings' [toolbarSettings]='tools'
                             (created)="rteCreated()" [(value)]="comunicado.mensaje" #blogRTE
                             placeholder='Escribe un comunicado'>

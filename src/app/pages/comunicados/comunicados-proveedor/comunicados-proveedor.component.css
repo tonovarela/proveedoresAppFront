@@ -9,3 +9,8 @@
 .round{
     background: #eaeaea;
 }
+
+.card{
+    border: 1px solid #d2cccc;
+    border-radius: 10px;
+}

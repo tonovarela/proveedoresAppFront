@@ -1,34 +1,36 @@
 
-.comment-widgets .comment-row{
+.alert{
+    padding: .05rem 0.65rem;
+}
+
+
+.comment-widgets .comment-row {
     padding: 0px;
 }
-.avisoCP{
-    border-color: #ffb22b;
-   background: white;
-   margin:0;
-}
-#contenedorContraRecibo{
+
+
+
+#contenedorContraRecibo {
     width: 50%;
     float: right;
     margin-top: -70px;
-    margin-bottom: 0px; 
+    margin-bottom: 0px;
     border: solid 1px #d9d6d4;
     border-radius: 5px;
 }
 
-#grid{
+#grid {
     margin-top: 10px;
 }
- 
-#notificacionMoneda{
+
+#notificacionMoneda {
     margin: 0;
     font-size: 12px;
 }
-.e-custom{
+
+.e-custom {
     border-radius: 100%;
-    background-color:rebeccapurple;
-border-color: transparent;
-color: #fff;
+    background-color: rebeccapurple;
+    border-color: transparent;
+    color: #fff;
 }
-
-

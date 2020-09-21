@@ -65,6 +65,15 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
   ) { }
 
 
+
+
+  rowDB(args ){
+
+    if(args.data.esRequerido ==1 ){                  
+      args.row.classList.add('bgcolor');      
+    }
+  }
+
   ngOnInit(): void {
     this._comunicadoService.verificarNotificacion.emit(true);
     this.subscription = this._usuarioService

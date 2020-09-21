@@ -10,10 +10,10 @@ import { FacturaService } from './../../services/factura.service';
 import { ModalUploadService } from './../../services/modal-upload.service';
 import { Movimiento, MovCR, CR_Request, Contrarecibo, PagoAprobado, Anexo } from './../../models/movimiento';
 import { Component, OnInit, ViewChild, OnDestroy, EventEmitter } from '@angular/core';
-import { L10n } from '@syncfusion/ej2-base'
+
 import { EditSettingsModel, PageSettingsModel, FilterSettingsModel, Grid, IFilter, parentsUntil } from '@syncfusion/ej2-angular-grids';
 import { setSpinner } from '@syncfusion/ej2-popups';
-import * as moment from 'moment';
+
 import { Subscription } from 'rxjs';
 import { FechaDictionary } from 'src/app/utils/dates';
 import { filter } from 'rxjs/operators';
@@ -22,7 +22,7 @@ import { AnexoService } from 'src/app/services/anexo.service';
 
 
 setSpinner({ template: '<div class="loader-centerd-screen"> <div>' });
-@Component({
+@Component({  
   selector: 'app-pendientes-cobro',
   templateUrl: './pendientes-cobro.component.html',
   styleUrls: ['./pendientes-cobro.component.css']
@@ -79,11 +79,12 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   ) {
   }
 
+
+
   ngOnInit(): void {
     this._comunicadoService.verificarNotificacion.emit(true);
     this.URL = environment.URL_VALIDADORFILE;    
-    this._usuarioService.usuario.PuedeAnexarDocumento=false;
-    this._usuarioService.usuario.PuedeGenerarContraRecibo=true;
+    this._usuarioService.usuario.PuedeAnexarDocumento=false;    
     this.subscription = this._usuarioService
       .filtroGeneral
       .subscribe(x => {
@@ -91,7 +92,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
       });
     this.cargando = true;
 
-
+    this._usuarioService.autorizacionCR().subscribe();
     this.subscriptionMovFile = this._subirUsuarioService.notificacion
       .pipe(filter((x: Movimiento) => x.tipo == "Factura-Ingreso"))
       .subscribe((mov: Movimiento) => {
@@ -126,21 +127,22 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   }
 
 
+   detalleAnexoMovimiento =(e) => {             
+     if (parentsUntil(e.target as Element, "e-detailrowexpand")) {    
+  //     //this.grid.detailRowModule.collapseAll(); 
+      let row = parentsUntil(e.target as Element, "e-row");       
+      let rowIndex = parseInt(row.getAttribute("aria-rowindex"));         
+       let movimiento=this.movimientos[rowIndex];
+       this.cargarAnexos(movimiento);           
+    this.grid.detailRowModule.expand(rowIndex);                                    
+     } 
+  }
+  
+
   created(e) {
     this.aplicarFiltroGeneral();
 
-    this.grid.element.addEventListener("click", e => {       
-      if (parentsUntil(e.target as Element, "e-detailrowexpand")) { 
-     //collapsing all the expanding records using collapseAll method 
-        //this.grid.detailRowModule.collapseAll(); 
-        let row = parentsUntil(e.target as Element, "e-row"); 
-        let rowIndex = parseInt(row.getAttribute("aria-rowindex"));         
-        let movimiento=this.movimientos[rowIndex];
-        this.cargarAnexos(movimiento);        
-     // expanding the particular using expand method 
-     this.grid.detailRowModule.expand(rowIndex);                                    
-      } 
-    }); 
+    this.grid.element.addEventListener("click",this.detalleAnexoMovimiento); 
   }
 
 

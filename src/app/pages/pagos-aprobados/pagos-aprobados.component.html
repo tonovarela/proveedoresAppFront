@@ -3,12 +3,23 @@
 
 <div *ngIf="!cargando">
   <app-busqueda moduloActivo='pagos-aprobados'></app-busqueda>
-  <div class="row">
+  <div class="alert alert-warning">
+    <h3 class="text-warning"><i class="fa fa-exclamation-circle"></i> Importante</h3>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10">
+          <p>Es necesario subir los documentos XML y PDF  de los movimiento(s) marcado(s) en color naranja.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">   
     <div class="col-12">
-      <ejs-grid #grid id="grid" height='300' (created)="created($event)" [dataSource]="pagosAprobados "
-        allowReordering='true' allowSelection="false" [selectionSettings]="selectOptions" [editSettings]='editSettings'
-        allowPaging="true" allowFiltering="true" [filterSettings]='filterSettings' allowSorting="true"
-        allowResizing='true' [pageSettings]="pageSettings" (actionComplete)="actionComplete($event)">
+      <ejs-grid #grid id="grid" (rowDataBound)='rowDB($event)' height='300' (created)="created($event)"
+        [dataSource]="pagosAprobados " allowReordering='true' allowSelection="false" [selectionSettings]="selectOptions"
+        [editSettings]='editSettings' allowPaging="true" allowFiltering="true" [filterSettings]='filterSettings'
+        allowSorting="true" allowResizing='true' [pageSettings]="pageSettings"
+        (actionComplete)="actionComplete($event)">
 
         <e-columns>
 
@@ -60,9 +71,10 @@
             </ng-template>
           </e-column>
 
-        </e-columns>        
+        </e-columns>
       </ejs-grid>
       <hr>
+
       <app-totales [movimientos]="pagosAprobados"></app-totales>
     </div>
   </div>

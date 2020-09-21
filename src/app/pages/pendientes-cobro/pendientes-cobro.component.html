@@ -1,6 +1,6 @@
 <app-loader *ngIf="cargando"></app-loader>
 
-<div *ngIf="!_usuarioService.usuario.PuedeGenerarContraRecibo" >  
+<div *ngIf="!_usuarioService.usuario.PuedeGenerarContraRecibo  && !cargando" >  
   <div class="alert avisoCP">      
     <h3 class="text-warning"><i class="fa fa-exclamation-circle"></i> Importante</h3> 
     <div class="container">
@@ -47,7 +47,9 @@
 
 <div class="row" *ngIf="!cargando">
   <div class="col-12">
-    <ejs-grid #grid id="grid" height='250' (created)="created($event)" [dataSource]="movimientos" allowReordering='true'
+    <ejs-grid #grid id="grid" height='250' 
+   
+    (created)="created($event)" [dataSource]="movimientos" allowReordering='true'
       allowSelection="false" [selectionSettings]="selectOptions" [editSettings]='editSettings' allowPaging="true"
       [allowFiltering]="true" [filterSettings]='filterSettings' allowSorting="true" allowResizing='true'
       [pageSettings]="pageSettings" (actionComplete)="actionComplete($event)">

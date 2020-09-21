@@ -95,7 +95,8 @@ export class FacturaService {
             importe: Number(m["Importe"]),
             fechaEmision: moment(m["FechaEmision"]).toDate(),
             fechaVencimiento: moment(m["Vencimiento"]).toDate(),
-            moneda: m["Moneda"].trim(),                      
+            moneda: m["Moneda"].trim(),  
+            esRequerido:m["esRequerido"]==1?true:false,                    
             tienePDF: m["PDF"] == "1" ? true : false,
             tieneXML: m["XML"] == "1" ? true : false,
             tipo: "Pago"

@@ -70,7 +70,8 @@ export interface PagoAprobado{
     totalMovimientos?:number,
     detalle?: PagoDetalle[],
     anexos?:Anexo[],
-    estaActualizando?:boolean
+    estaActualizando?:boolean,
+    esRequerido?:boolean
     
 }
 

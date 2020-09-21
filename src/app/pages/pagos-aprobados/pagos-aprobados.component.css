@@ -1,3 +1,18 @@
+.e-grid.e-gridhover  tr.bgcolor:hover .e-rowcell:not(.e-cellselectionbackground):not(.e-active):not(.e-updatedtd):not(.e-indentcell){ 
+    background-color:#e6701ca6 !important; 
+    color: white;
+  } 
+ 
+.bgcolor td {
+    background-color:#e3945ba6;    
+    font-weight: 300;
+}
+.bgcolor a {
+    color:red
+}
+
+
+
 .e-custom{
     border-radius: 100%;
     background-color:rebeccapurple;

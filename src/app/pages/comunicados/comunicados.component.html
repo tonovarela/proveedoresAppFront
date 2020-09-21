@@ -10,6 +10,10 @@
                     </div>
                     <div>  
                         <app-loader *ngIf="cargandoComunicados"></app-loader>
+                        <div *ngIf="comunicados.length==0 && !cargandoComunicados" class="text-center">
+                            <h4>No hay comunicados  </h4>
+                            <img src="assets/images/aviso.svg" height="400px">                            
+                        </div>
                         <div *ngIf="!cargandoComunicados">
                             <div class="table-responsive" *ngFor="let comunicado of comunicados" >
                                 <div class="post card">

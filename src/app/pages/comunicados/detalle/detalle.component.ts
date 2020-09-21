@@ -16,6 +16,8 @@ import * as moment from 'moment';
 })
 export class DetalleComponent implements OnInit {
 
+
+  public today: Date = new Date();
   comunicado: Comunicado = { mensaje: "" ,titulo:""};
   edicion: boolean;
   cargando:boolean =false;

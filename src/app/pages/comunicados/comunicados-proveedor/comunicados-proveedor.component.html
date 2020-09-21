@@ -4,21 +4,27 @@
     <li *ngFor="let comunicado of comunicados"> {{comunicado.titulo}}</li>
 </ul> -->
 
-<div class="card">
+
+<div *ngIf="comunicados.length==0 && !cargando" class="text-center" >
+    <h4>No hay avisos pendientes  </h4>
+    <img  src="assets/images/no_notifications.svg" height="400px">                            
+</div>
+
+<div class="card" *ngFor="let comunicado of comunicados">
     
     <!-- ============================================================== -->
     <!-- Comment widgets -->
     <!-- ============================================================== -->
-    <div class="comment-widgets m-b-20" >
+    <div class="comment-widgets " >
         <!-- Comment Row -->
-        <div class="d-flex flex-row comment-row  m-b-20"  *ngFor="let comunicado of comunicados" >
+        <div class="d-flex flex-row comment-row  "   >
             <div class="p-2"><span class="round"><img src="assets/images/logoLito.png" alt="user" width="50"></span></div>
             <div class=" w-100">
                 <h5>Departamento de Administración</h5>
                 <div class="comment-footer">
                     <span class="date">{{comunicado.fecha_registro | date:'dd-MM-y, h:mm:ss a '}}</span>                    
                 </div>
-                <p class="m-b-5 m-t-10">{{comunicado.titulo}}</p>
+                <p class=" m-t-10">{{comunicado.titulo}}</p>
                 <div [innerHtml]="comunicado.mensaje | safe:'html'" class="cuerpoAviso"></div>     
             </div>
                         

@@ -13,7 +13,10 @@ import { ProveedorAsignado } from '../models/proveedorAsignado';
 export class ComunicadoService {
   public verificarNotificacion = new EventEmitter<boolean>();
   URL = environment.URL_VALIDADORFILE;
-  //"http://localhost:44382";
+//"http://192.168.2.217/proveedor";
+
+  URLRegistro =environment.URL_SERVICIOS;
+  
   comunicados: Comunicado[] = [];
   asignacion: Comunicado = {};
   
@@ -21,9 +24,30 @@ export class ComunicadoService {
 
   agregar(comunicado: Comunicado) {
 
-    return this.http.post(`${this.URL}/api/comunicado`, comunicado);
+    //Se cambio a Laravel ya que la 217 tenia una politica de POST Max size
+    return this.http.post(`${this.URLRegistro}/comunicado`, comunicado);
+    //return this.http.post(`${this.URL}/api/comunicado`, comunicado);
   }
 
+
+  borrar(comunicado: Comunicado) {
+
+    return this.http.get(`${this.URL}/api/comunicado/borrar/${comunicado.id_comunicado}`).pipe(
+      map(x => {
+        return x["comunicados"];
+      })
+    );
+    //this.comunicados=this.comunicados.filter(x=>x.id_comunicado!==comunicado.id_comunicado);
+  }
+
+  actualizar(comunicado: Comunicado) {
+    return this.http.put(`${this.URLRegistro}/comunicado`, comunicado).pipe(
+      map(x => {
+        return x["comunicado"];
+      })
+    );
+
+  }
 
    porProveedor(proveedor:string){
     return this.http.get(`${this.URL}/api/comunicado/proveedor/${proveedor}`).pipe(
@@ -65,8 +89,7 @@ export class ComunicadoService {
 
 
   listar() {
-
-    return this.http.get(`${this.URL}/api/comunicado`).pipe(
+    return this.http.get(`${this.URLRegistro}/comunicado`).pipe(
       map(x => {
         this.comunicados = x["comunicados"];
         return this.comunicados;
@@ -83,26 +106,7 @@ export class ComunicadoService {
     );
   }
 
-  borrar(comunicado: Comunicado) {
-
-    return this.http.get(`${this.URL}/api/comunicado/borrar/${comunicado.id_comunicado}`).pipe(
-      map(x => {
-        return x["comunicados"];
-      })
-    );
-    //this.comunicados=this.comunicados.filter(x=>x.id_comunicado!==comunicado.id_comunicado);
-  }
-
-  actualizar(comunicado: Comunicado) {
-    return this.http.post(`${this.URL}/api/comunicado/actualizar`, comunicado).pipe(
-      map(x => {
-        return x["comunicado"];
-      })
-    );
-
-
-
-  }
+  
 
   cambiarDisponibilidad(comunicado: Comunicado) {
     return this.http.get(`${this.URL}/api/comunicado/general/${comunicado.id_comunicado}?valor=${comunicado.general}`).pipe(

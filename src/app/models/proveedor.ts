@@ -6,7 +6,7 @@ export interface Usuario {
     RFC?: string;
     PuedeAnexarDocumento?:boolean;
     PuedeGenerarContraRecibo?:boolean;   
-    MontoMaxContraRecibo?:number;
+    MontoMaxContraRecibo?:number;    
 }
 
 export interface ResponseLogin{

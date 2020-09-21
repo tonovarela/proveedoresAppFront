@@ -33,6 +33,8 @@ export class LoginComponent implements OnInit {
     }
   }
 
+
+
   irAvisoPrivacidad() {
     window.open('https://www.litoprocess.com/aviso-de-privacidad/', '_blank');
   }
@@ -47,11 +49,9 @@ export class LoginComponent implements OnInit {
   }
 
   ingresar(form: NgForm) {
-    const usuario = { usuario: form.value.usuario, password: form.value.password };
-
-    
-     const login$= forkJoin(this._usuarioService.login(usuario) , //Proveedor
-                            this._usuarioService.loginUsuario(usuario))  //Usuario Litoapps
+    const usuario = { usuario: form.value.usuario, password: form.value.password };    
+    const login$= forkJoin([this._usuarioService.login(usuario) , //Proveedor
+                            this._usuarioService.loginUsuario(usuario)])  //Usuario Litoapps
                             .pipe(
                               map(x=> {
                                 const responseProveedores=x[0];

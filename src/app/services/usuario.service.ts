@@ -10,8 +10,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UsuarioService {
   url: string = environment.URL_SERVICIOS;
-  filtroGeneral= new EventEmitter<any>();
-  filtroAplicar:any =null;
+  filtroGeneral = new EventEmitter<any>();
+  filtroAplicar: any = null;
   usuario: Usuario = {};
   constructor(
     public http: HttpClient,
@@ -19,59 +19,57 @@ export class UsuarioService {
     public settingService: SettingsService
   ) {
     this.cargarStorage();
-    
+
   }
 
 
 
 
-  loginUsuario(usuario:any){
+  loginUsuario(usuario: any) {
     const url = `${this.url}/usuario/login`;
     return this.http.post<ResponseLogin>(url, usuario).pipe(
       map((resp) => {
-   
-        if (resp.validacion == true) {        
-          this.usuario =resp.data[0] ;          
-          this.guardarStorage(resp.data[0]);   
+
+        if (resp.validacion == true) {
+          this.usuario = resp.data[0];
+          this.guardarStorage(resp.data[0]);
         }
         return resp;
       })
     );
-    
   }
 
 
   login(usuario: any) {
     const url = `${this.url}/cliente/login`;
     return this.http.post<ResponseLogin>(url, usuario).pipe(
-      map((resp) => {
-   //     console.log(resp.data);
-        if (resp.validacion == true) {        
-          this.usuario = resp.data[0];          
-          this.guardarStorage(resp.data[0]);   
+      map((resp) => {        
+        if (resp.validacion == true) {
+          this.usuario = resp.data[0];
+          this.guardarStorage(resp.data[0]);
         }
         return resp;
       })
     );
-    // return this.http.post(url, usuario).pipe(
-    //   map((resp: any) => {        
-    //     if (resp.ok==false){
-    //       //this.mostrarMensajeError("----",resp.mensaje);
-    //       return false;
-    //     }
-    //    // this.guardarStorage("1", "fdsffs", usuario, this.menu);
-    //     return true;
-    //   }), catchError ( err => {
-    //     console.log(err);
-    //     //this.mostrarMensajeError('Error en el login', err.error.mensaje );
-    //     return throwError(err);
-    //   } )
-    // );
   }
 
-  esAdmin(){
-    
-    return this.usuario.idRol=="1";
+  autorizacionCR() {
+    const url = `${this.url}/usuario/autorizacioncr/${this.usuario.Proveedor}`;
+    this.usuario.PuedeGenerarContraRecibo=false;
+    return this.http.get(url).pipe(
+      map(resp=>{
+          if (resp["validacion"]==true){
+            const autorizacion = resp["autorizacion"][0];            
+            this.usuario.PuedeGenerarContraRecibo =autorizacion["autorizacionCR"]=="Si"?true:false;
+          }
+      })
+    );
+
+  }
+
+
+  esAdmin() {
+    return this.usuario.idRol == "1";
   }
 
   estaLogueado() {
@@ -87,10 +85,10 @@ export class UsuarioService {
   }
   guardarStorage(usuario: Usuario) {
     localStorage.setItem('usuario', JSON.stringify(usuario));
-    
+
   }
   logout() {
-    this.usuario =null;
+    this.usuario = null;
     localStorage.removeItem("usuario");
     this.router.navigate(["/login"]);
   }
