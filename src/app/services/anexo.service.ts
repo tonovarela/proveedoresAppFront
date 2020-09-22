@@ -11,7 +11,10 @@ export class AnexoService {
   URL_SERVICE: string =environment.URL_VALIDADORFILE;    
 //"http://localhost:44382" ;
 
+  movimientoActual:Movimiento;
   constructor(private _http: HttpClient) { }
+
+  
 
 
   

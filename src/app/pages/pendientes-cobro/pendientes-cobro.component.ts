@@ -22,7 +22,7 @@ import { AnexoService } from 'src/app/services/anexo.service';
 
 
 setSpinner({ template: '<div class="loader-centerd-screen"> <div>' });
-@Component({  
+@Component({
   selector: 'app-pendientes-cobro',
   templateUrl: './pendientes-cobro.component.html',
   styleUrls: ['./pendientes-cobro.component.css']
@@ -32,12 +32,11 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
   @ViewChild('grid') grid: Grid;
 
-   URL:string
+  URL: string
 
   movimientosCR_$ = new EventEmitter<void>();
   subscripcionMovMoneda: Subscription;
-  gridInstance: Grid;
-  subscriptionMovFile: Subscription;
+  gridInstance: Grid;  
   subscription: Subscription;
   cargando: boolean = false;
   filtroCheck = false;
@@ -56,7 +55,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   cumpleSaldoContrarecibo: boolean = true;
   movimientos: Movimiento[] = [];
 
- 
+
 
 
   public fechaEmisionFilter: any;
@@ -75,7 +74,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     private _uiService: UiService,
     public _usuarioService: UsuarioService,
     public _anexoService: AnexoService,
-    private _comunicadoService:ComunicadoService
+    private _comunicadoService: ComunicadoService
   ) {
   }
 
@@ -83,8 +82,8 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._comunicadoService.verificarNotificacion.emit(true);
-    this.URL = environment.URL_VALIDADORFILE;    
-    this._usuarioService.usuario.PuedeAnexarDocumento=false;    
+    this.URL = environment.URL_VALIDADORFILE;
+    this._usuarioService.usuario.PuedeAnexarDocumento = true;
     this.subscription = this._usuarioService
       .filtroGeneral
       .subscribe(x => {
@@ -92,21 +91,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
       });
     this.cargando = true;
 
-    this._usuarioService.autorizacionCR().subscribe();
-    this.subscriptionMovFile = this._subirUsuarioService.notificacion
-      .pipe(filter((x: Movimiento) => x.tipo == "Factura-Ingreso"))
-      .subscribe((mov: Movimiento) => {
-        this.movimientos.forEach(movimiento => {
-          if (movimiento.movimientoID == mov.movimientoID)
-            movimiento = mov;
-            if (movimiento.estaActualizando){              
-              movimiento.estaActualizando=false;
-              this.cargarAnexos(movimiento);
-            }     
-        }
-        );
-      });
-
+    this._usuarioService.autorizacionCR().subscribe();    
     this.subscripcionMovMoneda = this.movimientosCR_$.subscribe(() => {
       this.validarReglasContraRecibo();
     });
@@ -115,34 +100,42 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
 
   cargaInfoPendientesCobro() {
-    
+
     this._facturaService
       .obtenerPendientesCobro(this._usuarioService.usuario.Proveedor)
       .subscribe(movs => {
-        
-        this.movimientos = movs;        
-        this.movimientos.forEach(x => { x.anexos=[]});
-        this.cargando = false;          
+
+        this.movimientos = movs;
+        this.movimientos.forEach(x => { x.anexos = [] });
+        this.cargando = false;
       });
   }
 
 
-   detalleAnexoMovimiento =(e) => {             
-     if (parentsUntil(e.target as Element, "e-detailrowexpand")) {    
-  //     //this.grid.detailRowModule.collapseAll(); 
-      let row = parentsUntil(e.target as Element, "e-row");       
-      let rowIndex = parseInt(row.getAttribute("aria-rowindex"));         
-       let movimiento=this.movimientos[rowIndex];
-       this.cargarAnexos(movimiento);           
-    this.grid.detailRowModule.expand(rowIndex);                                    
-     } 
+
+  rowSelected(args) {
+
   }
-  
+
+  prueba(movimiento: Movimiento) {
+    this._anexoService.movimientoActual = movimiento;
+    this._router.navigateByUrl(`/anexo-factura/${movimiento.movimientoID}`);
+  }
+
+  // detalleAnexoMovimiento = (e) => {
+  //   if (parentsUntil(e.target as Element, "e-detailrowexpand")) {
+  //   this.grid.detailRowModule.collapseAll(); 
+  //     let row = parentsUntil(e.target as Element, "e-row");
+  //     let rowIndex = parseInt(row.getAttribute("aria-rowindex"));
+  //     let movimiento = this.movimientos[rowIndex];      
+  //     this.grid.detailRowModule.expand(rowIndex);
+  //   }
+  // }
+
 
   created(e) {
     this.aplicarFiltroGeneral();
-
-    this.grid.element.addEventListener("click",this.detalleAnexoMovimiento); 
+    //this.grid.element.addEventListener("click", this.detalleAnexoMovimiento);
   }
 
 
@@ -223,10 +216,10 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   }
 
 
-  
-   irPagosAprobados(){
+
+  irPagosAprobados() {
     this._router.navigateByUrl('pagos-aprobados');
-   }
+  }
 
   validarReglasContraRecibo() {
     let movimientosPorGenerar = this.movimientos.filter(mov => mov.solicitaContraRecibo);
@@ -252,8 +245,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     this.cumpleSaldoContrarecibo = total < maxContrarecibo
   }
 
-  ngOnDestroy(): void {
-    this.subscriptionMovFile.unsubscribe();
+  ngOnDestroy(): void {    
     this.subscripcionMovMoneda.unsubscribe();
     this.subscription.unsubscribe();
   }
@@ -363,26 +355,8 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   }
 
 
-  cargarAnexos(movimiento:  Movimiento | Contrarecibo | PagoAprobado ){
-    movimiento.anexos=[];     
-        movimiento.estaActualizando=true;
-            this._anexoService.ListarPorID(movimiento).subscribe(data=>{            
-              if (data.total>0){
-                movimiento.anexos=data.anexos;
-              }                             
-              movimiento.estaActualizando=false;
-            });
 
-  }
-
-  borrarAnexo(anexo: Anexo,movimiento :Movimiento | Contrarecibo | PagoAprobado ){    
-    movimiento.estaActualizando=true;
-    this._anexoService.eliminarAnexo(anexo.id).subscribe(x=>{
-      movimiento.estaActualizando=false;
-      this.cargarAnexos(movimiento);
-    });
-
-  }
+  
 
 
 }

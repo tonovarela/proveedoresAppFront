@@ -47,9 +47,10 @@
 
 <div class="row" *ngIf="!cargando">
   <div class="col-12">
-    <ejs-grid #grid id="grid" height='250' 
-   
-    (created)="created($event)" [dataSource]="movimientos" allowReordering='true'
+    <ejs-grid #grid id="grid" height='250'    
+    (created)="created($event)"
+    (rowSelected)='rowSelected($event)' 
+    [dataSource]="movimientos" allowReordering='true'
       allowSelection="false" [selectionSettings]="selectOptions" [editSettings]='editSettings' allowPaging="true"
       [allowFiltering]="true" [filterSettings]='filterSettings' allowSorting="true" allowResizing='true'
       [pageSettings]="pageSettings" (actionComplete)="actionComplete($event)">
@@ -112,9 +113,15 @@
             <div *ngIf="data.tienePDF" class="rounded-icon rounded-success"><i class="fa fa-check-circle-o"></i></div>
           </ng-template>
         </e-column>
-
+       <e-column  headerText="Anexo" width='30'>
+         <ng-template #template let-data>
+           <button class="btn btn-warning  btn-xs" (click)="prueba(data)">
+             <i class="fa fa-upload"></i>
+           </button>
+         </ng-template>
+       </e-column>
         <e-column field="CR" headerText="" [allowFiltering]='false'  [allowSorting]="true" allowSelection="false"
-          width='50'>
+          width='50'>          
           <!-- <ng-template #headerTemplate let-data>
             <div>
               <ejs-checkbox [checked]='filtroCheck' cssClass="e-custom" [(ngModel)]="filtroCheck"
@@ -127,49 +134,7 @@
               *ngIf="data.CR" label=""></ejs-checkbox>
           </ng-template>
         </e-column>
-      </e-columns>
-      <ng-template *ngIf="_usuarioService.usuario.PuedeAnexarDocumento" #detailTemplate let-data>
-        <div class="container" style="background: #6a6b6f1c;">
-          <div class="row">
-            <div class="col-md-2">
-              <div class="m-t-10">
-                <button class="btn btn-info btn-xs  " (click)="_modalUploadService.mostrarModal('*',data)"><i
-                    class="fa fa-plus"></i></button>
-              </div>
-            </div>
-            <div class="col-md-10">
-              <div class="m-t-10" *ngIf="data.estaActualizando">
-                <app-loader></app-loader>
-              </div>
-              <div class="m-t-10" *ngIf="data.anexos.length==0 && !data.estaActualizando">
-                 <h6  class="text-themecolor">Sin documentos asociados a este movimiento</h6>                
-              </div>
-              <div class="m-t-10" *ngIf="data.anexos.length > 0 && !data.estaActualizando ">
-                <div class="comment-widgets m-b-20">
-                  <h5>Archivos anexos</h5>
-                  <!-- Comment Row -->
-                  <div class="d-flex flex-row comment-row" *ngFor="let anexo of data.anexos">
-                    <app-anexo-icono [tipo]="anexo.tipo"></app-anexo-icono>                      
-                      <div class="comment-text w-200">                            
-                          <a href="{{URL}}{{anexo.url}}" >{{anexo.nombre}}</a>                            
-                      </div>
-                      <div class="comment-text w-100">                            
-                        <div class="comment-footer">                            
-                          <span class="date">{{anexo.fecha_registro | date: 'dd/MM/y, hh:mm a' }}</span>
-                           <span class="action-icons">
-                                      <!-- <a href="javascript:void(0)"><i class="mdi mdi-pencil-circle"></i></a>
-                                      <a href="javascri pt:void(0)"><i class="mdi mdi-checkbox-marked-circle"></i></a> -->
-                                      <a href="javascript:void(0)" (click)="borrarAnexo(anexo,data)"><i class="fa fa-close"></i></a>    
-                                  </span>
-                      </div>                            
-                      </div>
-                  </div>                                    
-              </div>                  
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-template>
+      </e-columns>      
     </ejs-grid>
     <hr>
     <app-totales [movimientos]="movimientos"></app-totales>

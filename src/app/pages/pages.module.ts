@@ -40,6 +40,7 @@ import { registerLocaleData } from '@angular/common';
 import { DisponibilidadComponent } from './comunicados/disponibilidad/disponibilidad.component';
 
 import { ComunicadosProveedorComponent } from './comunicados/comunicados-proveedor/comunicados-proveedor.component';
+import { AnexoFacturaComponent } from './anexo-factura/anexo-factura.component';
 registerLocaleData(es);
 
 @NgModule({
@@ -55,7 +56,7 @@ registerLocaleData(es);
     ComunicadosComponent,
     DetalleComponent,
     DisponibilidadComponent,    
-    ComunicadosProveedorComponent
+    ComunicadosProveedorComponent, AnexoFacturaComponent
   ],
   providers: [ 
     //{provide:LOCALE_ID,useValue:"es-MX"},

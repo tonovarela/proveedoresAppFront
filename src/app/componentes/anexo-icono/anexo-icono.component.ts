@@ -15,7 +15,7 @@ export class AnexoIconoComponent implements OnInit {
 
   ngOnInit(): void {    
     this.icono="mdi mdi-file";
-    this.color="icon-file file";
+    this.color="icon-file file";    
     this.obtenerIcono();
   }
 

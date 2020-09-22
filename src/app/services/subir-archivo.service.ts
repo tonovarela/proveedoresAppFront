@@ -52,13 +52,13 @@ export class SubirArchivoService {
     formData.append('idMovimiento', movimiento.movimientoID.toString());  
     formData.append('archivo', archivo, archivo.name);        
     if (archivo.size>3145729){
-      let fakeResponse = {
+      let errorResponse = {
       ok: true,
       esIgual: false,
       errores: [],
       mensaje: `Archivo muy grande,debe de pesar menos de 3MB`
     };     
-    return Observable.of(fakeResponse).delay(500);       
+    return Observable.of(errorResponse).delay(500);       
     }
     return this._http.post(url, formData, { reportProgress: true })
     .pipe(

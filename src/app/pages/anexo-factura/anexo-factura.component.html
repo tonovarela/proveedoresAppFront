@@ -1,0 +1,52 @@
+<div class="container" style="background: #6a6b6f1c;" *ngIf="movimiento">
+    <h3>Factura {{movimiento.referencia}}
+    </h3>
+    <div class="row">
+        <div class="col-6"></div>
+        <div class="col-3">
+            <div class="m-t-10">
+
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="m-t-10">
+                <button  (click)="regresar()" class="btn btn-warning btn-xs m-r-10"><i class="fa fa-chevron-circle-left"></i>Regresar</button>
+                <button class="btn btn-info btn-xs" (click)="_modalUploadService.mostrarModal('*',movimiento)"><i
+                        class="fa fa-plus"></i>Agregar archivo</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="m-t-10" *ngIf="movimiento.estaActualizando">
+                <app-loader></app-loader>
+            </div>
+            <div class="m-t-10 text-center" *ngIf="movimiento.anexos.length==0 && !movimiento.estaActualizando">
+                <h4 class="text-themecolor">Sin archivos asociados a este movimiento</h4>
+                <img src="assets/images/no-data.svg" height="400" />
+            </div>
+            <div class="m-t-10" *ngIf="movimiento.anexos.length > 0 && !movimiento.estaActualizando ">
+                <div class="comment-widgets m-b-20">
+                    <h4>Archivos anexos</h4>
+                    <!-- Comment Row -->
+                    <div class="d-flex flex-row comment-row" *ngFor="let anexo of movimiento.anexos">
+                        <app-anexo-icono [tipo]="anexo.tipo"></app-anexo-icono>
+                        <div class="comment-text w-200">
+                            <a href="{{URL}}{{anexo.url}}">{{anexo.nombre}} </a>
+                        </div>
+                        <div class="comment-text w-100">
+                            <div class="comment-footer">
+                                <span class="date">{{anexo.fecha_registro | date: 'dd/MM/y, hh:mm a' }}</span>
+                                <span class="action-icons">
+                                    <a href="javascript:void(0)" (click)="borrarAnexo(anexo)"><i
+                                            class="fa fa-close"></i></a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

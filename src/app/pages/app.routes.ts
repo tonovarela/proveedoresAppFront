@@ -1,3 +1,4 @@
+import { AnexoFacturaComponent } from './anexo-factura/anexo-factura.component';
 import { ComunicadosProveedorComponent } from './comunicados/comunicados-proveedor/comunicados-proveedor.component';
 import { ProveedorGuard } from './../services/guards/proveedor.guard';
 
@@ -34,6 +35,7 @@ const pagesRoutes: Routes = [
             
             { path: 'comunicados/proveedor', component:ComunicadosProveedorComponent, data: { titulo: "Avisos",modulo:"comunicados" },canActivate:[ProveedorGuard] },                        
             { path: 'facturas-emitidas', component: PendientesCobroComponent, data: { titulo: "Facturas emitidas",modulo:"pendientes-cobro" } ,canActivate:[ProveedorGuard]},
+            { path: 'anexo-factura/:id', component: AnexoFacturaComponent, data: { titulo: "Anexo Factura",modulo:"anexo-factura" } ,canActivate:[ProveedorGuard]},
             { path: 'contra-recibos', component: ContraRecibosComponent, data: { titulo: "Contra recibos pendientes",modulo:"contra-recibos" },canActivate:[ProveedorGuard] },
             { path: 'pagos-aprobados', component: PagosAprobadosComponent, data: { titulo: "Pagos aprobados" ,modulo:"pagos-aprobados"} ,canActivate:[ProveedorGuard]},
             { path: 'pagos-programados', component: PagosProgramadosComponent, data: { titulo: "Pagos programados" ,modulo:"pagos-programados"} ,canActivate:[ProveedorGuard]},
