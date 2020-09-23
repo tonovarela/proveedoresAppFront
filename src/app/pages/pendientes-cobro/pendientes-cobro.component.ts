@@ -36,7 +36,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
   movimientosCR_$ = new EventEmitter<void>();
   subscripcionMovMoneda: Subscription;
-  gridInstance: Grid;  
+  gridInstance: Grid;
   subscription: Subscription;
   cargando: boolean = false;
   filtroCheck = false;
@@ -54,6 +54,8 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   movimientosDescripcionUnica = true;
   cumpleSaldoContrarecibo: boolean = true;
   movimientos: Movimiento[] = [];
+
+  tieneMovimientosAnexoRequeridos: boolean = false;
 
 
 
@@ -79,11 +81,23 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   }
 
 
+  verificarMovimientosAnexos() {
+    const totalMovimientos = this.movimientos.length;
+    const totalNoRequeridos = this.movimientos.filter(x => x.EV == "No Requerido").length;
+        
+    if ( totalMovimientos != totalNoRequeridos){
+      this.tieneMovimientosAnexoRequeridos =true;
+    }
+    
+    
+  }
+
 
   ngOnInit(): void {
     this._comunicadoService.verificarNotificacion.emit(true);
     this.URL = environment.URL_VALIDADORFILE;
-    this._usuarioService.usuario.PuedeAnexarDocumento = true;
+    //this._usuarioService.usuario.PuedeAnexarDocumento = true;
+    
     this.subscription = this._usuarioService
       .filtroGeneral
       .subscribe(x => {
@@ -91,7 +105,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
       });
     this.cargando = true;
 
-    this._usuarioService.autorizacionCR().subscribe();    
+    this._usuarioService.autorizacionCR().subscribe();
     this.subscripcionMovMoneda = this.movimientosCR_$.subscribe(() => {
       this.validarReglasContraRecibo();
     });
@@ -104,10 +118,10 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     this._facturaService
       .obtenerPendientesCobro(this._usuarioService.usuario.Proveedor)
       .subscribe(movs => {
-
         this.movimientos = movs;
         this.movimientos.forEach(x => { x.anexos = [] });
         this.cargando = false;
+        this.verificarMovimientosAnexos();
       });
   }
 
@@ -117,7 +131,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
   }
 
-  prueba(movimiento: Movimiento) {
+  irAnexoFactura(movimiento: Movimiento) {
     this._anexoService.movimientoActual = movimiento;
     this._router.navigateByUrl(`/anexo-factura/${movimiento.movimientoID}`);
   }
@@ -245,7 +259,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     this.cumpleSaldoContrarecibo = total < maxContrarecibo
   }
 
-  ngOnDestroy(): void {    
+  ngOnDestroy(): void {
     this.subscripcionMovMoneda.unsubscribe();
     this.subscription.unsubscribe();
   }
@@ -356,7 +370,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
 
 
-  
+
 
 
 }

@@ -23,7 +23,8 @@ export interface Movimiento {
     formaPago?:string,
     formaPagoDesc?:string,
     anexos?:Anexo[],
-    estaActualizando?:boolean
+    estaActualizando?:boolean,
+    EV?:string
     
 }
 
@@ -71,7 +72,8 @@ export interface PagoAprobado{
     detalle?: PagoDetalle[],
     anexos?:Anexo[],
     estaActualizando?:boolean,
-    esRequerido?:boolean
+    esRequerido?:boolean,
+    
     
 }
 

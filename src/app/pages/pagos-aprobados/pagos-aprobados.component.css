@@ -11,8 +11,12 @@
     color:red
 }
 
-
-
+.alert{
+    padding: .05rem 0.65rem;
+}
+#grid {
+    margin-top: 10px;
+}
 .e-custom{
     border-radius: 100%;
     background-color:rebeccapurple;

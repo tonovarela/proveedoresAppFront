@@ -1,27 +1,27 @@
 <app-loader *ngIf="cargando"></app-loader>
 
-<div *ngIf="!_usuarioService.usuario.PuedeGenerarContraRecibo  && !cargando" >  
-  <div class="alert avisoCP">      
-    <h3 class="text-warning"><i class="fa fa-exclamation-circle"></i> Importante</h3> 
+<div *ngIf="!_usuarioService.usuario.PuedeGenerarContraRecibo  && !cargando">
+  <div class="alert avisoCP">
+    <h3 class="text-warning"><i class="fa fa-exclamation-circle"></i> Importante</h3>
     <div class="container">
       <div class="row">
         <div class="col-md-10">
           <p>No se puede generar contra-recibos debido a que tiene complemento de pago pendientes.</p>
         </div>
         <div class="col-md-2">
-          <button (click)="irPagosAprobados()" class="btn btn-warning btn-xs">Ver detalle</button>      
+          <button (click)="irPagosAprobados()" class="btn btn-warning btn-xs">Ver detalle</button>
         </div>
       </div>
-    </div>    
-    
-    
+    </div>
+
+
   </div>
 </div>
 <div *ngIf="_usuarioService.usuario.PuedeGenerarContraRecibo">
   <div class="registroContrarecibo" *ngIf="(movimientos | numFacturasCR) >0 && !cargando">
-    <div class="card " id="contenedorContraRecibo">    
-      <div class="card-body" style="padding:0 1.2rem" *ngIf="_usuarioService.usuario.PuedeGenerarContraRecibo">      
-        <div class="d-flex no-block"  >
+    <div class="card " id="contenedorContraRecibo">
+      <div class="card-body" style="padding:0 1.2rem" *ngIf="_usuarioService.usuario.PuedeGenerarContraRecibo">
+        <div class="d-flex no-block">
           <div class="m-r-20 align-self-center" style="float:left">
             <h6 class="text-muted m-t-10 m-b-0 "># Facturas</h6>
             <h2 class="m-t-1 "> {{movimientos | numFacturasCR }} </h2>
@@ -33,8 +33,8 @@
           </div>
           <div>
             <div style="float:left">
-              
-              <button   class="btn btn-block btn-outline btn-secondary m-t-30 m-l-30 font-14 " *ngIf="monedasUnicas"
+
+              <button class="btn btn-block btn-outline btn-secondary m-t-30 m-l-30 font-14 " *ngIf="monedasUnicas"
                 (click)="generarContraRecibo()">Generar contra-recibo </button>
             </div>
           </div>
@@ -47,17 +47,14 @@
 
 <div class="row" *ngIf="!cargando">
   <div class="col-12">
-    <ejs-grid #grid id="grid" height='250'    
-    (created)="created($event)"
-    (rowSelected)='rowSelected($event)' 
-    [dataSource]="movimientos" allowReordering='true'
-      allowSelection="false" [selectionSettings]="selectOptions" [editSettings]='editSettings' allowPaging="true"
-      [allowFiltering]="true" [filterSettings]='filterSettings' allowSorting="true" allowResizing='true'
-      [pageSettings]="pageSettings" (actionComplete)="actionComplete($event)">
-      <e-columns>        
+    <ejs-grid #grid id="grid" height='300' (created)="created($event)" (rowSelected)='rowSelected($event)'
+      [dataSource]="movimientos" allowReordering='true' allowSelection="false" [selectionSettings]="selectOptions"
+      [editSettings]='editSettings' allowPaging="true" [allowFiltering]="true" [filterSettings]='filterSettings'
+      allowSorting="true" allowResizing='true' [pageSettings]="pageSettings" (actionComplete)="actionComplete($event)">
+      <e-columns>
         <!-- <e-column field="movimientoID" headerText="ID" width=50></e-column> -->
-        <e-column field="movimientoDescripcion" headerText="Tipo" width=50></e-column>
-        <e-column field="folio" headerText='Folio' width=30>
+        <e-column field="movimientoDescripcion" headerText="Tipo" width=40></e-column>
+        <e-column field="folio" headerText='Folio' width=25>
         </e-column>
         <e-column field="referencia" headerText="Factura" width=40>
         </e-column>
@@ -87,7 +84,7 @@
           </ng-template>
         </e-column> -->
 
-        <e-column headerText="Importe" width=50>
+        <e-column headerText="Importe" width=40>
           <ng-template #template let-data>
             {{data.importe | currency}}
           </ng-template>
@@ -99,29 +96,35 @@
         </e-column> -->
         <e-column field="moneda" headerText="Moneda" width=30>
         </e-column>
-        <e-column field="tieneXML" [allowFiltering]='false' headerText="XML" allowSelection="false" width='30'>
+        <e-column field="tieneXML" [allowFiltering]='false' headerText="XML" allowSelection="false" width='20'>
           <ng-template #template let-data>
             <div *ngIf="!data.tieneXML" (click)="_modalUploadService.mostrarModal('xml',data)"
               class="rounded-icon rounded-info"><i class="mdi mdi-file-xml"></i> </div>
             <div *ngIf="data.tieneXML" class="rounded-icon rounded-success"><i class="fa fa-check-circle-o"></i> </div>
           </ng-template>
         </e-column>
-        <e-column field="tienePDF" [allowFiltering]='false' headerText="PDF" allowSelection="false" width='30'>
+        <e-column field="tienePDF" [allowFiltering]='false' headerText="PDF" allowSelection="false" width='20'>
           <ng-template #template let-data>
             <div *ngIf="!data.tienePDF" (click)="_modalUploadService.mostrarModal('pdf',data)"
               class="rounded-icon rounded-warning"><i class="mdi mdi-file-pdf"></i></div>
             <div *ngIf="data.tienePDF" class="rounded-icon rounded-success"><i class="fa fa-check-circle-o"></i></div>
           </ng-template>
         </e-column>
-       <e-column  headerText="Anexo" width='30'>
-         <ng-template #template let-data>
-           <button class="btn btn-warning  btn-xs" (click)="prueba(data)">
-             <i class="fa fa-upload"></i>
-           </button>
-         </ng-template>
-       </e-column>
-        <e-column field="CR" headerText="" [allowFiltering]='false'  [allowSorting]="true" allowSelection="false"
-          width='50'>          
+        <e-column *ngIf="tieneMovimientosAnexoRequeridos" headerText="Anexo" width='30'>
+          <ng-template #template let-data>
+            <button *ngIf="data.EV!='No Requerido'" 
+            [ngClass]="{'btn-warning':data.EV ==='Requerido sin Evidencia',
+                        'btn-success':data.EV ==='Requerido con Evidencia'}"  
+                        class="btn   btn-xs" (click)="irAnexoFactura(data)">
+              <i class="fa " 
+              [ngClass]="{'fa-upload':data.EV ==='Requerido sin Evidencia',
+                          'fa-file-o':data.EV ==='Requerido con Evidencia'}"  
+              ></i>
+            </button>
+          </ng-template>
+        </e-column>
+        <e-column field="CR" headerText="" [allowFiltering]='false' [allowSorting]="true" allowSelection="false"
+          width='65'>
           <!-- <ng-template #headerTemplate let-data>
             <div>
               <ejs-checkbox [checked]='filtroCheck' cssClass="e-custom" [(ngModel)]="filtroCheck"
@@ -129,12 +132,20 @@
                
             </div>
           </ng-template> -->
+
           <ng-template #template let-data>
-            <ejs-checkbox (change)="cambio(data)" [disabled]="!_usuarioService.usuario.PuedeGenerarContraRecibo" cssClass="e-primary" [(ngModel)]="data.solicitaContraRecibo"
-              *ngIf="data.CR" label=""></ejs-checkbox>
+            <label class="label label-light-warning" *ngIf="data.EV=='Requerido sin Evidencia'">              
+                <i class="fa fa-chevron-left"></i>Es necesario un documento anexo              
+            </label>
+            <ejs-checkbox 
+            (change)="cambio(data)"
+               *ngIf="data.EV!='Requerido sin Evidencia' && data.CR"
+              [disabled]="!_usuarioService.usuario.PuedeGenerarContraRecibo"
+              cssClass="e-primary" [(ngModel)]="data.solicitaContraRecibo"  label="">
+            </ejs-checkbox>
           </ng-template>
         </e-column>
-      </e-columns>      
+      </e-columns>
     </ejs-grid>
     <hr>
     <app-totales [movimientos]="movimientos"></app-totales>

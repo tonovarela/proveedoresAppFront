@@ -57,11 +57,12 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
 
 
   constructor(private _facturaService: FacturaService,
-    private _usuarioService: UsuarioService,
+    public _usuarioService: UsuarioService,
     private modalService: NgbModal,
     public _modalUploadService: ModalUploadService,
     public _subirArchivoService: SubirArchivoService,  
-    private _comunicadoService:ComunicadoService 
+    private _comunicadoService:ComunicadoService ,
+    
   ) { }
 
 

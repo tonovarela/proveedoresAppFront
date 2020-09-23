@@ -4,7 +4,7 @@ export interface Usuario {
     Estatus?: string;
     Nombre?: string;
     RFC?: string;
-    PuedeAnexarDocumento?:boolean;
+    //PuedeAnexarDocumento?:boolean;
     PuedeGenerarContraRecibo?:boolean;   
     MontoMaxContraRecibo?:number;    
 }
