@@ -1,3 +1,10 @@
 .comment-widgets .comment-row {
     padding: 0px;
 }
+
+.contenedor-archivos {
+    padding: 10px;
+    border-radius: 10px;
+    border: solid 1px #5b5b644d;
+    background: #847d7d12;
+}

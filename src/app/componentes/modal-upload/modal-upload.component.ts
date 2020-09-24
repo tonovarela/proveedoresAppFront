@@ -66,9 +66,15 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
       .subscribe((response) => {
         this.archivoSubiendo=false;        
         if (response['esIgual']) {   
+          
           if (this._modalUploadService.tipoArchivo!="*"){
+            //Registrar bitacora XML y PDF
             this.registrarBitacoraIntelisis(response["path"]);
-          }          
+          } else{
+            //Registrar bitacora Evidencia          
+            this.registrarBitacoraEvidencia(response["pathArchivo"]);
+            
+          }         
           this._modalUploadService.ocultarModal();                 
           this.cerrarModal();
           this._uiService.mostrarAlertaSuccess("Listo",response["mensaje"]);
@@ -86,6 +92,18 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
 
       
   }
+
+
+
+  registrarBitacoraEvidencia(path:string){    
+    const movimiento=this._modalUploadService.movimiento;
+    let rama ="EVI"    
+      this._subirArchivoService
+                              .anexarEvidenciaIntelisis(path,movimiento,rama)
+                              .subscribe();             
+  
+  }
+
 
   registrarBitacoraIntelisis(path:string){    
     const movimiento=this._modalUploadService.movimiento;

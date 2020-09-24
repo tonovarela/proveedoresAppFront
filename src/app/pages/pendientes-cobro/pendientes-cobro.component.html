@@ -110,6 +110,14 @@
             <div *ngIf="data.tienePDF" class="rounded-icon rounded-success"><i class="fa fa-check-circle-o"></i></div>
           </ng-template>
         </e-column>
+        <!-- <e-column headerText="Anexo" width='30'>
+          <ng-template #template let-data>
+            <button class="btn btn-warning btn-xs" (click)="irAnexoFactura(data)">
+              <i class="fa fa-cog "></i>
+            </button>
+          </ng-template>
+        </e-column> -->
+
         <e-column *ngIf="tieneMovimientosAnexoRequeridos" headerText="Anexo" width='30'>
           <ng-template #template let-data>
             <button *ngIf="data.EV!='No Requerido'" 
@@ -134,14 +142,12 @@
           </ng-template> -->
 
           <ng-template #template let-data>
-            <label class="label label-light-warning" *ngIf="data.EV=='Requerido sin Evidencia'">              
-                <i class="fa fa-chevron-left"></i>Es necesario un documento anexo              
+            <label class="label label-light-warning" *ngIf="data.EV=='Requerido sin Evidencia'">
+              <i class="fa fa-chevron-left"></i>Es necesario un documento anexo
             </label>
-            <ejs-checkbox 
-            (change)="cambio(data)"
-               *ngIf="data.EV!='Requerido sin Evidencia' && data.CR"
-              [disabled]="!_usuarioService.usuario.PuedeGenerarContraRecibo"
-              cssClass="e-primary" [(ngModel)]="data.solicitaContraRecibo"  label="">
+            <ejs-checkbox (change)="cambio(data)" *ngIf="data.EV!='Requerido sin Evidencia' && data.CR"
+              [disabled]="!_usuarioService.usuario.PuedeGenerarContraRecibo" cssClass="e-primary"
+              [(ngModel)]="data.solicitaContraRecibo" label="">
             </ejs-checkbox>
           </ng-template>
         </e-column>

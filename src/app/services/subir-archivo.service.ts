@@ -17,11 +17,11 @@ import 'rxjs/add/operator/delay';
 })
 export class SubirArchivoService {
   public notificacion = new EventEmitter<Movimiento>();
-  
-  URL_SERVICE: string =environment.URL_VALIDADORFILE;    
+
+  URL_SERVICE: string = environment.URL_VALIDADORFILE;
   //"http://localhost:44382";
-  validarEstructura: boolean =true;
-  beta:boolean=false;
+  validarEstructura: boolean = true;
+  beta: boolean = false;
   constructor(private _http: HttpClient,
     private _usuarioService: UsuarioService) { }
 
@@ -30,7 +30,7 @@ export class SubirArchivoService {
 
   public revisarArchivo(archivo: File, tipoArchivo: string, movimiento: PagoAprobado | Movimiento) {
 
-    if (tipoArchivo=="*"){
+    if (tipoArchivo == "*") {
       return this.subirAnexoMovimiento(movimiento, tipoArchivo, archivo);
     }
 
@@ -44,39 +44,43 @@ export class SubirArchivoService {
   }
 
 
-  private subirAnexoMovimiento(movimiento: PagoAprobado | Movimiento,tipoArchivo:string,archivo:File){
-    
-    const url = `${this.URL_SERVICE}/api/anexo`;    
-    const formData = new FormData();    
-    formData.append('tipo', movimiento.tipo);  
-    formData.append('idMovimiento', movimiento.movimientoID.toString());  
-    formData.append('archivo', archivo, archivo.name);        
-    if (archivo.size>3145729){
+  private subirAnexoMovimiento(movimiento: PagoAprobado | Movimiento, tipoArchivo: string, archivo: File) {
+
+    const url = `${this.URL_SERVICE}/api/anexo`;
+    const formData = new FormData();
+    formData.append('tipo', movimiento.tipo);
+    formData.append('idMovimiento', movimiento.movimientoID.toString());
+    formData.append('archivo', archivo, archivo.name);
+    formData.append('fechaEmision', movimiento.fechaEmision.toLocaleString());
+    formData.append('proveedor', this._usuarioService.usuario.Proveedor.trim());
+    formData.append('referencia', movimiento.referencia.toString());
+
+    if (archivo.size > 3145729) {
       let errorResponse = {
-      ok: true,
-      esIgual: false,
-      errores: [],
-      mensaje: `Archivo muy grande,debe de pesar menos de 3MB`
-    };     
-    return Observable.of(errorResponse).delay(500);       
+        ok: true,
+        esIgual: false,
+        errores: [],
+        mensaje: `Archivo muy grande,debe de pesar menos de 3MB`
+      };
+      return Observable.of(errorResponse).delay(500);
     }
     return this._http.post(url, formData, { reportProgress: true })
-    .pipe(
-      map(resp => {   
-        movimiento.estaActualizando=true; 
-        if (resp["esIgual"]){
-          this.notificacion.emit(movimiento);    
-        }        
-        return resp;
-      })
-    );
-    
-    
+      .pipe(
+        map(resp => {
+          movimiento.estaActualizando = true;
+          if (resp["esIgual"]) {
+            this.notificacion.emit(movimiento);
+          }
+          return resp;
+        })
+      );
+
+
   }
 
 
   private revisarPendientesCobro(movimiento: Movimiento, tipoArchivo: string, archivo: File): Observable<any> {
-    const url = `${this.URL_SERVICE}/api/pendientescobro/revisar${tipoArchivo}?validar=${this.validarEstructura}&beta=${this.beta}`;    
+    const url = `${this.URL_SERVICE}/api/pendientescobro/revisar${tipoArchivo}?validar=${this.validarEstructura}&beta=${this.beta}`;
     const formData = new FormData();
     formData.append('archivo', archivo, archivo.name);
     formData.append('monto', movimiento.importe.toString());
@@ -94,8 +98,8 @@ export class SubirArchivoService {
     formData.append('movimiento', `${movimiento.movimientoDescripcion}-${movimiento.folio}`.trim());
     formData.append('proveedor', `${this._usuarioService.usuario.Proveedor.trim()}`);
     formData.append('tipo', `${movimiento.tipo}`);
-    formData.append('moneda', `${movimiento.moneda}`);    
-    formData.append('fechaEmision',movimiento.fechaEmision.toLocaleString() );
+    formData.append('moneda', `${movimiento.moneda}`);
+    formData.append('fechaEmision', movimiento.fechaEmision.toLocaleString());
 
     return this._http.post(url, formData, { reportProgress: true })
       .pipe(
@@ -120,18 +124,15 @@ export class SubirArchivoService {
     const formData = new FormData();
     formData.append('archivo', archivo, archivo.name);
     formData.append('monto', movimiento.importe.toString());
-    formData.append('rfc', this._usuarioService.usuario.RFC);    
+    formData.append('rfc', this._usuarioService.usuario.RFC);
     formData.append('movimiento', `${movimiento.movimientoDescripcion}-${movimiento.folio}`.trim());
     formData.append('factura', '');
-    formData.append('folio', `${movimiento.folio}`.trim());    
+    formData.append('folio', `${movimiento.folio}`.trim());
     formData.append('idMovimiento', movimiento.movimientoID.toString());
     formData.append('proveedor', `${this._usuarioService.usuario.Proveedor.trim()}`);
     formData.append('tipo', `${movimiento.tipo}`);
     formData.append('moneda', `${movimiento.moneda}`);
-    formData.append('fechaEmision',movimiento.fechaEmision.toLocaleString() );
-
-
-
+    formData.append('fechaEmision', movimiento.fechaEmision.toLocaleString());
     return this._http.post(url, formData, { reportProgress: true })
       .pipe(
         map(resp => {
@@ -146,21 +147,34 @@ export class SubirArchivoService {
           return resp;
         })
       );
-    
+
   }
 
 
-  anexarMovimientoIntelisis(pathArchivo, movimiento:Movimiento, rama) {
-  
+  anexarEvidenciaIntelisis(pathArchivo, movimiento: Movimiento, rama) {
+    return this._http.post(`${environment.URL_SERVICIOS}/facturas/evidencia`,
+      {
+        path: `${pathArchivo}`,
+        id: movimiento.movimientoID,
+        rama
+      }
+    );
+  }
+
+  anexarMovimientoIntelisis(pathArchivo, movimiento: Movimiento, rama) {
+
     return this._http.post(`${environment.URL_SERVICIOS}/facturas/registro/documento`,
-      { path: `${pathArchivo}`, id:movimiento.movimientoID,
-                                movID:movimiento.folio,
-                                movimientoDescripcion: movimiento.movimientoDescripcion,
-                                rama}
-                                );
+      {
+        path: `${pathArchivo}`,
+        id: movimiento.movimientoID,
+        movID: movimiento.folio,
+        movimientoDescripcion: movimiento.movimientoDescripcion,
+        rama
+      }
+    );
   }
 
-  //Revisa validez ante el SAT
+  //Revisa validez ante el SAT  --Deprecado ya no se usa el WebService de CloudCore
   validarXML(archivo: File) {
     const url = `${this.URL_SERVICE}/api/factura/validar`;
     const formData = new FormData();

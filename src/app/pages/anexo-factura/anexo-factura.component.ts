@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, forkJoin } from 'rxjs';
 import { ComunicadoService } from './../../services/comunicado.service';
 import { Anexo, Contrarecibo, Movimiento, PagoAprobado } from './../../models/movimiento';
 import { ModalUploadService } from './../../services/modal-upload.service';
@@ -21,59 +21,61 @@ export class AnexoFacturaComponent implements OnInit, OnDestroy {
   constructor(public activeRoute: ActivatedRoute,
     public router: Router,
     public _anexoService: AnexoService,
-    public  _comunicadoService:ComunicadoService,
-    public _subirUsuarioService:SubirArchivoService,
+    public _comunicadoService: ComunicadoService,
+    public _subirUsuarioService: SubirArchivoService,
     public _modalUploadService: ModalUploadService) { }
 
 
 
 
-    ngOnInit(): void {
-      this.URL = environment.URL_VALIDADORFILE;
-      this._comunicadoService.verificarNotificacion.emit(true);
+  ngOnInit(): void {
+    this.URL = environment.URL_VALIDADORFILE;
+    this._comunicadoService.verificarNotificacion.emit(true);
 
-      this.subscriptionMovFile = this._subirUsuarioService.notificacion
+    this.subscriptionMovFile = this._subirUsuarioService.notificacion
       .pipe(filter((x: Movimiento) => x.tipo == "Factura-Ingreso"))
       .subscribe((mov: Movimiento) => {
-        this.cargarAnexos();        
+        this.cargarAnexos();
       });
 
 
-      this.activeRoute.params.subscribe((params: Params) => {
-        const movimiento = this._anexoService.movimientoActual;
-        if (params["id"] == undefined) {
-          this.router.navigateByUrl("/facturas-emitidas");
-          return;
-        }
-        if (movimiento ==undefined){
-          this.router.navigateByUrl("/facturas-emitidas");
-          return;
-        }        
-        if (movimiento.movimientoID != params["id"]) {
-          this.router.navigateByUrl("/facturas-emitidas");        
-          return         
-        } 
-         this.movimiento = this._anexoService.movimientoActual;
-         this.cargarAnexos();
-      });
-    }
+    this.activeRoute.params.subscribe((params: Params) => {
+      const movimiento = this._anexoService.movimientoActual;
+      if (params["id"] == undefined) {
+        this.router.navigateByUrl("/facturas-emitidas");
+        return;
+      }
+      if (movimiento == undefined) {
+        this.router.navigateByUrl("/facturas-emitidas");
+        return;
+      }
+      if (movimiento.movimientoID != params["id"]) {
+        this.router.navigateByUrl("/facturas-emitidas");
+        return
+      }
+      this.movimiento = this._anexoService.movimientoActual;
+      this.cargarAnexos();
+    });
+  }
 
 
-    ngOnDestroy(): void {
-      this.subscriptionMovFile.unsubscribe();      
-    }
+  ngOnDestroy(): void {
+    this.subscriptionMovFile.unsubscribe();
+  }
 
 
-    regresar(){
-      this.router.navigateByUrl("/facturas-emitidas");
-    }
+  regresar() {
+    this.router.navigateByUrl("/facturas-emitidas");
+  }
 
-  borrarAnexo(anexo: Anexo ) {
-    this. movimiento.estaActualizando = true;
-    this._anexoService.eliminarAnexo(anexo.id).subscribe(x => {
+  borrarAnexo(anexo: Anexo) {
+    this.movimiento.estaActualizando = true;
+    forkJoin([this._anexoService.eliminarAnexo(anexo.id),
+              this._anexoService.borrarEvidenciaIntelisis(anexo)]).subscribe(data => {                
       this.movimiento.estaActualizando = false;
       this.cargarAnexos();
     });
+
 
   }
 
@@ -91,6 +93,6 @@ export class AnexoFacturaComponent implements OnInit, OnDestroy {
 
   }
 
-  
+
 
 }
