@@ -18,9 +18,11 @@
   </div>
 </div>
 <div *ngIf="_usuarioService.usuario.PuedeGenerarContraRecibo">
+  
   <div class="registroContrarecibo" *ngIf="(movimientos | numFacturasCR) >0 && !cargando">
     <div class="card " id="contenedorContraRecibo">
-      <div class="card-body" style="padding:0 1.2rem" *ngIf="_usuarioService.usuario.PuedeGenerarContraRecibo">
+      <div class="card-body" style="padding:0 1.2rem"       
+      >
         <div class="d-flex no-block">
           <div class="m-r-20 align-self-center" style="float:left">
             <h6 class="text-muted m-t-10 m-b-0 "># Facturas</h6>
@@ -110,13 +112,8 @@
             <div *ngIf="data.tienePDF" class="rounded-icon rounded-success"><i class="fa fa-check-circle-o"></i></div>
           </ng-template>
         </e-column>
-        <!-- <e-column headerText="Anexo" width='30'>
-          <ng-template #template let-data>
-            <button class="btn btn-warning btn-xs" (click)="irAnexoFactura(data)">
-              <i class="fa fa-cog "></i>
-            </button>
-          </ng-template>
-        </e-column> -->
+       
+       
 
         <e-column *ngIf="tieneMovimientosAnexoRequeridos" headerText="Anexo" width='30'>
           <ng-template #template let-data>
@@ -140,15 +137,21 @@
                
             </div>
           </ng-template> -->
-
           <ng-template #template let-data>
             <label class="label label-light-warning" *ngIf="data.EV=='Requerido sin Evidencia'">
               <i class="fa fa-chevron-left"></i>Es necesario un documento anexo
             </label>
-            <ejs-checkbox (change)="cambio(data)" *ngIf="data.EV!='Requerido sin Evidencia' && data.CR"
+            <!-- <ejs-checkbox (change)="cambio(data)" 
+            *ngIf="data.CR"              
+               cssClass="e-primary"
+              [(ngModel)]="data.solicitaContraRecibo" label="">
+            </ejs-checkbox> -->
+            <ejs-checkbox (change)="cambio(data)" 
+            *ngIf="data.EV!='Requerido sin Evidencia' && data.CR"
               [disabled]="!_usuarioService.usuario.PuedeGenerarContraRecibo" cssClass="e-primary"
               [(ngModel)]="data.solicitaContraRecibo" label="">
             </ejs-checkbox>
+                        
           </ng-template>
         </e-column>
       </e-columns>

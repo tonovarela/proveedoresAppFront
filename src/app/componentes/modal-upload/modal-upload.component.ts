@@ -13,164 +13,176 @@ import { ExcelService } from 'src/app/services/excel-service.service';
 })
 export class ModalUploadComponent implements OnInit, OnDestroy {
   mensaje: string = "";
-  errores:string[]=[];
+  errores: string[] = [];
   archivoSubir: File;
-  archivoSubiendo:boolean =false;
+  archivoSubiendo: boolean = false;
 
 
-  tipoArchivo='';
+  tipoArchivo = '';
 
 
 
-  detalleErroresCP:RevisionCP[]=[];  
-   
+  detalleErroresCP: RevisionCP[] = [];
+
 
   @ViewChild('archivo') archivoRef: ElementRef;
 
 
-  
+
   constructor(public _modalUploadService: ModalUploadService,
     public _uiService: UiService,
     public _subirArchivoService: SubirArchivoService,
-    private _excelService :ExcelService
+    private _excelService: ExcelService
 
   ) { }
-  
+
 
   ngOnInit(): void {
-    
+
   }
 
   ngOnDestroy(): void {
-  
+
   }
-  cerrarModal() {    
+  cerrarModal() {
     this._modalUploadService.ocultarModal();
     this.mensaje = "";
-    this.errores=[];
-    this.detalleErroresCP=[];
+    this.errores = [];
+    this.detalleErroresCP = [];
     this.archivoRef.nativeElement.value = "";
     this.archivoSubir = null;
-    this.archivoSubiendo=false;
+    this.archivoSubiendo = false;
   }
   subirArchivo() {
-    
-    if (!this.archivoSubir) {      
+
+    if (!this.archivoSubir) {
       return;
-    }    
-    this.archivoSubiendo=true;  
-    this.tipoArchivo=this._modalUploadService.tipoArchivo;     
+    }
+    this.archivoSubiendo = true;
+    this.tipoArchivo = this._modalUploadService.tipoArchivo;
     this._subirArchivoService.revisarArchivo(this.archivoSubir,
-                                            this._modalUploadService.tipoArchivo,
-                                            this._modalUploadService.movimiento)
+      this._modalUploadService.tipoArchivo,
+      this._modalUploadService.movimiento)
       .subscribe((response) => {
-        this.archivoSubiendo=false;        
-        if (response['esIgual']) {   
-          
-          if (this._modalUploadService.tipoArchivo!="*"){
+        this.archivoSubiendo = false;
+        if (response['esIgual']) {
+
+          if (this._modalUploadService.tipoArchivo != "*") {
             //Registrar bitacora XML y PDF
             this.registrarBitacoraIntelisis(response["path"]);
-          } else{
+          } else {
             //Registrar bitacora Evidencia          
             this.registrarBitacoraEvidencia(response["pathArchivo"]);
-            
-          }         
-          this._modalUploadService.ocultarModal();                 
+
+          }
+          this._modalUploadService.ocultarModal();
           this.cerrarModal();
-          this._uiService.mostrarAlertaSuccess("Listo",response["mensaje"]);
+          this._uiService.mostrarAlertaSuccess("Listo", response["mensaje"]);
         } else {
           this.mensaje = response["mensaje"];
-          this.errores= response["errores"];
-          if (response["detalleErroresCP"]!=undefined){
-            this.detalleErroresCP=response["detalleErroresCP"];           
+          this.errores = response["errores"];
+          if (response["detalleErroresCP"] != undefined) {
+            this.detalleErroresCP = response["detalleErroresCP"];
           }
-          
-          
-          
+
+
+
         }
       });
 
-      
+
   }
 
 
 
-  registrarBitacoraEvidencia(path:string){    
-    const movimiento=this._modalUploadService.movimiento;
-    let rama ="EVI"    
-      this._subirArchivoService
-                              .anexarEvidenciaIntelisis(path,movimiento,rama)
-                              .subscribe();             
-  
+  registrarBitacoraEvidencia(path: string) {
+    const movimiento = this._modalUploadService.movimiento;
+    let rama = "CXP"
+    this._subirArchivoService
+      .anexarEvidenciaIntelisis(path, movimiento, rama)
+      .subscribe();
+
   }
 
 
-  registrarBitacoraIntelisis(path:string){    
-    const movimiento=this._modalUploadService.movimiento;
-    let rama =""
-    if (this._modalUploadService.movimiento.tipo=="Factura-Ingreso"){
-      rama='CXP';
+  registrarBitacoraIntelisis(path: string) {
+    const movimiento = this._modalUploadService.movimiento;
+    let rama = ""
+    if (this._modalUploadService.movimiento.tipo == "Factura-Ingreso") {
+      rama = 'CXP';
     }
-    if (this._modalUploadService.movimiento.tipo=="Pago"){
-      rama='DIN';
-    }        
-    if (rama==""){
+    if (this._modalUploadService.movimiento.tipo == "Pago") {
+      rama = 'DIN';
+    }
+    if (rama == "") {
       return;
     }
-      this._subirArchivoService
-                              .anexarMovimientoIntelisis(path,movimiento,rama)
-                              .subscribe();             
-  
+    this._subirArchivoService
+      .anexarMovimientoIntelisis(path, movimiento, rama)
+      .subscribe();
+
   }
 
 
   exportarReporteErrores() {
-    let info=[];
-    if (this.tipoArchivo.toUpperCase()=="XML"){
-       info=this.detalleErroresCP.map(d=>{
+    let info = [];
+    if (this.tipoArchivo.toUpperCase() == "XML") {
+      info = this.detalleErroresCP.map(d => {
         return {
-          "idDocumento":d.idDocumento,
-          "Importe en sistema":d.importeRegistrado==-1?"No existe":d.importeRegistrado,
-          "Importe en XML":d.importeXML==-1?"No existe":d.importeXML
+          "idDocumento": d.idDocumento,
+          "Importe en sistema": d.importeRegistrado == -1 ? "No existe" : d.importeRegistrado,
+          "Importe en XML": d.importeXML == -1 ? "No existe" : d.importeXML
         };
-      });    
-    }else{
+      });
+    } else {
 
-      info=this.detalleErroresCP.map(d=>{
+      info = this.detalleErroresCP.map(d => {
         return {
-          "idDocumento":d.idDocumento,
-          "Error":'No existe en el PDF',          
+          "idDocumento": d.idDocumento,
+          "Error": 'No existe en el PDF',
         };
       });
     }
-    
-    this._excelService.exportAsExcelFile(info,"Error en Movimientos")
-   
+
+    this._excelService.exportAsExcelFile(info, "Error en Movimientos")
+
   }
 
 
   seleccionarArchivo(archivo: File) {
     this.mensaje = "";
-    this.errores=[];
+    this.errores = [];
     if (!archivo) {
       console.log("No hay archivo");
       return;
     }
 
-  
-    if (archivo.type.indexOf(this._modalUploadService.tipoArchivo) < 0 ) {
-      this.mensaje = `El archivo debe de ser de  tipo ${this._modalUploadService.tipoArchivo} `;      
+
+    if (archivo.type.indexOf(this._modalUploadService.tipoArchivo) < 0) {
+      this.mensaje = `El archivo debe de ser de  tipo ${this._modalUploadService.tipoArchivo} `;
     }
 
-    if (this._modalUploadService.tipoArchivo==="*"){
-      this.mensaje="";
+    if (this._modalUploadService.tipoArchivo === "*") {      
+      if (archivo.type.toLowerCase().indexOf("pdf") > 0 
+         || archivo.type.toLowerCase().indexOf("png") > 0
+         || archivo.type.toLowerCase().indexOf("jpeg") > 0
+         || archivo.type.toLowerCase().indexOf("bmp") > 0
+         || archivo.type.toLowerCase().indexOf("jpg") > 0
+         || archivo.type.toLowerCase().indexOf("gif") > 0
+         || archivo.type.toLowerCase().indexOf("svg") > 0
+         ) {
+        this.mensaje = "";
+      } else {
+        this.mensaje = `El archivo debe de ser una imagen o un PDF `;
+      }
+
     }
 
-    if (this.mensaje.length>0){
+    if (this.mensaje.length > 0) {
       return;
     }
     this.archivoSubir = archivo;
-    
+
 
   }
 

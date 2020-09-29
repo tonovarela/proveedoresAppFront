@@ -1,4 +1,5 @@
-import { Subscription, Observable, forkJoin } from 'rxjs';
+import { UiService } from './../../services/ui.service';
+import { Subscription, Observable, forkJoin, of } from 'rxjs';
 import { ComunicadoService } from './../../services/comunicado.service';
 import { Anexo, Contrarecibo, Movimiento, PagoAprobado } from './../../models/movimiento';
 import { ModalUploadService } from './../../services/modal-upload.service';
@@ -6,7 +7,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AnexoService } from 'src/app/services/anexo.service';
 import { SubirArchivoService } from 'src/app/services/subir-archivo.service';
-import { filter } from 'rxjs/operators';
+import { filter, mergeMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -70,12 +71,13 @@ export class AnexoFacturaComponent implements OnInit, OnDestroy {
 
   borrarAnexo(anexo: Anexo) {
     this.movimiento.estaActualizando = true;
-    forkJoin([this._anexoService.eliminarAnexo(anexo.id),
-              this._anexoService.borrarEvidenciaIntelisis(anexo)]).subscribe(data => {                
+    this._anexoService.eliminarAnexo(anexo.id).subscribe(data => {      
+      if (data["ok"]==true){      
+        this._anexoService.borrarEvidenciaIntelisis(anexo).subscribe();
+      }
       this.movimiento.estaActualizando = false;
-      this.cargarAnexos();
+      this.cargarAnexos();                   
     });
-
 
   }
 
