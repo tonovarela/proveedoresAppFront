@@ -18,8 +18,8 @@ import 'rxjs/add/operator/delay';
 export class SubirArchivoService {
   public notificacion = new EventEmitter<Movimiento>();
   URL_SERVICE: string = 
-  //environment.URL_VALIDADORFILE;
-  "http://localhost:44382";
+  environment.URL_VALIDADORFILE;
+  //"http://localhost:44382";
   validarEstructura: boolean = environment.REVISAR_ESTRUCTURA;
   beta: boolean = environment.BETA;
   constructor(private _http: HttpClient,

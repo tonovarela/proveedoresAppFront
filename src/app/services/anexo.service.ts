@@ -12,8 +12,8 @@ import { UiService } from './ui.service';
 export class AnexoService {
 
   URL_SERVICE: string =
-    //environment.URL_VALIDADORFILE;
-    "http://localhost:44382";
+    environment.URL_VALIDADORFILE;
+    //"http://localhost:44382";
   beta: boolean = environment.BETA;
 
   movimientoActual: Movimiento;

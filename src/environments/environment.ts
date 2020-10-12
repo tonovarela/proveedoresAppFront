@@ -3,10 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  BETA:true,
+  production: true,
+  BETA:false,
   REVISAR_ESTRUCTURA:true,
-  URL_SERVICIOS:"https://sistemas.litoprocess.com/proveedoresbeta/api",
+  URL_SERVICIOS:"https://sistemas.litoprocess.com/proveedores/api",
   URL_VALIDADORFILE:"https://sistemas.litoprocess.com/proveedor"
 };
 
