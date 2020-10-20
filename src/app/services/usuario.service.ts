@@ -55,7 +55,7 @@ export class UsuarioService {
 
   autorizacionCR() {
     const url = `${this.url}/usuario/autorizacioncr/${this.usuario.Proveedor}`;
-    this.usuario.PuedeGenerarContraRecibo=false;
+    //this.usuario.PuedeGenerarContraRecibo=false;
     return this.http.get(url).pipe(
       map(resp=>{
           if (resp["validacion"]==true){

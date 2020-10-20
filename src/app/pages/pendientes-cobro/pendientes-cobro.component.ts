@@ -65,7 +65,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   public contenedorFiltroFechaEmision: any = null;
   public contenedorFiltroFechaVencimiento: any = null;
   public fecha: FechaDictionary = new FechaDictionary();
-
+  
 
   constructor(
     private _router: Router,
@@ -94,18 +94,16 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this._usuarioService.usuario.PuedeGenerarContraRecibo=true;
     this._comunicadoService.verificarNotificacion.emit(true);
-    this.URL = environment.URL_VALIDADORFILE;
-    //this._usuarioService.usuario.PuedeGenerarContraRecibo=true;
-    ///this._usuarioService.usuario.PuedeAnexarDocumento = true;
-    
+    this.URL = environment.URL_VALIDADORFILE;    
     this.subscription = this._usuarioService
       .filtroGeneral
       .subscribe(x => {
         this.aplicarFiltroGeneral();
       });
     this.cargando = true;
-
+   
     this._usuarioService.autorizacionCR().subscribe();
     this.subscripcionMovMoneda = this.movimientosCR_$.subscribe(() => {
       this.validarReglasContraRecibo();

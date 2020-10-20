@@ -76,6 +76,8 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this._usuarioService.usuario.PuedeGenerarContraRecibo=true;
+    this._usuarioService.autorizacionCR().subscribe();
     this._comunicadoService.verificarNotificacion.emit(true);
     this.subscription = this._usuarioService
       .filtroGeneral

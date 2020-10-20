@@ -4,4 +4,6 @@ export const environment = {
   REVISAR_ESTRUCTURA:true,
   URL_SERVICIOS:"https://sistemas.litoprocess.com/proveedores/api",
   URL_VALIDADORFILE:"https://sistemas.litoprocess.com/proveedor"
+  //URL_VALIDADORFILE:"http://localhost:44382/"
+  
 };
