@@ -24,7 +24,9 @@ export interface Movimiento {
     formaPagoDesc?:string,
     anexos?:Anexo[],
     estaActualizando?:boolean,
-    EV?:string
+    EV?:string,
+    mostrarAdvertencia?:boolean,
+    pedido?:string
     
 }
 

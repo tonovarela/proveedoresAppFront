@@ -55,10 +55,10 @@
       allowSorting="true" allowResizing='true' [pageSettings]="pageSettings" (actionComplete)="actionComplete($event)">
       <e-columns>
         <!-- <e-column field="movimientoID" headerText="ID" width=50></e-column> -->
-        <e-column field="movimientoDescripcion" headerText="Tipo" width=40></e-column>
-        <e-column field="folio" headerText='Folio' width=25>
+        <e-column field="movimientoDescripcion" headerText="Tipo" width=55></e-column>
+        <e-column field="folio" headerText='Folio' width=30>
         </e-column>
-        <e-column field="referencia" headerText="Factura" width=40>
+        <e-column field="referencia" headerText="Factura" width=35>
         </e-column>
         <e-column field="fechaEmision" [filter]='filterMenu' headerText="Emisión" [format]='formatoptions' width=40>
           <ng-template #filterTemplate let-data>
@@ -86,7 +86,7 @@
           </ng-template>
         </e-column> -->
 
-        <e-column headerText="Importe" width=40>
+        <e-column headerText="Importe" width=30>
           <ng-template #template let-data>
             {{data.importe | currency}}
           </ng-template>
@@ -98,14 +98,14 @@
         </e-column> -->
         <e-column field="moneda" headerText="Moneda" width=30>
         </e-column>
-        <e-column field="tieneXML" [allowFiltering]='false' headerText="XML" allowSelection="false" width='20'>
+        <e-column field="tieneXML" [allowFiltering]='false' headerText="XML" allowSelection="false" width='18'>
           <ng-template #template let-data>
             <div *ngIf="!data.tieneXML" (click)="_modalUploadService.mostrarModal('xml',data)"
               class="rounded-icon rounded-info"><i class="mdi mdi-file-xml"></i> </div>
             <div *ngIf="data.tieneXML" class="rounded-icon rounded-success"><i class="fa fa-check-circle-o"></i> </div>
           </ng-template>
         </e-column>
-        <e-column field="tienePDF" [allowFiltering]='false' headerText="PDF" allowSelection="false" width='20'>
+        <e-column field="tienePDF" [allowFiltering]='false' headerText="PDF" allowSelection="false" width='18'>
           <ng-template #template let-data>
             <div *ngIf="!data.tienePDF" (click)="_modalUploadService.mostrarModal('pdf',data)"
               class="rounded-icon rounded-warning"><i class="mdi mdi-file-pdf"></i></div>
@@ -129,7 +129,7 @@
           </ng-template>
         </e-column>
         <e-column field="CR" headerText="" [allowFiltering]='false' [allowSorting]="true" allowSelection="false"
-          width='65'>
+          width='100'>
           <!-- <ng-template #headerTemplate let-data>
             <div>
               <ejs-checkbox [checked]='filtroCheck' cssClass="e-custom" [(ngModel)]="filtroCheck"
@@ -140,12 +140,12 @@
           <ng-template #template let-data>
             <label class="label label-light-warning" *ngIf="data.EV=='Requerido sin Evidencia'">
               <i class="fa fa-chevron-left"></i>Es necesario un documento anexo
-            </label>
-            <!-- <ejs-checkbox (change)="cambio(data)" 
-            *ngIf="data.CR"              
-               cssClass="e-primary"
-              [(ngModel)]="data.solicitaContraRecibo" label="">
-            </ejs-checkbox> -->
+            </label>            
+            <div *ngIf="data.mostrarAdvertencia" class="alert  alert-warning" style="margin: 0; line-height: 15px;">                      
+                <i  class="fa fa-warning "></i>                
+              <span style="font-size: 10px;margin-left: 2px;">El pedido {{data.pedido}} no se ha entregado por completo<br>para mayor información marca al 5521225600 Ext  109.</span>
+            </div>
+            
             <ejs-checkbox (change)="cambio(data)" 
             *ngIf="data.EV!='Requerido sin Evidencia' && data.CR"
               [disabled]="!_usuarioService.usuario.PuedeGenerarContraRecibo" cssClass="e-primary"

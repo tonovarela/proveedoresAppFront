@@ -16,8 +16,11 @@ import { setSpinner } from '@syncfusion/ej2-popups';
 
 import { Subscription } from 'rxjs';
 import { FechaDictionary } from 'src/app/utils/dates';
-import { filter } from 'rxjs/operators';
+//import { filter } from 'rxjs/operators';
 import { AnexoService } from 'src/app/services/anexo.service';
+
+
+
 
 
 
