@@ -1,3 +1,4 @@
+import { ResponseOpinionCumplimiento } from './../models/opinion_cumplimiento';
 import { SettingsService } from './settings.service';
 import { ResponseLogin, Usuario } from './../models/proveedor';
 import { environment } from './../../environments/environment';
@@ -67,6 +68,11 @@ export class UsuarioService {
 
   }
 
+
+  obtenerHistorialOpinionCumplimiento(){
+    const url = `${this.url}/usuario/opinioncumplimiento/${this.usuario.Proveedor}`;
+    return this.http.get<ResponseOpinionCumplimiento>(url);
+  } 
 
   esAdmin() {
     return this.usuario.idRol == "1";

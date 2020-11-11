@@ -67,14 +67,19 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
         this.archivoSubiendo = false;
         if (response['esIgual']) {
 
-          if (this._modalUploadService.tipoArchivo != "*") {
-            //Registrar bitacora XML y PDF
-            this.registrarBitacoraIntelisis(response["path"]);
-          } else {
-            //Registrar bitacora Evidencia          
-            this.registrarBitacoraEvidencia(response["pathArchivo"]);
-
+          //Registrar bitacora Cuenta                      
+          if (this._modalUploadService.movimiento == null) {
+            this.registrarBitacoraCuenta(response["pathArchivo"]);
+          }else{
+            if (this._modalUploadService.tipoArchivo != "*" ) {
+              //Registrar bitacora XML y PDF
+              this.registrarBitacoraIntelisis(response["path"]);
+            } else {           
+                //Registrar bitacora Evidencia          
+                this.registrarBitacoraEvidencia(response["pathArchivo"]);            
+            }
           }
+          
           this._modalUploadService.ocultarModal();
           this.cerrarModal();
           this._uiService.mostrarAlertaSuccess("Listo", response["mensaje"]);
@@ -89,11 +94,13 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
 
         }
       });
-
-
   }
 
-
+  registrarBitacoraCuenta(path:string) {    
+     this._subirArchivoService
+          .anexarEvidenciaCuenta(path)
+          .subscribe();
+  }
 
   registrarBitacoraEvidencia(path: string) {
     const movimiento = this._modalUploadService.movimiento;
@@ -162,15 +169,15 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
       this.mensaje = `El archivo debe de ser de  tipo ${this._modalUploadService.tipoArchivo} `;
     }
 
-    if (this._modalUploadService.tipoArchivo === "*") {      
-      if (archivo.type.toLowerCase().indexOf("pdf") > 0 
-         || archivo.type.toLowerCase().indexOf("png") > 0
-         || archivo.type.toLowerCase().indexOf("jpeg") > 0
-         || archivo.type.toLowerCase().indexOf("bmp") > 0
-         || archivo.type.toLowerCase().indexOf("jpg") > 0
-         || archivo.type.toLowerCase().indexOf("gif") > 0
-         || archivo.type.toLowerCase().indexOf("svg") > 0
-         ) {
+    if (this._modalUploadService.tipoArchivo === "*") {
+      if (archivo.type.toLowerCase().indexOf("pdf") > 0
+        || archivo.type.toLowerCase().indexOf("png") > 0
+        || archivo.type.toLowerCase().indexOf("jpeg") > 0
+        || archivo.type.toLowerCase().indexOf("bmp") > 0
+        || archivo.type.toLowerCase().indexOf("jpg") > 0
+        || archivo.type.toLowerCase().indexOf("gif") > 0
+        || archivo.type.toLowerCase().indexOf("svg") > 0
+      ) {
         this.mensaje = "";
       } else {
         this.mensaje = `El archivo debe de ser una imagen o un PDF `;

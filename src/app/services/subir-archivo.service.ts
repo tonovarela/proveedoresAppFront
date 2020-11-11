@@ -5,7 +5,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Movimiento } from '../models/movimiento';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/delay';
@@ -17,8 +17,9 @@ import 'rxjs/add/operator/delay';
 })
 export class SubirArchivoService {
   public notificacion = new EventEmitter<Movimiento>();
-  URL_SERVICE: string = 
-  environment.URL_VALIDADORFILE;
+  public notificacionSubirOpinionCumplimiento= new EventEmitter<boolean>();
+  URL_SERVICE: string =
+    environment.URL_VALIDADORFILE;
   //"http://localhost:44382";
   validarEstructura: boolean = environment.REVISAR_ESTRUCTURA;
   beta: boolean = environment.BETA;
@@ -28,7 +29,16 @@ export class SubirArchivoService {
 
 
 
+
+
   public revisarArchivo(archivo: File, tipoArchivo: string, movimiento: PagoAprobado | Movimiento) {
+
+
+
+    if (movimiento == null && tipoArchivo == "pdf") {
+      return this.subirOpinionCumplimiento(archivo);
+    }
+
 
     if (tipoArchivo == "*") {
       return this.subirAnexoMovimiento(movimiento, tipoArchivo, archivo);
@@ -44,6 +54,29 @@ export class SubirArchivoService {
   }
 
 
+  public subirOpinionCumplimiento(archivo: File) {
+
+    const url = `${this.URL_SERVICE}/api/anexocumplimiento?beta=${this.beta}`;
+    const formData = new FormData();
+    formData.append('proveedor', this._usuarioService.usuario.Proveedor.trim());
+    formData.append('rfc', this._usuarioService.usuario.RFC.trim());
+    formData.append('archivo', archivo, archivo.name);
+    this.validarPesoArchivo(archivo.size);
+    return this._http.post(url, formData, { reportProgress: true })
+      .pipe(
+        map(resp => {
+          return resp;
+        }),
+        catchError(err => {
+          return Observable.of({ mensaje: "Error en la subida de archivos", esIgual: false }).delay(500);
+        })
+      );
+
+  }
+
+
+
+
   private subirAnexoMovimiento(movimiento: PagoAprobado | Movimiento, tipoArchivo: string, archivo: File) {
 
     const url = `${this.URL_SERVICE}/api/anexo?beta=${this.beta}`;
@@ -55,15 +88,7 @@ export class SubirArchivoService {
     formData.append('proveedor', this._usuarioService.usuario.Proveedor.trim());
     formData.append('referencia', movimiento.referencia.toString());
 
-    if (archivo.size > 3145729) {
-      let errorResponse = {
-        ok: true,
-        esIgual: false,
-        errores: [],
-        mensaje: `Archivo muy grande,debe de pesar menos de 3MB`
-      };
-      return Observable.of(errorResponse).delay(500);
-    }
+    this.validarPesoArchivo(archivo.size);
     return this._http.post(url, formData, { reportProgress: true })
       .pipe(
         map(resp => {
@@ -151,7 +176,25 @@ export class SubirArchivoService {
   }
 
 
+
+  anexarEvidenciaCuenta(path) {
+
+    return this._http.post(`${environment.URL_SERVICIOS}/usuario/opinioncumplimiento`,
+      {
+        path: `${path}`,
+        id: this._usuarioService.usuario.Proveedor.trim(),
+      }
+    ).pipe(
+      map(resp => {
+        this.notificacionSubirOpinionCumplimiento.emit(true);
+      }
+      )
+    );
+    //return Observable.of({}).delay(500);    
+  }
+
   anexarEvidenciaIntelisis(pathArchivo, movimiento: Movimiento, rama) {
+
     return this._http.post(`${environment.URL_SERVICIOS}/facturas/evidencia`,
       {
         path: `${pathArchivo}`,
@@ -168,11 +211,27 @@ export class SubirArchivoService {
         path: `${pathArchivo}`,
         id: movimiento.movimientoID,
         movID: movimiento.folio,
-        moneda:movimiento.moneda.toLowerCase(),
+        moneda: movimiento.moneda.toLowerCase(),
         movimientoDescripcion: movimiento.movimientoDescripcion,
         rama
       }
     );
+  }
+
+
+
+
+  private validarPesoArchivo(peso) {
+
+    if (peso > 3145729) {
+      let errorResponse = {
+        ok: true,
+        esIgual: false,
+        errores: [],
+        mensaje: `Archivo muy grande,debe de pesar menos de 3MB`
+      };
+      return Observable.of(errorResponse).delay(500);
+    }
   }
 
   //Revisa validez ante el SAT  --Deprecado ya no se usa el WebService de CloudCore

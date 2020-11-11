@@ -3,13 +3,25 @@
     <div class="col-lg-7">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Usuario</h4>
+                <h4 class="card-title">Opinión de cumplimiento</h4>
+                <p>En este apartado podras subir la opinión de cumplimiento que emite el SAT cuando el departamento de
+                    administración te lo solicite.</p>
+                <button type="button" (click)="subirArchivo()"
+                    class="btn btn-info pull-right waves-effect waves-light m-r-10"><i class="fa fa-upload"></i>Subir
+                    archivo</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Proveedor</h4>
                 <h6 class="card-subtitle"></h6>
                 <form class="form p-t-20">
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon"><i class="ti-user"></i></div>
-                            <input [ngModel]="usuario.Nombre" disabled name="nombre" required class="form-control"
+                            <input [ngModel]="usuario.Proveedor" disabled name="nombre" required class="form-control"
                                 id="exampleInputuname" type="text">
                         </div>
                     </div>
@@ -22,11 +34,11 @@
                     </div>
 
 
-                    <!-- <button type="submit"  class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i>Guardar</button> -->
 
                 </form>
             </div>
         </div>
+        
     </div>
     <!-- <div class="col-lg-5">                
             <div class="card">
@@ -75,10 +87,33 @@
                 </div>
             </div>  
         
-
-
-
     </div> -->
 
 
+</div>
+<div class="row" *ngIf="historicoOpinionCumplimiento.length>0">    
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-body">
+                
+    
+                <div class="list-group"  >
+                    <h4>Historical de documentos</h4>
+                    <a style="cursor:default" href="javascript:void(0)" class="list-group-item "
+                     *ngFor="let documento of historicoOpinionCumplimiento">                     
+                        <div class="d-flex w-80 justify-content-between ">                            
+                            <small>
+                                <app-anexo-icono tipo="pdf"></app-anexo-icono>
+                             </small>
+                            <h5 class="mb-1 m-t-10" >{{documento.nombre}}</h5>
+                            <small class="text-muted"> {{documento.fecha | date:'dd-MM-y, h:mm:ss a'}}</small>
+                        </div>
+                        
+                        
+                    </a>                                        
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
