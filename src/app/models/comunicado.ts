@@ -7,7 +7,9 @@ export interface Comunicado {
     fecha_fin?:Date,
     fecha_actualizacion?:Date,
     visible?:boolean,
-    general?:boolean
+    general?:boolean,
+    opinion_cumplimiento?:boolean
+
 }
 
 

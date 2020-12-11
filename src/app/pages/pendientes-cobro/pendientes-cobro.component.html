@@ -1,6 +1,6 @@
 <app-loader *ngIf="cargando"></app-loader>
 
-<div *ngIf="!_usuarioService.usuario.PuedeGenerarContraRecibo ">
+<div *ngIf="!_usuarioService.usuario.PuedeGenerarContraRecibo && !cargando ">
   <div class="alert avisoCP">
     <h3 class="text-warning"><i class="fa fa-exclamation-circle"></i> Importante</h3>
     <div class="container">
@@ -13,11 +13,25 @@
         </div>
       </div>
     </div>
-
-
   </div>
 </div>
-<div *ngIf="_usuarioService.usuario.PuedeGenerarContraRecibo">
+<div *ngIf="tieneRequerimientoOpinionCumplimiento  && !cargando">
+  <div class="alert avisoCP">
+    <h3 class="text-warning"><i class="fa fa-exclamation-circle"></i> Importante</h3>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10">
+          <p>No puede generar contra-recibos debido a que tiene que anexar la <b>Opinión de cumplimiento</b> emitida por el SAT.</p>
+        </div>
+        <div class="col-md-2">
+          <button (click)="irPerfil()" class="btn btn-warning btn-xs">Subir documento</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="_usuarioService.usuario.PuedeGenerarContraRecibo && !tieneRequerimientoOpinionCumplimiento">
   
   <div class="registroContrarecibo" *ngIf="(movimientos | numFacturasCR) >0 && !cargando">
     <div class="card " id="contenedorContraRecibo">
@@ -144,11 +158,10 @@
             <div *ngIf="data.mostrarAdvertencia" class="alert  alert-warning" style="margin: 0; line-height: 15px;">                      
                 <i  class="fa fa-warning "></i>                
               <span style="font-size: 10px;margin-left: 2px;">El pedido {{data.pedido}} no se ha entregado por completo<br>para mayor información marca al 5521225600 Ext  109.</span>
-            </div>
-            
+            </div>            
             <ejs-checkbox (change)="cambio(data)" 
             *ngIf="data.EV!='Requerido sin Evidencia' && data.CR"
-              [disabled]="!_usuarioService.usuario.PuedeGenerarContraRecibo" cssClass="e-primary"
+              [disabled]="!_usuarioService.usuario.PuedeGenerarContraRecibo || tieneRequerimientoOpinionCumplimiento " cssClass="e-primary"
               [(ngModel)]="data.solicitaContraRecibo" label="">
             </ejs-checkbox>
                         

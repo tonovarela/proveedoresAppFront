@@ -46,7 +46,6 @@ export class ComunicadoService {
         return x["comunicado"];
       })
     );
-
   }
 
    porProveedor(proveedor:string){
@@ -106,7 +105,8 @@ export class ComunicadoService {
     );
   }
 
-  
+ 
+
 
   cambiarDisponibilidad(comunicado: Comunicado) {
     return this.http.get(`${this.URL}/api/comunicado/general/${comunicado.id_comunicado}?valor=${comunicado.general}`).pipe(
@@ -116,6 +116,8 @@ export class ComunicadoService {
     );
 
   }
+
+
 
   cambiarVisible(comunicado: Comunicado) {
     return this.http.get(`${this.URL}/api/comunicado/visible/${comunicado.id_comunicado}?valor=${comunicado.visible}`).pipe(

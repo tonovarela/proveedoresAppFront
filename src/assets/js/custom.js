@@ -12,6 +12,14 @@ function mostrarNotificaciones() {
     });
 }
 
+function habilitarToolTip(){
+    $(function () {
+        setTimeout(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        },1000);                
+    });
+}
+
 function iniciar_pluginCheck() {
     $(function () {
         'use_strict';
@@ -40,6 +48,7 @@ function iniciar_plugins() {
         jQuery(document).on('click', '.mega-dropdown', function (e) {
             e.stopPropagation()
         });
+        
         // ============================================================== 
         // This is for the top header part and sidebar part
         // ==============================================================  

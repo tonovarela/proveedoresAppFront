@@ -1,3 +1,4 @@
+import { OpinioncumplimientoService } from './../../services/opinioncumplimiento.service';
 import { ComunicadoService } from 'src/app/services/comunicado.service';
 import { environment } from './../../../environments/environment';
 import { Router } from '@angular/router';
@@ -57,8 +58,8 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   movimientosDescripcionUnica = true;
   cumpleSaldoContrarecibo: boolean = true;
   movimientos: Movimiento[] = [];
-
   tieneMovimientosAnexoRequeridos: boolean = false;
+  tieneRequerimientoOpinionCumplimiento:boolean=false;
 
 
 
@@ -72,14 +73,15 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
   constructor(
     private _router: Router,
-    private _subirUsuarioService: SubirArchivoService,
+    //private _subirUsuarioService: SubirArchivoService,
     private _currencyPipe: CurrencyPipe,
     public _modalUploadService: ModalUploadService,
     private _facturaService: FacturaService,
     private _uiService: UiService,
     public _usuarioService: UsuarioService,
     public _anexoService: AnexoService,
-    private _comunicadoService: ComunicadoService
+    private _comunicadoService: ComunicadoService,
+    private _opinionCumplimientoService: OpinioncumplimientoService
   ) {
   }
 
@@ -108,6 +110,10 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     this.cargando = true;
    
     this._usuarioService.autorizacionCR().subscribe();
+    this._opinionCumplimientoService.tieneRequerimiento(this._usuarioService.usuario.Proveedor)
+                                    .subscribe(response=>{
+                                      this.tieneRequerimientoOpinionCumplimiento=response["requerimiento"];                                      
+                                    });
     this.subscripcionMovMoneda = this.movimientosCR_$.subscribe(() => {
       this.validarReglasContraRecibo();
     });
@@ -235,6 +241,10 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
   irPagosAprobados() {
     this._router.navigateByUrl('pagos-aprobados');
+  }
+  
+  irPerfil() {
+    this._router.navigateByUrl('perfil');
   }
 
   validarReglasContraRecibo() {

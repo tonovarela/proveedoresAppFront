@@ -1,3 +1,4 @@
+import { OpinioncumplimientoService } from './../../services/opinioncumplimiento.service';
 import { UiService } from './../../services/ui.service';
 import { Router } from '@angular/router';
 import { ComunicadoService } from './../../services/comunicado.service';
@@ -5,6 +6,8 @@ import { Comunicado } from './../../models/comunicado';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ToolbarService, LinkService, ImageService, HtmlEditorService, RichTextEditorComponent, QuickToolbarService, TableService } from '@syncfusion/ej2-angular-richtexteditor';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+declare function habilitarToolTip();
 
 @Component({
     selector: 'app-comunicados',
@@ -23,8 +26,12 @@ export class ComunicadosComponent implements OnInit {
     constructor(private router: Router,
         private _modalService: NgbModal,
         private _comunicadoService: ComunicadoService,
+        private _opinionCumplimientoService:OpinioncumplimientoService,
         private _uiService: UiService
-    ) { }
+    ) {
+
+        
+     }
 
     ngOnInit(): void {
         this.cargarComunicados();
@@ -36,7 +43,18 @@ export class ComunicadosComponent implements OnInit {
             this.comunicados = x;
             this.cargandoComunicados=false;
         });
+        habilitarToolTip();
     }
+
+    solicitarOpinionCumplimiento(comunicado: Comunicado){   
+        if (comunicado.visible)
+        return;     
+        comunicado.opinion_cumplimiento=!comunicado.opinion_cumplimiento;
+        this._opinionCumplimientoService
+            .actualizarComunicado(comunicado)
+            .subscribe();
+     
+    };
 
     verDetalle(comunicado: Comunicado) {
         this.cargandoDetalleComunicado=true;

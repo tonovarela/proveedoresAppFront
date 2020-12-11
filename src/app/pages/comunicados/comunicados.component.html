@@ -1,4 +1,4 @@
-<div class="container">
+ <div class="container">
     <div class="control-section">
         <div class="control-wrapper">
             <div class="default-section">
@@ -8,18 +8,21 @@
                             class="right-side-toggle waves-effect waves-light btn-success btn btn-circle  pull-right m-l-10"><i
                                 class="mdi mdi-message-plus text-white font-20"></i></button>
                     </div>
-                    <div>  
+                    <div>
                         <app-loader *ngIf="cargandoComunicados"></app-loader>
                         <div *ngIf="comunicados.length==0 && !cargandoComunicados" class="text-center">
-                            <h4>No hay comunicados  </h4>
-                            <img src="assets/images/aviso.svg" height="400px">                            
+                            <h4>No hay comunicados </h4>
+                            <img src="assets/images/aviso.svg" height="400px">
                         </div>
                         <div *ngIf="!cargandoComunicados">
-                            <div class="table-responsive" *ngFor="let comunicado of comunicados" >
+
+                            <div class="table-responsive" *ngFor="let comunicado of comunicados">
                                 <div class="post card">
+
                                     <div class="card-body collapse show">
                                         <div class="row">
                                             <div class="col-md-6">
+                                                
                                                 <table>
                                                     <td rowspan="2">
                                                         <img alt="user" class="profile-pic"
@@ -27,21 +30,22 @@
                                                     </td>
                                                     <td>
                                                         <div class="authorname">Administración - CXP</div>
-                                                        <div class="detailsAnswer" >
+                                                        <div class="detailsAnswer">
                                                             Vigente del
                                                             {{comunicado.fecha_inicio | date:'dd-MM-y'}} a
                                                             {{comunicado.fecha_fin | date:'dd-MM-y'}}
-                                                        </div>
+                                                            </div>
                                                         <div class="detailsAnswer">Fecha de registro:
                                                             {{comunicado.fecha_registro | date:'dd-MM-y, h:mm:ss a '}}
                                                         </div>
-    
+
                                                     </td>
                                                 </table>
-    
+
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="card-body tools">
+
+                                                <div class="card-body tools">                                                    
                                                     <div class="btn-group m-b-10 m-r-10" role="group">
                                                         <button type="button " class="btn btn-xs"
                                                             [ngClass]="{'btn-success': !comunicado.general, 'btn-outline-secondary': comunicado.general}"
@@ -55,47 +59,63 @@
                                                                 title="Al seleccionar esta opción este comunicado sera visible para todos los proveedores"></i>Todos</button>
                                                     </div>
                                                     <div class="btn-group m-b-10 m-r-10" role="group">
+                                                        <button type="button"                                                        
+                                                        (click)="solicitarOpinionCumplimiento(comunicado)"
+                                                        [ngClass]="{'btn-warning ': comunicado.opinion_cumplimiento, 'btn-outline-secondary': !comunicado.opinion_cumplimiento}"
+                                                            class=" btn btn-xs  ">
+                                                            <i class="mdi mdi-email-alert font-16" data-toggle="tooltip"
+                                                                data-placement="top" title=""
+                                                                data-original-title="Solicitar  opinión de cumplimiento"></i></button>
+                                                                
+
+                                                    </div>
+                                                    <div class="btn-group m-b-10 m-r-10" role="group">
                                                         <button type="button" class="btn  btn-xs"
-                                                            [ngClass]="{'btn-primary':comunicado.visible,'btn-outline-secondary':!comunicado.visible}"
+                                                             [ngClass]="{'btn-primary':comunicado.visible,'btn-outline-secondary':!comunicado.visible}"
                                                             (click)="cambiarVisible(comunicado)">
                                                             <i [ngClass]="{'fa-eye':comunicado.visible,'fa-eye-slash':!comunicado.visible}"
-                                                                class="fa font-18"></i></button>
+                                                                class="fa font-18"></i></button>                                                                
                                                     </div>
                                                     <div class="btn-group m-b-10 m-r-10" role="group">
                                                         <button type="button" *ngIf="!comunicado.visible"
                                                             class="btn btn-xs btn-outline-secondary "
                                                             (click)="editarComunicado(comunicado)"><i
                                                                 class="fa fa-edit font-18"></i></button>
+                                                                
                                                         <!-- <button type="button" class="btn btn-xs btn-outline-secondary"
                                                             (click)="borrarComunicado(comunicado)"><i
                                                                 class="fa fa-trash font-18"></i></button> -->
                                                     </div>
-                                                    <!-- <div class="btn-group m-b-10 m-r-10" role="group">
-                                                        <button type="button" class="btn waves-effect waves-light btn-outline-warning  btn-xs">
-                                                            <i class="mdi mdi-email-alert font-16"></i></button>
-                                                    </div> -->
-    
+
+
+
+
                                                 </div>
+                                                <div class="card-body tools" *ngIf="comunicado.opinion_cumplimiento">
+                                                    
+                                                    <span class="label label-light-warning">Al finalizar la vigencia de este comunicado el sistema no permitira generar contra-recibos hasta que los proveedores seleccionados registren su opinión de cumplimiento </span>                                                    
+                                                </div>
+
                                             </div>
+
                                         </div>
-    
-                                        <a href="javascript:void(0)"
-                                        (click)="mostrarModalDetalle(comunicado)"
+
+                                        <a href="javascript:void(0)" (click)="mostrarModalDetalle(comunicado)"
                                             class="postTitle card-text font-14">{{comunicado.titulo}}</a>
-    
+
                                     </div>
-    
-    
+
+
                                     <!-- <div class="container-posting">
                                         <div class="posting"  [innerHtml]="comunicado.mensaje | safe:'html'">
                                         </div>
                                     </div> -->
-    
+
                                 </div>
-    
+
                             </div>
                         </div>
-                        
+
                         <div class="answer">
                             <!-- <table>
                                 <tbody>
@@ -174,7 +194,7 @@
     </div>
     <div class="modal-body">
         <app-loader *ngIf="cargandoDetalleComunicado"></app-loader>
-        <div  *ngIf="!cargandoDetalleComunicado">
+        <div *ngIf="!cargandoDetalleComunicado">
             {{comunicado.titulo}}
             <div class="posting" style="width:100%; overflow: auto;" [innerHtml]="comunicado.mensaje | safe:'html'">
             </div>

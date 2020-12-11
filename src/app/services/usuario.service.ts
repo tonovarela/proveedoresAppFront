@@ -54,6 +54,8 @@ export class UsuarioService {
     );
   }
 
+  
+
   autorizacionCR() {
     const url = `${this.url}/usuario/autorizacioncr/${this.usuario.Proveedor}`;
     //this.usuario.PuedeGenerarContraRecibo=false;

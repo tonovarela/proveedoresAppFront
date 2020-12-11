@@ -7,6 +7,7 @@ export interface Usuario {
     //PuedeAnexarDocumento?:boolean;
     PuedeGenerarContraRecibo?:boolean;   
     MontoMaxContraRecibo?:number;    
+    
 }
 
 export interface ResponseLogin{
