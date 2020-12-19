@@ -74,9 +74,13 @@
         </e-column>
         <e-column field="referencia" headerText="Factura" width=35>
         </e-column>
-        <e-column field="fechaEmision" [filter]='filterMenu' headerText="Emisión" [format]='formatoptions' width=40>
+        <e-column field="fechaEmision" [filter]='filterMenu' headerText="Emisión"         
+        width=70>
+        <ng-template #template let-data>
+          {{data.fechaEmision | fecha}}
+        </ng-template>
           <ng-template #filterTemplate let-data>
-            <ejs-daterangepicker format='dd-MM-yyyy' placeholder="Elija la fecha" [(ngModel)]="fechaEmisionFilter"
+            <ejs-daterangepicker format='dd-MMM-yyyy' placeholder="Elija la fecha" [(ngModel)]="fechaEmisionFilter"
               (change)="cambioFechaEmision($event)">
               <e-presets>
                 <e-preset label="Esta semana" [start]='fecha.weekStart' [end]='fecha.weekEnd'></e-preset>

@@ -1,3 +1,4 @@
+import { FechaPipe } from './pipes/fecha.pipe';
 import { PagesModule } from './pages/pages.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -35,7 +36,7 @@ import { ToolbarService, LinkService, ImageService, HtmlEditorService } from '@s
     CommonModule
   ],
   
-  providers: [CurrencyPipe,DatePipe,ToolbarService, LinkService, ImageService, HtmlEditorService],
+  providers: [CurrencyPipe,DatePipe,FechaPipe,ToolbarService, LinkService, ImageService, HtmlEditorService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

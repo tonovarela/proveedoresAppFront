@@ -1,3 +1,4 @@
+import { PipesModule } from './../pipes/pipes.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { LoaderComponent } from './loader/loader.component';
 import { NgModule } from '@angular/core';
@@ -36,6 +37,7 @@ import { AnexoIconoComponent } from './anexo-icono/anexo-icono.component';
     BrowserModule,
     CommonModule,
     FormsModule,
+    PipesModule,
     RouterModule,    
     AutoCompleteModule
   ]

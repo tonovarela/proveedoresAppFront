@@ -1,11 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+
 import { UsuarioService } from './usuario.service';
 import { Movimiento, Contrarecibo, PagoAprobado } from './../models/movimiento';
 import { Injectable } from '@angular/core';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { Lito } from '../utils/logoLito';
+import { FechaPipe } from '../pipes/fecha.pipe';
 
 
 
@@ -19,6 +19,7 @@ export class PdfMovimientosService {
 
   constructor(public _currencyPipe: CurrencyPipe,
     public _datePipe: DatePipe,
+    public _fechaPipe:FechaPipe,
     public _usuarioService: UsuarioService,
   ) { }
 
@@ -41,7 +42,7 @@ export class PdfMovimientosService {
         margin: [0, 0, 0, 20]
       },
       {
-        text: `Fecha: ${this._datePipe.transform(pago.fechaEmision, 'dd/MM/yyyy')} `,
+        text: `Fecha: ${this._fechaPipe.transform(pago.fechaEmision)} `,
         fontSize: 11,
         alignment: 'right',
       },
@@ -144,7 +145,7 @@ export class PdfMovimientosService {
         margin: [0, 0, 0, 20]
       },
       {
-        text: `Fecha: ${this._datePipe.transform(contraRecibo.fechaEmision, 'dd/MM/yyyy')} `,
+        text: `Fecha: ${this._fechaPipe.transform(contraRecibo.fechaEmision)} `,
         fontSize: 11,
         alignment: 'right',
       },
@@ -194,7 +195,7 @@ export class PdfMovimientosService {
                 ...contraRecibo.detalle.map(mov => {
                   return [
                     { text: mov.referencia },
-                    { text: this._datePipe.transform(mov.fechaEmision, 'dd-MM-yyyy') },
+                    { text: this._fechaPipe.transform(mov.fechaEmision) },
                     { text: this._currencyPipe.transform(mov.importe),style:{ alignment: 'right'} }
                   ];
                 })                
@@ -211,7 +212,7 @@ export class PdfMovimientosService {
         margin: [0, 0, 0, 20]
       },
       {
-        text: `Fecha probable de pago : ${this._datePipe.transform(contraRecibo.fechaVencimiento, 'dd-MM-yyyy')}`,
+        text: `Fecha probable de pago : ${this._fechaPipe.transform(contraRecibo.fechaVencimiento)}`,
         fontSize: 11,
         alignment: 'right',
         margin: [0, 0, 0, 20]

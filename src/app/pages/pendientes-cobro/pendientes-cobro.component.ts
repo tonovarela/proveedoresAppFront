@@ -22,9 +22,6 @@ import { AnexoService } from 'src/app/services/anexo.service';
 
 
 
-
-
-
 setSpinner({ template: '<div class="loader-centerd-screen"> <div>' });
 @Component({
   selector: 'app-pendientes-cobro',
@@ -48,7 +45,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   pageSettings: PageSettingsModel = { pageSizes: true, pageCount: 10 };
   filterSettings: FilterSettingsModel = { type: "CheckBox" };
   filterMenu: FilterSettingsModel = { type: "Menu" };
-  formatoptions = { type: 'dateTime', format: 'dd/MM/y' };
+  formatoptions = { type: 'dateTime', format: 'dd/MM/yyyy' };
   selectOptions: any = {
     //persistSelection: true, type: "Multiple",
     //checkboxOnly: true 
