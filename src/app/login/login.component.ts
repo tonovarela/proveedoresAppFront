@@ -7,8 +7,6 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ResponseLogin } from '../models/proveedor';
 import { of ,forkJoin} from 'rxjs';
-
-
 declare function iniciar_plugins();
 @Component({
   selector: 'app-login',
@@ -16,6 +14,7 @@ declare function iniciar_plugins();
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+  fondo="";
   usuario = { usuario: "", password: "" };
   constructor(private _usuarioService: UsuarioService,
     private _uiService: UiService,
@@ -23,6 +22,16 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    
+    let fondos=["assets/images/background/login-register3.jpg",
+                "assets/images/background/login-register2.jpg",
+                "assets/images/background/login-register4.jpg",
+                "assets/images/background/login-register5.jpg",
+                "assets/images/background/login-register6.jpg",
+                "assets/images/background/material-bg.jpg",                
+              ];              
+    const random=Math.floor(Math.random() * ((fondos.length-1) - 0 + 1) + 0);
+    this.fondo=`url(${fondos[random]})`;    
     iniciar_plugins();
     if (this._usuarioService.estaLogueado()) {
       if (this._usuarioService.esAdmin()){

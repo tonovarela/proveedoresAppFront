@@ -50,6 +50,7 @@ Login register and recover password Page
   position: absolute;
   top:65%;
   left: 2%;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 .login-register {

@@ -30,9 +30,7 @@
     </div>
   </div>
 </div>
-
-<div *ngIf="_usuarioService.usuario.PuedeGenerarContraRecibo && !tieneRequerimientoOpinionCumplimiento">
-  
+<div *ngIf="_usuarioService.usuario.PuedeGenerarContraRecibo && !tieneRequerimientoOpinionCumplimiento">  
   <div class="registroContrarecibo" *ngIf="(movimientos | numFacturasCR) >0 && !cargando">
     <div class="card " id="contenedorContraRecibo">
       <div class="card-body" style="padding:0 1.2rem"       
@@ -63,6 +61,7 @@
 
 <div class="row" *ngIf="!cargando">
   <div class="col-12">
+    
     <ejs-grid #grid id="grid" height='300' (created)="created($event)" (rowSelected)='rowSelected($event)'
       [dataSource]="movimientos" allowReordering='true' allowSelection="false" [selectionSettings]="selectOptions"
       [editSettings]='editSettings' allowPaging="true" [allowFiltering]="true" [filterSettings]='filterSettings'

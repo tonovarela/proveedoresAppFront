@@ -5,22 +5,18 @@ import { Router } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { TotalSaldoCRPipe } from './../../pipes/total-saldo-cr.pipe';
 import { UiService } from './../../services/ui.service';
-import { SubirArchivoService } from './../../services/subir-archivo.service';
+//import { SubirArchivoService } from './../../services/subir-archivo.service';
 import { UsuarioService } from './../../services/usuario.service';
 import { FacturaService } from './../../services/factura.service';
 import { ModalUploadService } from './../../services/modal-upload.service';
 import { Movimiento, MovCR, CR_Request, Contrarecibo, PagoAprobado, Anexo } from './../../models/movimiento';
 import { Component, OnInit, ViewChild, OnDestroy, EventEmitter } from '@angular/core';
-
 import { EditSettingsModel, PageSettingsModel, FilterSettingsModel, Grid, IFilter, parentsUntil } from '@syncfusion/ej2-angular-grids';
 import { setSpinner } from '@syncfusion/ej2-popups';
-
 import { Subscription } from 'rxjs';
 import { FechaDictionary } from 'src/app/utils/dates';
 //import { filter } from 'rxjs/operators';
 import { AnexoService } from 'src/app/services/anexo.service';
-
-
 
 setSpinner({ template: '<div class="loader-centerd-screen"> <div>' });
 @Component({
@@ -107,6 +103,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     this.cargando = true;
    
     this._usuarioService.autorizacionCR().subscribe();
+    this.tieneRequerimientoOpinionCumplimiento=true;
     this._opinionCumplimientoService.tieneRequerimiento(this._usuarioService.usuario.Proveedor)
                                     .subscribe(response=>{
                                       this.tieneRequerimientoOpinionCumplimiento=response["requerimiento"];                                      
