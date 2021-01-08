@@ -3,7 +3,9 @@
   <app-busqueda moduloActivo='pagos-programados'></app-busqueda>
   <div class="row">
     <div class="col-12">
-      <ejs-grid #grid id="grid" height='300' (created)="created($event)" [dataSource]="pagosProgramados "
+      <ejs-grid #grid id="grid"
+      (dataBound)='dataBound()'
+       height='300' (created)="created($event)" [dataSource]="pagosProgramados "
         allowReordering='true' allowSelection="false" [selectionSettings]="selectOptions" [editSettings]='editSettings'
         allowPaging="true" allowFiltering="true" [filterSettings]='filterSettings' allowSorting="true"
         allowResizing='true' [pageSettings]="pageSettings" (actionComplete)="actionComplete($event)">

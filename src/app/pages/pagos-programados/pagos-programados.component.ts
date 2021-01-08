@@ -63,6 +63,7 @@ export class PagosProgramadosComponent implements OnInit {
 
 
   ngOnInit(): void {
+    window.addEventListener('resize', this.onresize.bind(this));
     this._comunicadoService.verificarNotificacion.emit(true);
     this.subscription = this._usuarioService
       .filtroGeneral
@@ -164,6 +165,29 @@ export class PagosProgramadosComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
     // this.subscriptionNotification.unsubscribe();
+  }
+
+
+  resizeGrid() {
+    if (this.grid === undefined) {
+      return;
+    }
+    if (window.innerHeight >= 655) {
+      this.grid.height = window.innerHeight * 0.60;
+    }
+    if (window.innerHeight <= 654) {
+      this.grid.height = 250;
+    }
+
+  }
+
+  dataBound() {
+    this.resizeGrid();
+
+  }
+
+  onresize(e) {
+    this.resizeGrid();
   }
 
 }

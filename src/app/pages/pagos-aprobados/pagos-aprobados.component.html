@@ -15,7 +15,9 @@
   </div>
   <div class="row">   
     <div class="col-12">
-      <ejs-grid #grid id="grid" (rowDataBound)='rowDB($event)' height='300' (created)="created($event)"
+      <ejs-grid #grid id="grid" 
+      (dataBound)='dataBound()'
+      (rowDataBound)='rowDB($event)' height='300' (created)="created($event)"
         [dataSource]="pagosAprobados " allowReordering='true' allowSelection="false" [selectionSettings]="selectOptions"
         [editSettings]='editSettings' allowPaging="true" allowFiltering="true" [filterSettings]='filterSettings'
         allowSorting="true" allowResizing='true' [pageSettings]="pageSettings"

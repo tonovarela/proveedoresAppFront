@@ -37,7 +37,7 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
   };
   contraRecibos: Contrarecibo[] = [];
   _contraRecibo: Contrarecibo = {};
-  _referencia:string="";
+  _referencia: string = "";
 
   public fechaEmisionFilter: any;
   public fechaVencimientoFilter: any;
@@ -51,17 +51,18 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
     private _usuarioService: UsuarioService,
     private modalService: NgbModal,
     private _pdfService: PdfMovimientosService,
-    private _comunicadoService:ComunicadoService    
+    private _comunicadoService: ComunicadoService
   ) {
   }
 
 
 
   ngOnInit(): void {
+    window.addEventListener('resize', this.onresize.bind(this));
     this._comunicadoService.verificarNotificacion.emit(true);
     this.subscription = this._usuarioService
-      .filtroGeneral      
-      .subscribe(x => {        
+      .filtroGeneral
+      .subscribe(x => {
         this.aplicarFiltroGeneral();
       });
     this.cargando = true;
@@ -72,45 +73,45 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
       });
   }
 
-  verDetalle(contrarecibo: Contrarecibo, referencia?:string) {
+  verDetalle(contrarecibo: Contrarecibo, referencia?: string) {
 
     this._contraRecibo = contrarecibo;
-    if (referencia!=undefined){
-      this._referencia=referencia;
+    if (referencia != undefined) {
+      this._referencia = referencia;
     }
     this.modalService.open(this.detalle, { size: 'md' });
-    
+
   }
 
 
-  
+
   aplicarFiltroGeneral() {
-    if (this._usuarioService.filtroAplicar == null || this.grid == undefined        ) {
+    if (this._usuarioService.filtroAplicar == null || this.grid == undefined) {
       return;
     }
-    if (this._usuarioService.filtroAplicar.modulo!="contra-recibos") {
+    if (this._usuarioService.filtroAplicar.modulo != "contra-recibos") {
       return;
     }
     const folio = this._usuarioService.filtroAplicar.folio;
-    this._referencia=this._usuarioService.filtroAplicar.referencia;
-    
+    this._referencia = this._usuarioService.filtroAplicar.referencia;
+
     this.grid.filterSettings.columns = [
       { "value": `${folio}`, "operator": "equal", "field": "folio", },
-    ];      
-    this._contraRecibo = this.contraRecibos.find(x => x.folio == folio);    
-    
-    this.verDetalle(this._contraRecibo,this._referencia);
+    ];
+    this._contraRecibo = this.contraRecibos.find(x => x.folio == folio);
+
+    this.verDetalle(this._contraRecibo, this._referencia);
     this._usuarioService.filtroAplicar = null;
     //this._referencia='';
   }
 
 
   created(e) {
-    this.aplicarFiltroGeneral();    
+    this.aplicarFiltroGeneral();
   }
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();    
-    
+    this.subscription.unsubscribe();
+
   }
 
 
@@ -173,7 +174,30 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
       //this.grid.removeFilteredColsByField("fechaEmision");
     }
   }
- //#endregion
+  //#endregion
+
+
+  resizeGrid() {
+    if (this.grid === undefined) {
+      return;
+    }
+    if (window.innerHeight >= 655) {
+      this.grid.height = window.innerHeight * 0.60;
+    }
+    if (window.innerHeight <= 654) {
+      this.grid.height = 250;
+    }
+
+  }
+
+  dataBound() {
+    this.resizeGrid();
+
+  }
+
+  onresize(e) {
+    this.resizeGrid();
+  }
 
 }
 

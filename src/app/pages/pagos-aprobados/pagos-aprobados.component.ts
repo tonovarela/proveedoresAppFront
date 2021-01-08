@@ -76,6 +76,7 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    window.addEventListener('resize', this.onresize.bind(this));
     this._usuarioService.usuario.PuedeGenerarContraRecibo=true;
     this._usuarioService.autorizacionCR().subscribe();
     this._comunicadoService.verificarNotificacion.emit(true);
@@ -218,6 +219,29 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
     this.subscriptionNotification.unsubscribe();
   }
+
+
+  resizeGrid(){
+    if (this.grid ===undefined){
+      return;
+    }
+    if (window.innerHeight>=655){
+      this.grid.height =window.innerHeight * 0.5;
+    }
+    if (window.innerHeight<=654){
+      this.grid.height =250;
+    }    
+    
+  }
+
+  dataBound(){
+    this.resizeGrid();
+    
+    }
+
+    onresize(e) {                     
+      this.resizeGrid();
+    }
 
 
 

@@ -92,6 +92,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    window.addEventListener('resize', this.onresize.bind(this));
     this._usuarioService.usuario.PuedeGenerarContraRecibo=true;
     this._comunicadoService.verificarNotificacion.emit(true);
     this.URL = environment.URL_VALIDADORFILE;    
@@ -373,6 +374,29 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     this.grid.refresh();
 
   }
+
+
+  resizeGrid(){
+    if (this.grid ===undefined){
+      return;
+    }
+    if (window.innerHeight>=655){
+      this.grid.height =window.innerHeight * 0.55;
+    }
+    if (window.innerHeight<=654){
+      this.grid.height =250;
+    }    
+    
+  }
+
+  dataBound(){
+    this.resizeGrid();
+    
+    }
+
+    onresize(e) {                     
+      this.resizeGrid();
+    }
 
 
 

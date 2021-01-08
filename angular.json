@@ -62,7 +62,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "proveedoresApp:build"
+            "browserTarget": "proveedoresApp:build"            
           },
           "configurations": {
             "production": {
