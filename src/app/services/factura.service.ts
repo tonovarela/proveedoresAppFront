@@ -30,30 +30,30 @@ export class FacturaService {
             fechaVencimiento: moment(m["Vencimiento"]).toDate(),
             moneda: m["Moneda"].trim(),
             usoCFDI: m["UsoCFDI"],
-            usoCDFIDesc:m["DescUsoCFDI"],
+            usoCDFIDesc: m["DescUsoCFDI"],
             metodopago: m["MetodoPago"],
-            metodoPagoDesc:m["DescMetodoPago"],
-            tipoCambio:Number(m["TipoCambio"]),
-            formaPago: m["FormaPago"]  ,
-            formaPagoDesc: m["DescFormaPago"]  ,
+            metodoPagoDesc: m["DescMetodoPago"],
+            tipoCambio: Number(m["TipoCambio"]),
+            formaPago: m["FormaPago"],
+            formaPagoDesc: m["DescFormaPago"],
             solicitaContraRecibo: false,
             tienePDF: m["PDF"] == "1" ? true : false,
             tieneXML: m["XML"] == "1" ? true : false,
-            CR:m["CR"]== "1" ? true : false  , //Intelisis decide si se  muestra el checkbox
+            CR: m["CR"] == "1" ? true : false, //Intelisis decide si se  muestra el checkbox
             tipo: "Factura-Ingreso",
-            EV:m["EV"],
-            mostrarAdvertencia:m["CR"]=="2"?true:false,
-            pedido:m["Pedido"]
+            EV: m["EV"],
+            mostrarAdvertencia: m["CR"] == "2" ? true : false,
+            pedido: m["Pedido"]
           };
           return mov;
         })),
         //map(movimientos => movimientos.sort((a: Movimiento, b: Movimiento) => a.CR==b.CR?-1:1 )),        
-        map(movimientos => movimientos.sort((a: Movimiento, b: Movimiento) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime())),        
+        map(movimientos => movimientos.sort((a: Movimiento, b: Movimiento) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime())),
       );
   }
-   
-  generarContraRecibo(request:CR_Request){    
-   return this._http.post(`${this.URL_SERVICIOS}/facturas/generarcontrarecibo`,request);
+
+  generarContraRecibo(request: CR_Request) {
+    return this._http.post(`${this.URL_SERVICIOS}/facturas/generarcontrarecibo`, request);
   }
 
   obtenerContraRecibosPendientes(proveedor) {
@@ -69,8 +69,8 @@ export class FacturaService {
             referencia: m["Referencia"],
             saldo: Number(m["Saldo"]),
             importe: Number(m["Importe"]),
-            tipo:"Contra-recibo",
-            totalMovimientos:Number(m["NoFacturas"]),
+            tipo: "Contra-recibo",
+            totalMovimientos: Number(m["NoFacturas"]),
             fechaEmision: moment(m["FechaEmision"]).toDate(),
             fechaVencimiento: moment(m["Vencimiento"]).toDate(),
             moneda: m["Moneda"],
@@ -79,7 +79,7 @@ export class FacturaService {
           return mov;
         })
         ),
-        map(contrarecibos => contrarecibos.sort((a: Contrarecibo, b: Contrarecibo) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime())),        
+        map(contrarecibos => contrarecibos.sort((a: Contrarecibo, b: Contrarecibo) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime())),
       );
   }
 
@@ -98,15 +98,21 @@ export class FacturaService {
             importe: Number(m["Importe"]),
             fechaEmision: moment(m["FechaEmision"]).toDate(),
             fechaVencimiento: moment(m["Vencimiento"]).toDate(),
-            moneda: m["Moneda"].trim(),  
-            esRequerido:m["esRequerido"]==1?true:false,                    
+            moneda: m["Moneda"].trim(),
+            esRequerido: m["esRequerido"] == 1 ? true : false,
             tienePDF: m["PDF"] == "1" ? true : false,
             tieneXML: m["XML"] == "1" ? true : false,
             tipo: "Pago"
           };
           return pago;
         })),
-        map(movimientos => movimientos.sort((a: PagoAprobado, b: PagoAprobado) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime()))
+        map(movimientos => movimientos.sort((a: PagoAprobado, b: PagoAprobado) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime())),
+        map(x => {
+          const requeridos = x.filter(e=>e.esRequerido);
+          const noRequeridos= x.filter(e=>!e.esRequerido)                    
+          return [...requeridos,...noRequeridos];          
+        }
+        )
       );
 
   }
@@ -120,10 +126,10 @@ export class FacturaService {
             movimientoID: m["ID"],
             folio: m["Folio"],
             movimientoDescripcion: m["Movimiento"],
-            referencia: m["Referencia"],            
+            referencia: m["Referencia"],
             importe: Number(m["Importe"]),
-            fechaEmision: moment(m["FechaEmision"]).toDate(),            
-            moneda: m["Moneda"].trim(),                                  
+            fechaEmision: moment(m["FechaEmision"]).toDate(),
+            moneda: m["Moneda"].trim(),
             tipo: "Pago"
           };
           return pago;
@@ -203,7 +209,7 @@ export class FacturaService {
   }
 
 
-  
+
 
 
   obtenerFacturas(cliente) {
