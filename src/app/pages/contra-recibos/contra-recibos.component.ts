@@ -27,7 +27,7 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   cargando: boolean = false;
   editSettings: EditSettingsModel = { allowDeleting: false, allowEditing: false };
-  pageSettings: PageSettingsModel = { pageSizes: true, pageCount: 10 };
+  pageSettings: PageSettingsModel = { pageSizes: true, pageCount: 10 ,};
   filterSettings: FilterSettingsModel = { type: "CheckBox", };
   filterMenu: FilterSettingsModel = { type: "Menu", mode: "Immediate" };
   formatoptions = { type: 'dateTime', format: 'dd/MM/y' };

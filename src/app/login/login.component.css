@@ -1,79 +1,120 @@
-/*
-Template Name: Admin pro Admin
-Author: Wrappixel
-Email: niravjoshi87@gmail.com
-File: scss
-*/
+/* ---- reset ---- */
 
-
-/*
-Template Name: Admin Pro Admin
-Author: Wrappixel
-Email: niravjoshi87@gmail.com
-File: scss
-*/
-
-
-/*Theme Colors*/
-
-
-/*bootstrap Color*/
-
-
-/*Light colors*/
-
-
-/*Normal Color*/
-
-
-/*Extra Variable*/
-
-
-/*******************
-Login register and recover password Page
-******************/
-.m-20{
-    position: fixed;
-    bottom: 5%;
-
+body {
+  margin: 0;
+  font: normal 75% Arial, Helvetica, sans-serif;
 }
 
-#nameSystem{
-  color:white;  
+canvas {
+  display: block;
+  vertical-align: bottom;
+}
+
+/* ---- particles.js container ---- */
+
+.bg-overlay{
+  position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+opacity: .6;
+z-index: -99;
+background:#151516 ;
+/* background: linear-gradient(to right, #3264f5 2%,#7202bb 82%); */
+/* background: linear-gradient(to right, #2b3f7b 2%,#151516 82%); */
+}
+
+/* #particles-js {
+    
+  
+  
+
+} */
+
+/* ---- stats.js ---- */
+
+.count-particles {
+  background: #000022;
+  position: absolute;
+  top: 48px;
+  left: 0;
+  width: 80px;
+  color: #13E8E9;
+  font-size: .8em;
+  text-align: left;
+  text-indent: 4px;
+  line-height: 14px;
+  padding-bottom: 2px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+}
+
+.js-count-particles {
+  font-size: 1.1em;
+}
+
+#stats, .count-particles {
+  -webkit-user-select: none;
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+#stats {
+  border-radius: 3px 3px 0 0;
+  overflow: hidden;
+}
+
+.count-particles {
+  border-radius: 0 0 3px 3px;
+}
+
+
+
+
+
+
+.m-20 {
+  position: fixed;
+  bottom: 5%;
+}
+
+#nameSystem {
+  color: white;
   /* border-style: solid;   */
   /* border-width: 2px; */
   padding: 5px;
-  font-weight: 900;  
-  font-size: 3.5rem;  
+  font-weight: 900;
+  font-size: 3.5rem;
   font-family: sans-serif;
   line-height: 1.1;
   position: absolute;
-  top:65%;
+  top: 65%;
   left: 2%;
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 .login-register {
-    background-size: cover;    
-    background-position-x: -400px!important; 
-     background-repeat: no-repeat; 
-      background-position: center center; 
-    height: 100%;
-    width: 100%;    
-     padding: 1% 0; 
-    position: fixed;
+  background-size: cover;
+  background-position-x: -400px!important;
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 100%;
+  width: 100%;
+  padding: 1% 0;
+  position: fixed;
 }
 
 .login-box {
-    width: 400px;    
-    padding-top: 2%;
-    margin: 0 auto;
+  width: 400px;
+  padding-top: 2%;
+  margin: 0 auto;
 }
 
 .login-box .footer {
-    width: 100%;
-    left: 0px;
-    right: 0px;
+  width: 100%;
+  left: 0px;
+  right: 0px;
 }
 
 /* .login-box .social {
@@ -83,18 +124,18 @@ Login register and recover password Page
 } */
 
 #recoverform {
-    display: none;
+  display: none;
 }
 
 .login-sidebar {
-    padding: 0px;
-    margin-top: 0px;
+  padding: 0px;
+  margin-top: 0px;
 }
 
 .login-sidebar .login-box {
-    right: 0px;
-    position: absolute;
-    height: 100%;
+  right: 0px;
+  position: absolute;
+  height: 100%;
 }
 
 /* 
