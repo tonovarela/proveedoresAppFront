@@ -106,8 +106,7 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
     this.cargando = true;
     this._facturaService
       .obtenerPagosAprobados(this._usuarioService.usuario.Proveedor)
-      .subscribe((pagos: PagoAprobado[]) => {
-        
+      .subscribe((pagos: PagoAprobado[]) => {        
         this.pagosAprobados = pagos;
         this.pagosAprobados.forEach(x => {x.totalMovimientos = 0; x.anexos=[]});
         this.cargando = false;

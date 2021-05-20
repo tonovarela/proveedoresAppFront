@@ -39,7 +39,8 @@ export class FacturaService {
             solicitaContraRecibo: false,
             tienePDF: m["PDF"] == "1" ? true : false,
             tieneXML: m["XML"] == "1" ? true : false,
-            CR: m["CR"] == "1" ? true : false, //Intelisis decide si se  muestra el checkbox
+            CR: m["CR"] == "1" ? true : false, 
+            PermiteGenerarCR: m["PermiteGenerarCR"] == "1" ? true : false, //Intelisis decide si se  muestra el checkbox
             tipo: "Factura-Ingreso",
             EV: m["EV"],
             mostrarAdvertencia: m["CR"] == "2" ? true : false,

@@ -116,6 +116,16 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   }
 
 
+
+
+  tieneSoloUnArchivo(mov:Movimiento){
+     
+     return (mov.tieneXML && !mov.tienePDF)  ||  (!mov.tieneXML && mov.tienePDF);
+     
+
+
+  }
+
   cargaInfoPendientesCobro() {
 
     this._facturaService

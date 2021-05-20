@@ -1,5 +1,8 @@
 <app-loader *ngIf="cargando"></app-loader>
 
+
+
+
 <div *ngIf="!_usuarioService.usuario.PuedeGenerarContraRecibo && !cargando ">
   <div class="alert avisoCP">
     <h3 class="text-warning"><i class="fa fa-exclamation-circle"></i> Importante</h3>
@@ -21,7 +24,8 @@
     <div class="container">
       <div class="row">
         <div class="col-md-10">
-          <p>No puede generar contra-recibos debido a que tiene que anexar la <b>Opinión de cumplimiento</b> emitida por el SAT.</p>
+          <p>No puede generar contra-recibos debido a que tiene que anexar la <b>Opinión de cumplimiento</b> emitida por
+            el SAT.</p>
         </div>
         <div class="col-md-2">
           <button (click)="irPerfil()" class="btn btn-warning btn-xs">Subir documento</button>
@@ -30,11 +34,10 @@
     </div>
   </div>
 </div>
-<div *ngIf="_usuarioService.usuario.PuedeGenerarContraRecibo && !tieneRequerimientoOpinionCumplimiento">  
+<div *ngIf="_usuarioService.usuario.PuedeGenerarContraRecibo && !tieneRequerimientoOpinionCumplimiento">
   <div class="registroContrarecibo" *ngIf="(movimientos | numFacturasCR) >0 && !cargando">
     <div class="card " id="contenedorContraRecibo">
-      <div class="card-body" style="padding:0 1.2rem"       
-      >
+      <div class="card-body" style="padding:0 1.2rem">
         <div class="d-flex no-block">
           <div class="m-r-20 align-self-center" style="float:left">
             <h6 class="text-muted m-t-10 m-b-0 "># Facturas</h6>
@@ -61,26 +64,23 @@
 
 <div class="row" *ngIf="!cargando">
   <div class="col-12">
-    
-    <ejs-grid #grid id="grid" 
-      height="300"
-    (dataBound)='dataBound()'
-     (created)="created($event)" (rowSelected)='rowSelected($event)'
-      [dataSource]="movimientos" allowReordering='true' allowSelection="false" [selectionSettings]="selectOptions"
-      [editSettings]='editSettings' allowPaging="true" [allowFiltering]="true" [filterSettings]='filterSettings'
-      allowSorting="true" allowResizing='true' [pageSettings]="pageSettings" (actionComplete)="actionComplete($event)">
+
+    <ejs-grid #grid id="grid" height="300" (dataBound)='dataBound()' (created)="created($event)"
+      (rowSelected)='rowSelected($event)' [dataSource]="movimientos" allowReordering='true' allowSelection="false"
+      [selectionSettings]="selectOptions" [editSettings]='editSettings' allowPaging="true" [allowFiltering]="true"
+      [filterSettings]='filterSettings' allowSorting="true" allowResizing='true' [pageSettings]="pageSettings"
+      (actionComplete)="actionComplete($event)">
       <e-columns>
         <!-- <e-column field="movimientoID" headerText="ID" width=50></e-column> -->
-        <e-column field="movimientoDescripcion" headerText="Tipo" width=55></e-column>
-        <e-column field="folio" headerText='Folio' width=30>
+        <e-column field="movimientoDescripcion" headerText="Tipo" width=40></e-column>
+        <e-column field="folio" headerText='Folio' width=20>
         </e-column>
-        <e-column field="referencia" headerText="Factura" width=35>
+        <e-column field="referencia" headerText="Factura" width=20>
         </e-column>
-        <e-column field="fechaEmision" [filter]='filterMenu' headerText="Emisión"         
-        width=70>
-        <ng-template #template let-data>
-          {{data.fechaEmision | fecha}}
-        </ng-template>
+        <e-column field="fechaEmision" [filter]='filterMenu' headerText="Emisión" width=30>
+          <ng-template #template let-data>
+            {{data.fechaEmision | fecha}}
+          </ng-template>
           <ng-template #filterTemplate let-data>
             <ejs-daterangepicker format='dd-MMM-yyyy' placeholder="Elija la fecha" [(ngModel)]="fechaEmisionFilter"
               (change)="cambioFechaEmision($event)">
@@ -106,7 +106,7 @@
           </ng-template>
         </e-column> -->
 
-        <e-column headerText="Importe" width=30>
+        <e-column headerText="Importe" width=25>
           <ng-template #template let-data>
             {{data.importe | currency}}
           </ng-template>
@@ -116,7 +116,7 @@
             {{data.tipoCambio | currency}}
           </ng-template>
         </e-column> -->
-        <e-column field="moneda" headerText="Moneda" width=30>
+        <e-column field="moneda" headerText="Moneda" width=20>
         </e-column>
         <e-column field="tieneXML" [allowFiltering]='false' headerText="XML" allowSelection="false" width='18'>
           <ng-template #template let-data>
@@ -132,19 +132,16 @@
             <div *ngIf="data.tienePDF" class="rounded-icon rounded-success"><i class="fa fa-check-circle-o"></i></div>
           </ng-template>
         </e-column>
-       
-       
+
+
 
         <e-column *ngIf="tieneMovimientosAnexoRequeridos" headerText="Anexo" width='30'>
           <ng-template #template let-data>
-            <button *ngIf="data.EV!='No Requerido'" 
-            [ngClass]="{'btn-warning':data.EV ==='Requerido sin Evidencia',
-                        'btn-success':data.EV ==='Requerido con Evidencia'}"  
-                        class="btn   btn-xs" (click)="irAnexoFactura(data)">
-              <i class="fa " 
-              [ngClass]="{'fa-upload':data.EV ==='Requerido sin Evidencia',
-                          'fa-file-o':data.EV ==='Requerido con Evidencia'}"  
-              ></i>
+            <button *ngIf="data.EV!='No Requerido'" [ngClass]="{'btn-warning':data.EV ==='Requerido sin Evidencia',
+                        'btn-success':data.EV ==='Requerido con Evidencia'}" class="btn   btn-xs"
+              (click)="irAnexoFactura(data)">
+              <i class="fa " [ngClass]="{'fa-upload':data.EV ==='Requerido sin Evidencia',
+                          'fa-file-o':data.EV ==='Requerido con Evidencia'}"></i>
             </button>
           </ng-template>
         </e-column>
@@ -160,17 +157,22 @@
           <ng-template #template let-data>
             <label class="label label-light-warning" *ngIf="data.EV=='Requerido sin Evidencia'">
               <i class="fa fa-chevron-left"></i>Es necesario un documento anexo
-            </label>            
-            <div *ngIf="data.mostrarAdvertencia" class="alert  alert-warning" style="margin: 0; line-height: 15px;">                      
-                <i  class="fa fa-warning "></i>                
-              <span style="font-size: 10px;margin-left: 2px;">El pedido {{data.pedido}} no se ha entregado por completo<br>para mayor información marca al 5521225600 Ext  109.</span>
-            </div>            
-            <ejs-checkbox (change)="cambio(data)" 
-            *ngIf="data.EV!='Requerido sin Evidencia' && data.CR"
-              [disabled]="!_usuarioService.usuario.PuedeGenerarContraRecibo || tieneRequerimientoOpinionCumplimiento " cssClass="e-primary"
-              [(ngModel)]="data.solicitaContraRecibo" label="">
+            </label>
+            <div *ngIf="data.mostrarAdvertencia" class="alert  alert-warning" style="margin: 0; line-height: 15px;">
+              <i class="fa fa-warning "></i>
+              <span style="font-size: 10px;margin-left: 2px;">El pedido {{data.pedido}} no se ha entregado por
+                completo<br>para mayor información marca al 5521225600 Ext 109.</span>
+            </div>
+            <div *ngIf="tieneSoloUnArchivo(data) " class="alert  alert-warning" style="margin: 0; line-height: 25px;">                      
+              <i  class="fa fa-warning "></i>                
+            <span style="font-size: 10px;margin-left: 2px;">Para poder generar Contra-recibo debe subir XML y PDF de su factura.</span>
+          </div>                       
+
+            <ejs-checkbox (change)="cambio(data)" *ngIf="data.EV!='Requerido sin Evidencia' && data.PermiteGenerarCR"
+              [disabled]="!_usuarioService.usuario.PuedeGenerarContraRecibo || tieneRequerimientoOpinionCumplimiento "
+              cssClass="e-primary" [(ngModel)]="data.solicitaContraRecibo" label="">
             </ejs-checkbox>
-                        
+
           </ng-template>
         </e-column>
       </e-columns>
