@@ -2,8 +2,10 @@ import { Movimiento, Contrarecibo, PagoDetalle, PagoAprobado, Factura, CR_Reques
 import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, tap, filter } from 'rxjs/operators';
+import { map, tap, filter, delay, concatMap } from 'rxjs/operators';
 import * as moment from 'moment';
+import { from, of } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +41,7 @@ export class FacturaService {
             solicitaContraRecibo: false,
             tienePDF: m["PDF"] == "1" ? true : false,
             tieneXML: m["XML"] == "1" ? true : false,
-            CR: m["CR"] == "1" ? true : false, 
+            CR: m["CR"] == "1" ? true : false,
             PermiteGenerarCR: m["PermiteGenerarCR"] == "1" ? true : false, //Intelisis decide si se  muestra el checkbox
             tipo: "Factura-Ingreso",
             EV: m["EV"],
@@ -52,6 +54,17 @@ export class FacturaService {
         map(movimientos => movimientos.sort((a: Movimiento, b: Movimiento) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime())),
       );
   }
+
+
+  generarContraReciboIndependiente(peticiones: CR_Request[]) {
+    return from(peticiones).pipe(
+      concatMap(({ proveedor }) => of({ data: [{ MOVID: proveedor }] })//.pipe(delay(2000)) 
+       )
+      //concatMap((peticion) =>   this.generarContraRecibo(peticion)  )          
+    );    
+
+  }
+
 
   generarContraRecibo(request: CR_Request) {
     return this._http.post(`${this.URL_SERVICIOS}/facturas/generarcontrarecibo`, request);
@@ -109,9 +122,9 @@ export class FacturaService {
         })),
         map(movimientos => movimientos.sort((a: PagoAprobado, b: PagoAprobado) => new Date(b.fechaEmision).getTime() - new Date(a.fechaEmision).getTime())),
         map(x => {
-          const requeridos = x.filter(e=>e.esRequerido);
-          const noRequeridos= x.filter(e=>!e.esRequerido)                    
-          return [...requeridos,...noRequeridos];          
+          const requeridos = x.filter(e => e.esRequerido);
+          const noRequeridos = x.filter(e => !e.esRequerido)
+          return [...requeridos, ...noRequeridos];
         }
         )
       );
@@ -150,12 +163,14 @@ export class FacturaService {
   //       movimientoDescripcion: "General entrada ",
   //       referencia: "59897" + (i + 1),
   //       moneda: moneda,
-  //       tipoCambio:moneda=='Dolares'?20.6:1,
+  //       tipoCambio: moneda == 'Dolares' ? 20.6 : 1,
   //       saldo: Math.random() * (10000 - 50 + 1) + 50,
   //       importe: Math.random() * (10000 - 50 + 1) + 50,
   //       tienePDF: true,
   //       tieneXML: true,
-  //       CR:true,
+  //       CR: true,
+  //       EV: false,
+  //       PermiteGenerarCR: true,
   //       fechaEmision: moment('2020-01-05').toDate(),
   //       fechaVencimiento: moment('2020-01-05').toDate()
   //     });

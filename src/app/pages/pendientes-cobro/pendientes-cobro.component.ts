@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { TotalSaldoCRPipe } from './../../pipes/total-saldo-cr.pipe';
 import { UiService } from './../../services/ui.service';
-//import { SubirArchivoService } from './../../services/subir-archivo.service';
 import { UsuarioService } from './../../services/usuario.service';
 import { FacturaService } from './../../services/factura.service';
 import { ModalUploadService } from './../../services/modal-upload.service';
@@ -15,7 +14,6 @@ import { EditSettingsModel, PageSettingsModel, FilterSettingsModel, Grid, IFilte
 import { setSpinner } from '@syncfusion/ej2-popups';
 import { Subscription } from 'rxjs';
 import { FechaDictionary } from 'src/app/utils/dates';
-//import { filter } from 'rxjs/operators';
 import { AnexoService } from 'src/app/services/anexo.service';
 
 setSpinner({ template: '<div class="loader-centerd-screen"> <div>' });
@@ -52,7 +50,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   cumpleSaldoContrarecibo: boolean = true;
   movimientos: Movimiento[] = [];
   tieneMovimientosAnexoRequeridos: boolean = false;
-  tieneRequerimientoOpinionCumplimiento:boolean=false;
+  tieneRequerimientoOpinionCumplimiento: boolean = false;
 
 
 
@@ -62,11 +60,10 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   public contenedorFiltroFechaEmision: any = null;
   public contenedorFiltroFechaVencimiento: any = null;
   public fecha: FechaDictionary = new FechaDictionary();
-  
+
 
   constructor(
     private _router: Router,
-    //private _subirUsuarioService: SubirArchivoService,
     private _currencyPipe: CurrencyPipe,
     public _modalUploadService: ModalUploadService,
     private _facturaService: FacturaService,
@@ -82,33 +79,33 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   verificarMovimientosAnexos() {
     const totalMovimientos = this.movimientos.length;
     const totalNoRequeridos = this.movimientos.filter(x => x.EV == "No Requerido").length;
-        
-    if ( totalMovimientos != totalNoRequeridos){
-      this.tieneMovimientosAnexoRequeridos =true;
+
+    if (totalMovimientos != totalNoRequeridos) {
+      this.tieneMovimientosAnexoRequeridos = true;
     }
-    
-    
+
+
   }
 
 
   ngOnInit(): void {
     window.addEventListener('resize', this.onresize.bind(this));
-    this._usuarioService.usuario.PuedeGenerarContraRecibo=true;
+    this._usuarioService.usuario.PuedeGenerarContraRecibo = true;
     this._comunicadoService.verificarNotificacion.emit(true);
-    this.URL = environment.URL_VALIDADORFILE;    
+    this.URL = environment.URL_VALIDADORFILE;
     this.subscription = this._usuarioService
       .filtroGeneral
       .subscribe(x => {
         this.aplicarFiltroGeneral();
       });
     this.cargando = true;
-   
+
     this._usuarioService.autorizacionCR().subscribe();
-    this.tieneRequerimientoOpinionCumplimiento=true;
+    this.tieneRequerimientoOpinionCumplimiento = true;
     this._opinionCumplimientoService.tieneRequerimiento(this._usuarioService.usuario.Proveedor)
-                                    .subscribe(response=>{
-                                      this.tieneRequerimientoOpinionCumplimiento=response["requerimiento"];                                      
-                                    });
+      .subscribe(response => {
+        this.tieneRequerimientoOpinionCumplimiento = response["requerimiento"];
+      });
     this.subscripcionMovMoneda = this.movimientosCR_$.subscribe(() => {
       this.validarReglasContraRecibo();
     });
@@ -118,15 +115,19 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
 
 
-  tieneSoloUnArchivo(mov:Movimiento){
-     
-     return (mov.tieneXML && !mov.tienePDF)  ||  (!mov.tieneXML && mov.tienePDF);
-     
+  tieneSoloUnArchivo(mov: Movimiento) {
+
+    return (mov.tieneXML && !mov.tienePDF) || (!mov.tieneXML && mov.tienePDF);
+
 
 
   }
 
   cargaInfoPendientesCobro() {
+    // this.movimientos = this._facturaService.obtenerMovimientosFicticios("PESOS", 200);
+    // this.movimientos.forEach(x => { x.anexos = [] });
+    // this.cargando = false;
+    // this.verificarMovimientosAnexos();
 
     this._facturaService
       .obtenerPendientesCobro(this._usuarioService.usuario.Proveedor)
@@ -247,7 +248,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   irPagosAprobados() {
     this._router.navigateByUrl('pagos-aprobados');
   }
-  
+
   irPerfil() {
     this._router.navigateByUrl('perfil');
   }
@@ -315,10 +316,9 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     if (!resultado.value)
       return
 
-    this.cargando = true;
+
     //Movimientos para generar contrarecibo
-    const movimientosPorGenerar = this.movimientos
-      .filter(mov => mov.solicitaContraRecibo);
+    const movimientosPorGenerar = this.movimientos.filter(mov => mov.solicitaContraRecibo);
     const usuario = this._usuarioService.usuario;
 
 
@@ -338,16 +338,39 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     };
 
     this.cargando = true;
+    let totalContrareciboRestriccion: number = 0;
+    request.movimientos.forEach(m => totalContrareciboRestriccion += m.importe);
+
+    if (totalContrareciboRestriccion >= 10) {
+      this.generarContraReciboIndependiente(request);
+      return;
+    }
+
+
     this._facturaService.generarContraRecibo(request).subscribe(x => {
       const data = x["data"];
-      //this.cargando = false;
       this._uiService.mostrarAlertaSuccess("Listo", `Se ha generado el contrarecibo ${data[0]["MOVID"]}`);
       this.cargaInfoPendientesCobro();
     });
+  }
 
-    // setTimeout(() => {
-    //   this.cargando = false;
+  generarContraReciboIndependiente(request: CR_Request) {
 
+    const peticiones: CR_Request[] = [];
+    request.movimientos.forEach(r => peticiones.push({
+      proveedor: this._usuarioService.usuario.Proveedor,
+      movimientos: [r],
+      movimiento: request.movimiento
+    })
+    );
+    let numRecibos = [];
+    this._facturaService.generarContraReciboIndependiente(peticiones).subscribe((x) => {
+      const data = x["data"];
+      numRecibos.push(data[0]["MOVID"]);
+    }, () => { this._uiService.mostrarAlertaError("Problema detectado", "Comuniquese con el departamento de administración para reportar esta anomalia "); }, () => {      
+      this._uiService.mostrarAlertaSuccess("Listo", `Se ha generado el contrarecibo ${numRecibos}`);
+      this.cargaInfoPendientesCobro();
+    });
 
   }
 
@@ -386,27 +409,27 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   }
 
 
-  resizeGrid(){
-    if (this.grid ===undefined){
+  resizeGrid() {
+    if (this.grid === undefined) {
       return;
     }
-    if (window.innerHeight>=655){
-      this.grid.height =window.innerHeight * 0.55;
+    if (window.innerHeight >= 655) {
+      this.grid.height = window.innerHeight * 0.55;
     }
-    if (window.innerHeight<=654){
-      this.grid.height =250;
-    }    
-    
+    if (window.innerHeight <= 654) {
+      this.grid.height = 250;
+    }
+
   }
 
-  dataBound(){
+  dataBound() {
     this.resizeGrid();
-    
-    }
 
-    onresize(e) {                     
-      this.resizeGrid();
-    }
+  }
+
+  onresize(e) {
+    this.resizeGrid();
+  }
 
 
 
