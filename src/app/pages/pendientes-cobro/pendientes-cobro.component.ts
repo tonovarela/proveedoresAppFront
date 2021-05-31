@@ -337,37 +337,56 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
       movimiento: movimientosPorGenerar[0].movimientoDescripcion
     };
 
-    this.cargando = true;
-    let totalContrareciboRestriccion: number = 0;
-    request.movimientos.forEach(m => totalContrareciboRestriccion += m.importe);
+    
 
-    if (totalContrareciboRestriccion >= 10) {
-      this.generarContraReciboIndependiente(request);
-      return;
-    }
+    let movimientosIndependientes = request.movimientos.filter(m => m.importe >= 80000);;
+    let movsAgrupados = request.movimientos.filter(m => !(m.importe >= 80000));
+
+    let peticiones: CR_Request[] = [];
 
 
-    this._facturaService.generarContraRecibo(request).subscribe(x => {
-      const data = x["data"];
-      this._uiService.mostrarAlertaSuccess("Listo", `Se ha generado el contrarecibo ${data[0]["MOVID"]}`);
-      this.cargaInfoPendientesCobro();
-    });
-  }
-
-  generarContraReciboIndependiente(request: CR_Request) {
-
-    const peticiones: CR_Request[] = [];
-    request.movimientos.forEach(r => peticiones.push({
+    peticiones.push({
       proveedor: this._usuarioService.usuario.Proveedor,
-      movimientos: [r],
+      movimientos: movsAgrupados,
       movimiento: request.movimiento
     })
-    );
+
+    movimientosIndependientes.forEach(p => {
+      peticiones.push({
+        proveedor: this._usuarioService.usuario.Proveedor,
+        movimientos: [p],
+        movimiento: request.movimiento
+      })
+    });
+
+    this.cargando = true;
+    this.generarContraRecibos(peticiones);
+
+    // let totalContrareciboRestriccion: number = 0;
+    // request.movimientos.forEach(m => totalContrareciboRestriccion += m.importe);
+
+
+
+    // if (totalContrareciboRestriccion >= 80000) {
+    //   this.generarContraReciboIndependiente(request);
+    //   return;
+    // }
+
+
+    // this._facturaService.generarContraRecibo(request).subscribe(x => {
+    //   const data = x["data"];
+    //   this._uiService.mostrarAlertaSuccess("Listo", `Se ha generado el contrarecibo ${data[0]["MOVID"]}`);
+    //   this.cargaInfoPendientesCobro();
+    // });
+  }
+
+  generarContraRecibos(peticiones: CR_Request[]) {
     let numRecibos = [];
     this._facturaService.generarContraReciboIndependiente(peticiones).subscribe((x) => {
       const data = x["data"];
       numRecibos.push(data[0]["MOVID"]);
-    }, () => { this._uiService.mostrarAlertaError("Problema detectado", "Comuniquese con el departamento de administración para reportar esta anomalia "); }, () => {      
+    }, () => { //this._uiService.mostrarAlertaError("Problema detectado", "Comuniquese con el departamento de administración para reportar esta anomalia "); 
+    }, () => {
       this._uiService.mostrarAlertaSuccess("Listo", `Se ha generado el contrarecibo ${numRecibos}`);
       this.cargaInfoPendientesCobro();
     });
