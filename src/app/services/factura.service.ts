@@ -16,11 +16,12 @@ export class FacturaService {
 
   constructor(private _http: HttpClient) {
   }
-  obtenerPendientesCobro(proveedor) {
+  obtenerPendientesCobro(proveedor) {    
     return this._http.get<Movimiento[]>(`${this.URL_SERVICIOS}/facturas/pendientescobro/${proveedor}`)
       .pipe(
         map(resp => resp["data"]),
         map(data => data.map(m => {
+          
           let mov: Movimiento = {
             movimientoID: m["ID"],
             folio: m["Folio"],
@@ -45,6 +46,7 @@ export class FacturaService {
             PermiteGenerarCR: m["PermiteGenerarCR"] == "1" ? true : false, //Intelisis decide si se  muestra el checkbox
             tipo: "Factura-Ingreso",
             EV: m["EV"],
+            Retencion:m["Retencion"]=="1"?"SI":"NO",
             mostrarAdvertencia: m["CR"] == "2" ? true : false,
             pedido: m["Pedido"]
           };

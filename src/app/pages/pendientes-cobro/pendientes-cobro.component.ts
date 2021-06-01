@@ -8,7 +8,7 @@ import { UiService } from './../../services/ui.service';
 import { UsuarioService } from './../../services/usuario.service';
 import { FacturaService } from './../../services/factura.service';
 import { ModalUploadService } from './../../services/modal-upload.service';
-import { Movimiento, MovCR, CR_Request, Contrarecibo, PagoAprobado, Anexo } from './../../models/movimiento';
+import { Movimiento, MovCR, CR_Request } from './../../models/movimiento';
 import { Component, OnInit, ViewChild, OnDestroy, EventEmitter } from '@angular/core';
 import { EditSettingsModel, PageSettingsModel, FilterSettingsModel, Grid, IFilter, parentsUntil } from '@syncfusion/ej2-angular-grids';
 import { setSpinner } from '@syncfusion/ej2-popups';
@@ -253,7 +253,22 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     this._router.navigateByUrl('perfil');
   }
 
+
+  tieneMismoTipoRetencion(){
+
+    let movimientosPorGenerar = this.movimientos.filter(mov => mov.solicitaContraRecibo);
+    let movsUnicos = new Set();
+    const p = movimientosPorGenerar.forEach(x => {
+      movsUnicos.add(x.Retencion);
+    });
+    
+    return movsUnicos.size == 1 && movsUnicos.size>0;
+
+  }
+
   validarReglasContraRecibo() {
+
+
     let movimientosPorGenerar = this.movimientos.filter(mov => mov.solicitaContraRecibo);
     if (!this.tieneMonedasUnicas()) {
       this.monedasUnicas = false;
@@ -262,6 +277,14 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     } else {
       this.monedasUnicas = true;
     }
+
+
+    if(!this.tieneMismoTipoRetencion()) {
+      this._uiService.mostrarToasterWarning("Retención",
+        "Para generar contra-recibo se necesitan que los movimientos seleccionados tengan el mismo tipo de Retención");                
+    }
+
+
     if (!this.tieneMovimientosDescripcionUnica() && movimientosPorGenerar.length > 0) {
       this.movimientosDescripcionUnica = false;
       this._uiService.mostrarToasterWarning("Movimientos",
@@ -304,6 +327,12 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
       this._uiService.mostrarAlertaError("Monedas ",
         `Solo puede generar un contra-recibo con facturas con el mismo tipo de moneda`);
       return;
+    }
+
+    if(!this.tieneMismoTipoRetencion()) {
+      this._uiService.mostrarAlertaError("Retención",
+        "Para generar contra-recibo se necesitan que los movimientos seleccionados tengan el mismo tipo de Retención");
+        return;
     }
 
     if (!this.movimientosDescripcionUnica) {
@@ -358,8 +387,8 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
         movimiento: request.movimiento
       })
     });
-
-    this.cargando = true;
+  
+    this.cargando = true;    
     this.generarContraRecibos(peticiones);
 
     // let totalContrareciboRestriccion: number = 0;

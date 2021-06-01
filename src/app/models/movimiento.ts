@@ -26,6 +26,7 @@ export interface Movimiento {
     anexos?:Anexo[],
     estaActualizando?:boolean,
     EV?:string,
+    Retencion?:string;
     mostrarAdvertencia?:boolean,
     pedido?:string
     
