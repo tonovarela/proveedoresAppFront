@@ -1,58 +1,61 @@
-.e-grid.e-gridhover  tr.bgcolor:hover .e-rowcell:not(.e-cellselectionbackground):not(.e-active):not(.e-updatedtd):not(.e-indentcell){ 
-    background-color:#e6701ca6 !important; 
+.e-grid.e-gridhover tr.bgcolor:hover .e-rowcell:not(.e-cellselectionbackground):not(.e-active):not(.e-updatedtd):not(.e-indentcell) {
+    background-color: #e6701ca6 !important;
     color: white;
-  } 
- 
-.bgcolor td {
-    background-color:#e3945ba6;    
-    font-weight: 300;
-}
-.bgcolor a {
-    color:red
 }
 
-.alert{
+.bgcolor td {
+    background-color: #e3945ba6;
+    font-weight: 300;
+}
+
+.bgcolor a {
+    color: red
+}
+
+.alert {
     padding: .05rem 0.65rem;
 }
+
 #grid {
     margin-top: 10px;
 }
-.e-custom{
+
+.e-custom {
     border-radius: 100%;
-    background-color:rebeccapurple;
-border-color: transparent;
-color: #fff;
+    background-color: rebeccapurple;
+    border-color: transparent;
+    color: #fff;
 }
 
-.rounded-success{
-    color:#60c794;
-    border-color: #60c794;        
+.rounded-success {
+    color: #60c794;
+    border-color: #60c794;
 }
-.rounded-info{
-    color:#2693db;
-    border-color: #6099c7;        
+
+.rounded-info {
+    color: #2693db;
+    border-color: #6099c7;
 }
-.rounded-warning{
-    
+
+.rounded-warning {
     color: #c90f2ec2;
-    border-color:  #c90f2ec2;
-    
-}
-.rounded-disabled{    
-    color: #57525242;        
-    
-}
-.rounded-icon{
-border:1px solid; 
-font-size: 18px;
-padding: 0 2px;
-/* width: 40px; */
-display: inline-block;
-text-align: center;
-border-radius: 20%;
+    border-color: #c90f2ec2;
 }
 
-.comment-widgets .comment-row{
+.rounded-disabled {
+    color: #57525242;
+}
+
+.rounded-icon {
+    border: 1px solid;
+    font-size: 18px;
+    padding: 0 2px;
+    /* width: 40px; */
+    display: inline-block;
+    text-align: center;
+    border-radius: 20%;
+}
+
+.comment-widgets .comment-row {
     padding: 0px!important;
-    
 }

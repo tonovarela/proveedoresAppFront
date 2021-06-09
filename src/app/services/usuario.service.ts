@@ -1,8 +1,9 @@
+import { FacturaService } from './factura.service';
 import { ResponseOpinionCumplimiento } from './../models/opinion_cumplimiento';
 import { SettingsService } from './settings.service';
 import { ResponseLogin, Usuario } from './../models/proveedor';
 import { environment } from './../../environments/environment';
-import { map } from 'rxjs/operators';
+import { map} from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -17,7 +18,8 @@ export class UsuarioService {
   constructor(
     public http: HttpClient,
     public router: Router,
-    public settingService: SettingsService
+    public settingService: SettingsService,
+    public facturaService: FacturaService
   ) {
     this.cargarStorage();
 
@@ -44,7 +46,7 @@ export class UsuarioService {
   login(usuario: any) {
     const url = `${this.url}/cliente/login`;
     return this.http.post<ResponseLogin>(url, usuario).pipe(
-      map((resp) => {        
+      map((resp) => {
         if (resp.validacion == true) {
           this.usuario = resp.data[0];
           this.guardarStorage(resp.data[0]);
@@ -54,27 +56,33 @@ export class UsuarioService {
     );
   }
 
-  
+
 
   autorizacionCR() {
-    const url = `${this.url}/usuario/autorizacioncr/${this.usuario.Proveedor}`;
+    //const url = `${this.url}/usuario/autorizacioncr/${this.usuario.Proveedor}`;
     //this.usuario.PuedeGenerarContraRecibo=false;
-    return this.http.get(url).pipe(
-      map(resp=>{
-          if (resp["validacion"]==true){
-            const autorizacion = resp["autorizacion"][0];            
-            this.usuario.PuedeGenerarContraRecibo =autorizacion["autorizacionCR"]=="Si"?true:false;
-          }
+    return this.facturaService.obtenerPagosAprobados(this.usuario.Proveedor).pipe(
+      map(data=>{
+        const autorizacion =data.filter(d=>d["esRequerido"]);
+      this.usuario.PuedeGenerarContraRecibo =autorizacion.length==0;
       })
     );
+    // return this.http.get(url).pipe(
+    //   map(resp => {
+    //     if (resp["validacion"] == true) {
+    //       const autorizacion = resp["autorizacion"][0];
+    //       this.usuario.PuedeGenerarContraRecibo = autorizacion["autorizacionCR"] == "Si" ? true : false;
+    //     }
+    //   })
+    // );
 
   }
 
 
-  obtenerHistorialOpinionCumplimiento(){
+  obtenerHistorialOpinionCumplimiento() {
     const url = `${this.url}/usuario/opinioncumplimiento/${this.usuario.Proveedor}`;
     return this.http.get<ResponseOpinionCumplimiento>(url);
-  } 
+  }
 
   esAdmin() {
     return this.usuario.idRol == "1";

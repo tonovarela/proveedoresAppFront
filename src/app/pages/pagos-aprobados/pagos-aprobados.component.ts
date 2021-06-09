@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 
-import { Movimiento, Contrarecibo, PagoAprobado, PagoDetalle, Anexo } from './../../models/movimiento';
+import { Movimiento, PagoAprobado} from './../../models/movimiento';
 
 
 
@@ -38,9 +38,7 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
   filterSettings: FilterSettingsModel = { type: "CheckBox" };
   filterMenu: FilterSettingsModel = { type: "Menu" };
   formatoptions = { type: 'dateTime', format: 'dd/MM/y' };
-  selectOptions: any = {
-    //persistSelection: true, type: "Multiple",
-    //checkboxOnly: true 
+  selectOptions: any = {    
   };
 
   public row: any;
@@ -91,11 +89,7 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
       .subscribe(mov => {        
         this.pagosAprobados.forEach(movimiento => {
           if (movimiento.movimientoID == mov.movimientoID){
-            movimiento = mov;
-            // if (movimiento.estaActualizando){              
-            //   movimiento.estaActualizando=false;
-            //   this.cargarAnexos(movimiento);
-            // }            
+            movimiento = mov;            
           }
             
         }

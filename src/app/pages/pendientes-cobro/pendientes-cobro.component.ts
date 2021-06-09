@@ -254,15 +254,15 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   }
 
 
-  tieneMismoTipoRetencion(){
+  tieneMismoTipoRetencion() {
 
     let movimientosPorGenerar = this.movimientos.filter(mov => mov.solicitaContraRecibo);
     let movsUnicos = new Set();
     const p = movimientosPorGenerar.forEach(x => {
       movsUnicos.add(x.Retencion);
     });
-    
-    return movsUnicos.size == 1 && movsUnicos.size>0;
+
+    return movsUnicos.size == 1 && movsUnicos.size > 0;
 
   }
 
@@ -277,11 +277,17 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     } else {
       this.monedasUnicas = true;
     }
-
-
-    if(!this.tieneMismoTipoRetencion()) {
-      this._uiService.mostrarToasterWarning("Retención",
-        "Para generar contra-recibo se necesitan que los movimientos seleccionados tengan el mismo tipo de Retención");                
+    if (!this.tieneMismoTipoRetencion()) {
+      let movimientosConRetencion = this.movimientos.filter(mov => mov.solicitaContraRecibo && mov.Retencion == "SI");
+      let mensaje = "";            
+      if (movimientosConRetencion.length == 1) {
+        mensaje = `Es necesario que se genere contra-recibo del movimiento ${movimientosConRetencion[0].folio}  por separado `;
+        this._uiService.mostrarToasterWarning("Retención",mensaje);
+      } 
+      if (movimientosConRetencion.length > 1) {
+        mensaje = `Es necesario que se generen contra-recibos de los movimientos ${movimientosConRetencion.map(x => x.folio)}  por separado `;
+        this._uiService.mostrarToasterWarning("Retención",mensaje);
+      }            
     }
 
 
@@ -329,10 +335,20 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if(!this.tieneMismoTipoRetencion()) {
-      this._uiService.mostrarAlertaError("Retención",
-        "Para generar contra-recibo se necesitan que los movimientos seleccionados tengan el mismo tipo de Retención");
-        return;
+    if (!this.tieneMismoTipoRetencion()) {
+      const movimientosConRetencion = this.movimientos.filter(mov => mov.solicitaContraRecibo && mov.Retencion == "SI");
+      let mensaje = "";      
+      if (movimientosConRetencion.length == 1) {
+        mensaje = `Es necesario que se genere contra-recibo del movimiento ${movimientosConRetencion[0].folio}  por separado `;
+        this._uiService.mostrarAlertaError("Retención",mensaje);
+      } 
+      if (movimientosConRetencion.length > 1) {
+        mensaje = `Es necesario que se generen contra-recibos de los movimientos ${movimientosConRetencion.map(x => x.folio)}  por separado `;
+        this._uiService.mostrarAlertaError("Retención",mensaje);
+      }
+      // this._uiService.mostrarAlertaError("Retención",
+      //   "Para generar contra-recibo se necesitan que los movimientos seleccionados tengan el mismo tipo de Retención");
+      return;
     }
 
     if (!this.movimientosDescripcionUnica) {
@@ -366,7 +382,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
       movimiento: movimientosPorGenerar[0].movimientoDescripcion
     };
 
-    
+
 
     let movimientosIndependientes = request.movimientos.filter(m => m.importe >= 80000);;
     let movsAgrupados = request.movimientos.filter(m => !(m.importe >= 80000));
@@ -387,8 +403,8 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
         movimiento: request.movimiento
       })
     });
-  
-    this.cargando = true;    
+
+    this.cargando = true;
     this.generarContraRecibos(peticiones);
 
     // let totalContrareciboRestriccion: number = 0;

@@ -22,19 +22,14 @@
         [editSettings]='editSettings' allowPaging="true" allowFiltering="true" [filterSettings]='filterSettings'
         allowSorting="true" allowResizing='true' [pageSettings]="pageSettings"
         (actionComplete)="actionComplete($event)">
-        <e-columns>
-          <!-- <e-column field="movimientoID" headerText="ID" width=20>
-          </e-column> -->
+        <e-columns>        
           <e-column field="movimientoDescripcion" headerText="Movimiento" width=40>
             <ng-template #template let-data>
               <a href="javascript:void(0);" (click)="verDetalle(data,'')">{{data.movimientoDescripcion}}</a>
             </ng-template>
           </e-column>
           <e-column field="folio" headerText="Folio" width=20>
-          </e-column>
-          <!-- <e-column field="referencia" headerText=Factura width=20>
-          </e-column> -->
-
+          </e-column>          
           <e-column field="fechaEmision" [filter]='filterMenu' headerText="Emisión" width=40>
             <ng-template  #template let-data>
               {{data.fechaEmision | fecha}}
