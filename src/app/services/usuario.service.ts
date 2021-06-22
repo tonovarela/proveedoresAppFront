@@ -22,12 +22,7 @@ export class UsuarioService {
     public facturaService: FacturaService
   ) {
     this.cargarStorage();
-
   }
-
-
-
-
   loginUsuario(usuario: any) {
     const url = `${this.url}/usuario/login`;
     return this.http.post<ResponseLogin>(url, usuario).pipe(
@@ -41,8 +36,6 @@ export class UsuarioService {
       })
     );
   }
-
-
   login(usuario: any) {
     const url = `${this.url}/cliente/login`;
     return this.http.post<ResponseLogin>(url, usuario).pipe(
@@ -55,9 +48,6 @@ export class UsuarioService {
       })
     );
   }
-
-
-
   autorizacionCR() {
     //const url = `${this.url}/usuario/autorizacioncr/${this.usuario.Proveedor}`;
     //this.usuario.PuedeGenerarContraRecibo=false;
@@ -75,19 +65,14 @@ export class UsuarioService {
     //     }
     //   })
     // );
-
   }
-
-
   obtenerHistorialOpinionCumplimiento() {
     const url = `${this.url}/usuario/opinioncumplimiento/${this.usuario.Proveedor}`;
     return this.http.get<ResponseOpinionCumplimiento>(url);
   }
-
   esAdmin() {
     return this.usuario.idRol == "1";
   }
-
   estaLogueado() {
     return this.usuario != null;
   }
@@ -101,7 +86,6 @@ export class UsuarioService {
   }
   guardarStorage(usuario: Usuario) {
     localStorage.setItem('usuario', JSON.stringify(usuario));
-
   }
   logout() {
     this.usuario = null;

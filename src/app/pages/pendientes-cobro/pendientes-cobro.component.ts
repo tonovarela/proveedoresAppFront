@@ -279,15 +279,15 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     }
     if (!this.tieneMismoTipoRetencion()) {
       let movimientosConRetencion = this.movimientos.filter(mov => mov.solicitaContraRecibo && mov.Retencion == "SI");
-      let mensaje = "";            
+      let mensaje = "";
       if (movimientosConRetencion.length == 1) {
         mensaje = `Es necesario que se genere contra-recibo del movimiento ${movimientosConRetencion[0].folio}  por separado `;
-        this._uiService.mostrarToasterWarning("Retención",mensaje);
-      } 
+        this._uiService.mostrarToasterWarning("Retención", mensaje);
+      }
       if (movimientosConRetencion.length > 1) {
         mensaje = `Es necesario que se generen contra-recibos de los movimientos ${movimientosConRetencion.map(x => x.folio)}  por separado `;
-        this._uiService.mostrarToasterWarning("Retención",mensaje);
-      }            
+        this._uiService.mostrarToasterWarning("Retención", mensaje);
+      }
     }
 
 
@@ -337,14 +337,14 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
     if (!this.tieneMismoTipoRetencion()) {
       const movimientosConRetencion = this.movimientos.filter(mov => mov.solicitaContraRecibo && mov.Retencion == "SI");
-      let mensaje = "";      
+      let mensaje = "";
       if (movimientosConRetencion.length == 1) {
         mensaje = `Es necesario que se genere contra-recibo del movimiento ${movimientosConRetencion[0].folio}  por separado `;
-        this._uiService.mostrarAlertaError("Retención",mensaje);
-      } 
+        this._uiService.mostrarAlertaError("Retención", mensaje);
+      }
       if (movimientosConRetencion.length > 1) {
         mensaje = `Es necesario que se generen contra-recibos de los movimientos ${movimientosConRetencion.map(x => x.folio)}  por separado `;
-        this._uiService.mostrarAlertaError("Retención",mensaje);
+        this._uiService.mostrarAlertaError("Retención", mensaje);
       }
       // this._uiService.mostrarAlertaError("Retención",
       //   "Para generar contra-recibo se necesitan que los movimientos seleccionados tengan el mismo tipo de Retención");
@@ -389,12 +389,14 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
     let peticiones: CR_Request[] = [];
 
+    if (movsAgrupados.length > 0) {
+      peticiones.push({
+        proveedor: this._usuarioService.usuario.Proveedor,
+        movimientos: movsAgrupados,
+        movimiento: request.movimiento
+      });
+    }
 
-    peticiones.push({
-      proveedor: this._usuarioService.usuario.Proveedor,
-      movimientos: movsAgrupados,
-      movimiento: request.movimiento
-    })
 
     movimientosIndependientes.forEach(p => {
       peticiones.push({
@@ -403,8 +405,8 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
         movimiento: request.movimiento
       })
     });
-
-    this.cargando = true;
+  
+    this.cargando = true;  
     this.generarContraRecibos(peticiones);
 
     // let totalContrareciboRestriccion: number = 0;
@@ -418,7 +420,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     // }
 
 
-    // this._facturaService.generarContraRecibo(request).subscribe(x => {
+    // this._facturaService.generarContraRecibo(request).subscribe(x => { 
     //   const data = x["data"];
     //   this._uiService.mostrarAlertaSuccess("Listo", `Se ha generado el contrarecibo ${data[0]["MOVID"]}`);
     //   this.cargaInfoPendientesCobro();
@@ -430,7 +432,9 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
     this._facturaService.generarContraReciboIndependiente(peticiones).subscribe((x) => {
       const data = x["data"];
       numRecibos.push(data[0]["MOVID"]);
-    }, () => { //this._uiService.mostrarAlertaError("Problema detectado", "Comuniquese con el departamento de administración para reportar esta anomalia "); 
+    }, () => {
+      this.cargando = false;
+      this._uiService.mostrarAlertaError("Problema detectado", "Comuniquese con el departamento de administración para reportar esta anomalia ");
     }, () => {
       this._uiService.mostrarAlertaSuccess("Listo", `Se ha generado el contrarecibo ${numRecibos}`);
       this.cargaInfoPendientesCobro();
