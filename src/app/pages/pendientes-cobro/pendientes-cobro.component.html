@@ -169,8 +169,8 @@
               <i  class="fa fa-warning "></i>                
             <span style="font-size: 10px;margin-left: 2px;">Para poder generar Contra-recibo debe subir XML y PDF de su factura.</span>
           </div>                       
-
-            <ejs-checkbox (change)="cambio(data)" *ngIf="data.EV!='Requerido sin Evidencia' && data.PermiteGenerarCR"
+          
+            <ejs-checkbox (change)="cambio(data)" *ngIf="data.EV!='Requerido sin Evidencia' &&  (data.PermiteGenerarCR  && data.CR)"
               [disabled]="!_usuarioService.usuario.PuedeGenerarContraRecibo || tieneRequerimientoOpinionCumplimiento "
               cssClass="e-primary" [(ngModel)]="data.solicitaContraRecibo" label="">
             </ejs-checkbox>
