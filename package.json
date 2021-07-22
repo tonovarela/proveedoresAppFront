@@ -38,7 +38,7 @@
     "pdfmake": "^0.1.65",
     "rxjs": "~6.5.4",
     "sweetalert2": "^9.14.2",
-    "xlsx": "^0.16.2",
+    "xlsx": "^0.17.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
