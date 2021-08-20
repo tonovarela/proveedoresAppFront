@@ -105,6 +105,8 @@ export class SubirArchivoService {
 
 
   private revisarPendientesCobro(movimiento: Movimiento, tipoArchivo: string, archivo: File): Observable<any> {
+    console.log(movimiento);
+    console.log(this.URL_SERVICE);
     const url = `${this.URL_SERVICE}/api/pendientescobro/revisar${tipoArchivo}?validar=${this.validarEstructura}&beta=${this.beta}`;
     const formData = new FormData();
     formData.append('archivo', archivo, archivo.name);
@@ -123,7 +125,7 @@ export class SubirArchivoService {
     formData.append('movimiento', `${movimiento.movimientoDescripcion}-${movimiento.folio}`.trim());
     formData.append('proveedor', `${this._usuarioService.usuario.Proveedor.trim()}`);
     formData.append('tipo', `${movimiento.tipo}`);
-    formData.append('moneda', `${movimiento.moneda}`);
+    formData.append('moneda', `${movimiento.monedaClave}`);
     formData.append('fechaEmision', movimiento.fechaEmision.toLocaleString());
 
     return this._http.post(url, formData, { reportProgress: true })

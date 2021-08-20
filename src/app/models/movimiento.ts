@@ -9,6 +9,7 @@ export interface Movimiento {
     saldo?: number;
     importe?:number,    
     moneda?: string;
+    monedaClave?:string;
     montoMaximoContraRecibo?:number;
     tieneXML?:boolean;
     tienePDF?: boolean    

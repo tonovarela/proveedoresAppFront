@@ -32,6 +32,7 @@ export class FacturaService {
             fechaEmision: moment(m["FechaEmision"]).toDate(),
             fechaVencimiento: moment(m["Vencimiento"]).toDate(),
             moneda: m["Moneda"].trim(),
+            monedaClave:m["MonedaClave"].trim(),
             usoCFDI: m["UsoCFDI"],
             usoCDFIDesc: m["DescUsoCFDI"],
             metodopago: m["MetodoPago"],
