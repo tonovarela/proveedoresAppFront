@@ -175,6 +175,8 @@ export class PagosAprobadosComponent implements OnInit, OnDestroy {
   }
 
   verDetalle(mov: PagoAprobado, referencia?: string) {
+
+    
     this._pagoActual = mov;
     this._referencia = referencia;
     this.modalService.open(this.detalle, { size: 'lg' });

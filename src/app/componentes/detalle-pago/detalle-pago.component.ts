@@ -12,6 +12,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class DetallePagoComponent implements OnInit {
   @Input('pago') _pago: PagoAprobado;
   @Input('referencia') _referencia: PagoAprobado;
+  @Input("programado") pagoProgramado:boolean =false;
   total: number = 0;
   cargando: boolean = false;
   constructor(private _pdfMovimientosService: PdfMovimientosService,
@@ -20,9 +21,13 @@ export class DetallePagoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.cargando = true;
-   
-    this._facturaService.obtenerDetallePagoAprobado(this._pago.folio).subscribe(
+    
+    this.cargando = true;   
+    const peticion=this.pagoProgramado
+    ?this._facturaService.obtenerDetallePagoProgramados(this._pago.movimientoID)
+    :this._facturaService.obtenerDetallePagoAprobados(this._pago.movimientoID);
+
+    peticion.subscribe(
       (movs: PagoDetalle[]) => {
         this._pago.detalle = movs;
         this._pago.detalle.forEach(x => {
@@ -35,9 +40,11 @@ export class DetallePagoComponent implements OnInit {
         }        
         this.cargando = false;
       });
-
-
   }
+
+
+
+
 
   movimientoFiltrado(movimiento) {
     return movimiento.factura == this._referencia ? 'movFiltrado' : '';

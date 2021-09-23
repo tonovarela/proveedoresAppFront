@@ -9,8 +9,8 @@ export const environment = {
      //URL_SERVICIOS:"/proveedores/api",
      //URL_VALIDADORFILE:"/proveedor",
     URL_SERVICIOS:"http://servicios.litoprocess.com/proveedores/api",
-    //URL_VALIDADORFILE:"http://192.168.2.221/proveedor"
-    URL_VALIDADORFILE:"http://localhost:44382/"
+     URL_VALIDADORFILE:"http://servicios.litoprocess.com/proveedor"
+    //URL_VALIDADORFILE:"http://localhost:44382/"
 };
 
 /*

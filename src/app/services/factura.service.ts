@@ -102,6 +102,11 @@ export class FacturaService {
   }
 
 
+
+
+  
+
+
   obtenerPagosAprobados(proveedor) {
     return this._http.get<PagoAprobado[]>(`${this.URL_SERVICIOS}/facturas/pagosaprobados/${proveedor}`)
       .pipe(
@@ -204,9 +209,35 @@ export class FacturaService {
 
 
 
-  obtenerDetallePagoAprobado(folio) {
+  // obtenerDetallePagoAprobado(folio) {
+  //   return this._http
+  //     .get<PagoDetalle[]>(`${this.URL_SERVICIOS}/facturas/detallepagos/${folio}`)
+  //     .pipe(
+  //       map(resp => resp["data"]),
+  //       map(data => data
+  //         .filter(m => m["Factura"] != null)
+  //         .map(m => {
+  //           let d: PagoDetalle = {
+  //             factura: m["Factura"],
+  //             numE: m["NumE"],
+  //             movPago: m["MovPago"],
+  //             numeroCR: m["NumCR"],
+  //             importe: Number(m["ImporteF"]),
+  //             fechaEmision: moment(m["FechaEmisionP"]).toDate()
+  //           };
+  //           return d;
+  //         }))
+  //     );
+
+
+
+  // }
+
+
+
+  obtenerDetallePagoProgramados(id) {
     return this._http
-      .get<PagoDetalle[]>(`${this.URL_SERVICIOS}/facturas/detallepagos/${folio}`)
+      .get<PagoDetalle[]>(`${this.URL_SERVICIOS}/facturas/detallepagosprogramados/${id}`)
       .pipe(
         map(resp => resp["data"]),
         map(data => data
@@ -223,9 +254,27 @@ export class FacturaService {
             return d;
           }))
       );
-
-
-
+  }
+  
+  obtenerDetallePagoAprobados(id) {
+    return this._http
+      .get<PagoDetalle[]>(`${this.URL_SERVICIOS}/facturas/detallepagosaprobados/${id}`)
+      .pipe(
+        map(resp => resp["data"]),
+        map(data => data
+          .filter(m => m["Factura"] != null)
+          .map(m => {
+            let d: PagoDetalle = {
+              factura: m["Factura"],
+              numE: m["NumE"],
+              movPago: m["MovPago"],
+              numeroCR: m["NumCR"],
+              importe: Number(m["ImporteF"]),
+              fechaEmision: moment(m["FechaEmisionP"]).toDate()
+            };
+            return d;
+          }))
+      );
   }
 
 

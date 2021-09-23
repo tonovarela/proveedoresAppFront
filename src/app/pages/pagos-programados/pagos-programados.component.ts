@@ -71,17 +71,7 @@ export class PagosProgramadosComponent implements OnInit {
         this.aplicarFiltroGeneral();
       });
 
-    // this.subscriptionNotification = this._subirArchivoService.notificacion
-    //   .pipe(filter((x: Movimiento) => x.tipo == "Pago"))
-    //   .subscribe(mov => {        
-    //     this.pagosProgramados.forEach(movimiento => {
-    //       if (movimiento.movimientoID == mov.movimientoID){
-    //         movimiento = mov;            
-    //       }
-            
-    //     }
-    //     );        
-    //   })
+    
 
     this.cargando = true;
     this._facturaService

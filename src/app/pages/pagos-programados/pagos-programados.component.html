@@ -52,7 +52,6 @@
   </div>
 </div>
 
-
 <ng-template #detalle let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Detalle de pago {{_pagoActual.folio }} </h4>
@@ -61,7 +60,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-detalle-pago [referencia]="_referencia" [pago]="_pagoActual"></app-detalle-pago>
+    <app-detalle-pago [referencia]="_referencia" [programado]="true"  [pago]="_pagoActual"></app-detalle-pago>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary waves-effect" (click)="modal.close('Save click')">Cerrar</button>
