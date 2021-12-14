@@ -46,8 +46,11 @@
 
 
 
-<section id="particles-js" [style.background-image]="fondo" class="login-register login-sidebar">
-    <div  class="bg-overlay"></div>    
+<section [id]="esMesNavidenio?'':'particles-js'"   [style.background-image]="fondo" class="login-register login-sidebar">
+
+    <app-snow-effect *ngIf="esMesNavidenio"></app-snow-effect>
+
+    <div class="bg-overlay"></div>
     <h1 id="nameSystem">PORTAL DE <br> PROVEEDORES</h1>
     <div class="login-box card">
         <div class="card-body">

@@ -12,17 +12,17 @@ canvas {
 
 /* ---- particles.js container ---- */
 
-.bg-overlay{
+.bg-overlay {
   position: absolute;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-opacity: .6;
-z-index: -99;
-background:#151516 ;
-/* background: linear-gradient(to right, #3264f5 2%,#7202bb 82%); */
-/* background: linear-gradient(to right, #2b3f7b 2%,#151516 82%); */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .6;
+  z-index: -99;
+  background: #151516;
+  /* background: linear-gradient(to right, #3264f5 2%,#7202bb 82%); */
+  /* background: linear-gradient(to right, #2b3f7b 2%,#151516 82%); */
 }
 
 /* #particles-js {
@@ -96,7 +96,7 @@ background:#151516 ;
 
 .login-register {
   background-size: cover;
-  background-position-x: -400px!important;
+  background-position-x: -400px !important;
   background-repeat: no-repeat;
   background-position: center center;
   height: 100%;
@@ -169,3 +169,7 @@ background:#151516 ;
       right: 0px;
       position: absolute;
       height: 100%; } */
+
+
+
+      

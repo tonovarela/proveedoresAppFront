@@ -21,8 +21,19 @@ export class LoginComponent implements OnInit {
     public router: Router
   ) { }
 
+
+  get esMesNavidenio(){
+    const mes= (new Date().getMonth() + 1);
+    return mes ==12;    
+  }
+
   ngOnInit(): void {
     
+
+    
+
+
+
     let fondos=["assets/images/background/login-register3.jpg",
                 "assets/images/background/login-register2.jpg",
                 "assets/images/background/login-register4.jpg",

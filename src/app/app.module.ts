@@ -14,6 +14,7 @@ import { CurrencyPipe, DatePipe, CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { ToolbarService, LinkService, ImageService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
+import { ComponentesModule } from './componentes/componentes.module';
 
 
 
@@ -30,6 +31,7 @@ import { ToolbarService, LinkService, ImageService, HtmlEditorService } from '@s
     ReactiveFormsModule,
     PagesModule,
     FormsModule,
+    ComponentesModule,
     CheckBoxModule,    
     APP_ROUTES,
     NgbModule,

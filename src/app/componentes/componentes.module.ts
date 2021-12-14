@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { TotalesComponent } from './totales/totales.component';
 import { AnexoIconoComponent } from './anexo-icono/anexo-icono.component';
+import { SnowEffectComponent } from './snow-effect/snow-effect.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { AnexoIconoComponent } from './anexo-icono/anexo-icono.component';
     DetallePagoComponent,
     BusquedaComponent,
    TotalesComponent,
-   AnexoIconoComponent
+   AnexoIconoComponent,
+   SnowEffectComponent
   ],
   exports:[
    LoaderComponent,
@@ -31,7 +33,8 @@ import { AnexoIconoComponent } from './anexo-icono/anexo-icono.component';
    DetallePagoComponent,
    BusquedaComponent,
    TotalesComponent,
-   AnexoIconoComponent
+   AnexoIconoComponent,
+   SnowEffectComponent
   ],  
   imports: [    
     BrowserModule,
@@ -39,7 +42,7 @@ import { AnexoIconoComponent } from './anexo-icono/anexo-icono.component';
     FormsModule,
     PipesModule,
     RouterModule,    
-    AutoCompleteModule
+    AutoCompleteModule,    
   ]
 })
 export class ComponentesModule { }
