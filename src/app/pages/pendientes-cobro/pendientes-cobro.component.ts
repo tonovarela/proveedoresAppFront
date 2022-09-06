@@ -396,8 +396,6 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
         movimiento: request.movimiento
       });
     }
-
-
     movimientosIndependientes.forEach(p => {
       peticiones.push({
         proveedor: this._usuarioService.usuario.Proveedor,

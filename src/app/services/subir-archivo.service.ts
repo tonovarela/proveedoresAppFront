@@ -9,6 +9,7 @@ import { catchError, map } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/delay';
+import { ProveedorService } from './proveedor.service';
 
 
 
@@ -24,7 +25,7 @@ export class SubirArchivoService {
   validarEstructura: boolean = environment.REVISAR_ESTRUCTURA;
   beta: boolean = environment.BETA;
   constructor(private _http: HttpClient,
-    private _usuarioService: UsuarioService) { }
+    private _usuarioService: UsuarioService, private _proveedorService:ProveedorService) { }
 
 
 
@@ -32,9 +33,6 @@ export class SubirArchivoService {
 
 
   public revisarArchivo(archivo: File, tipoArchivo: string, movimiento: PagoAprobado | Movimiento) {
-
-
-
     if (movimiento == null && tipoArchivo == "pdf") {
       return this.subirOpinionCumplimiento(archivo);
     }
@@ -56,11 +54,15 @@ export class SubirArchivoService {
 
   public subirOpinionCumplimiento(archivo: File) {
 
-    const url = `${this.URL_SERVICE}/api/anexocumplimiento?beta=${this.beta}`;
+    const url = `${this.URL_SERVICE}/api/anexocumplimiento`;
     const formData = new FormData();
-    formData.append('proveedor', this._usuarioService.usuario.Proveedor.trim());
-    formData.append('rfc', this._usuarioService.usuario.RFC.trim());
+    formData.append('proveedor', this._proveedorService.usuario.Proveedor.trim());
+    formData.append('rfc', this._proveedorService.usuario.RFC.trim());
+    formData.append('tipoArchivo', this._proveedorService.tipoArchivo.toString());
+    formData.append('revisarArchivo', this._proveedorService.revisarArchivo);
     formData.append('archivo', archivo, archivo.name);
+    
+
     this.validarPesoArchivo(archivo.size);
     return this._http.post(url, formData, { reportProgress: true })
       .pipe(
@@ -105,13 +107,16 @@ export class SubirArchivoService {
 
 
   private revisarPendientesCobro(movimiento: Movimiento, tipoArchivo: string, archivo: File): Observable<any> {
-    console.log(movimiento);
+    
     console.log(this.URL_SERVICE);
     const url = `${this.URL_SERVICE}/api/pendientescobro/revisar${tipoArchivo}?validar=${this.validarEstructura}&beta=${this.beta}`;
     const formData = new FormData();
+  
+    formData.append('movimientoDescripcion', movimiento.movimientoDescripcion);
     formData.append('archivo', archivo, archivo.name);
     formData.append('monto', movimiento.importe.toString());
     formData.append('rfc', this._usuarioService.usuario.RFC);
+    formData.append('regimenFiscal', this._usuarioService.usuario.RegimenFiscal);
     formData.append('condicionesPago', "------");
     formData.append('metodoPago', movimiento.metodopago);
     formData.append('metodoPagoDesc', movimiento.metodoPagoDesc);
@@ -179,12 +184,12 @@ export class SubirArchivoService {
 
 
 
-  anexarEvidenciaCuenta(path) {
-
+  anexarEvidenciaCuenta(path,tipoArchivo="Opinion de Cumplimiento") {
     return this._http.post(`${environment.URL_SERVICIOS}/usuario/opinioncumplimiento`,
       {
-        path: `${path}`,
-        id: this._usuarioService.usuario.Proveedor.trim(),
+        path: `${path}`,        
+        tipoArchivo,
+        id: this._proveedorService.usuario.Proveedor.trim(),
       }
     ).pipe(
       map(resp => {

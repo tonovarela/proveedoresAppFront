@@ -24,8 +24,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-10">
-          <p>No puede generar contra-recibos debido a que tiene que anexar la <b>Opinión de cumplimiento</b> emitida por
-            el SAT.</p>
+          <p>No puede generar contra-recibos debido a que tiene que anexar los documentos requeridos,  emitidos por el SAT.</p>          
         </div>
         <div class="col-md-2">
           <button (click)="irPerfil()" class="btn btn-warning btn-xs">Subir documento</button>
@@ -94,30 +93,12 @@
             </ejs-daterangepicker>
           </ng-template>
         </e-column>
-        <!-- <e-column field="fechaVencimiento" [filter]='filterMenu' headerText="Vencimiento" [format]='formatoptions'
-          width=40>
-          <ng-template #filterTemplate let-data>
-            <ejs-daterangepicker format='dd-MM-yyyy' placeholder="Elija la fecha" [(ngModel)]="fechaVencimientoFilter"
-              (change)="cambioFechaVencimiento($event)">
-              <e-presets>
-                <e-preset label="Esta semana" [start]='fecha.weekStart' [end]='fecha.weekEnd'></e-preset>
-                <e-preset label="Este mes" [start]='fecha.monthStart' [end]='fecha.monthEnd'></e-preset>
-                <e-preset label="Anterior mes" [start]='fecha.lastStart' [end]='fecha.lastEnd'></e-preset>
-              </e-presets>
-            </ejs-daterangepicker>
-          </ng-template>
-        </e-column> -->
-
+     
         <e-column headerText="Importe" width=25>
           <ng-template #template let-data>
             {{data.importe | currency}}
           </ng-template>
-        </e-column>
-        <!-- <e-column  headerText="Cambio divisa" width=50>
-          <ng-template #template let-data>
-            {{data.tipoCambio | currency}}
-          </ng-template>
-        </e-column> -->
+        </e-column>     
         <e-column field="moneda" headerText="Moneda" width=20>
         </e-column>
         <e-column field="tieneXML" [allowFiltering]='false' headerText="XML" allowSelection="false" width='18'>

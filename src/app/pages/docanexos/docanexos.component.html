@@ -1,0 +1,8 @@
+<ejs-grid #grid id="grid" 
+      (dataBound)='dataBound()'
+      height='350' [dataSource]="anexos " allowReordering='true' allowSelection="false"
+        [selectionSettings]="selectOptions" (created)="created($event)" [editSettings]='editSettings' allowPaging="true"
+        allowFiltering="true" [filterSettings]='filterSettings' allowSorting="true" allowResizing='true'
+        [pageSettings]="pageSettings" >
+        >
+</ejs-grid>

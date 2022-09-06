@@ -5,26 +5,30 @@ import { environment } from 'src/environments/environment';
 import { catchError, mergeMap } from 'rxjs/operators';
 import { of, throwError } from 'rxjs';
 import { UiService } from './ui.service';
+import { ResponseAnexo } from '../models/responseAnexo';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnexoService {
 
-  URL_SERVICE: string =
-    environment.URL_VALIDADORFILE;
+  URL_SERVICE: string =environment.URL_VALIDADORFILE;
     //"http://localhost:44382";
+
   beta: boolean = environment.BETA;
 
   movimientoActual: Movimiento;
-  constructor(private _http: HttpClient,
+  constructor(
+    private _http: HttpClient,
     private _uiService: UiService
   ) { }
 
 
 
 
-
+ listar(){
+   return this._http.get<ResponseAnexo>(`${environment.URL_SERVICIOS}/anexo`);
+ }
 
   ListarPorID(movimiento: Movimiento) {
     const url = `${this.URL_SERVICE}`;

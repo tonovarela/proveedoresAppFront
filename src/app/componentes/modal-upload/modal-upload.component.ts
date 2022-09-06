@@ -6,6 +6,8 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { RevisionCP } from 'src/app/models/movimiento';
 import { ExcelService } from 'src/app/services/excel-service.service';
 
+import { UsuarioService } from 'src/app/services/usuario.service';
+
 @Component({
   selector: 'app-modal-upload',
   templateUrl: './modal-upload.component.html',
@@ -32,7 +34,8 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
   constructor(public _modalUploadService: ModalUploadService,
     public _uiService: UiService,
     public _subirArchivoService: SubirArchivoService,
-    private _excelService: ExcelService
+    private _excelService: ExcelService,
+    private usuarioService:UsuarioService
 
   ) { }
 
@@ -70,16 +73,18 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
           //Registrar bitacora Cuenta                      
           if (this._modalUploadService.movimiento == null) {
             this.registrarBitacoraCuenta(response["pathArchivo"]);
-          }else{
-            if (this._modalUploadService.tipoArchivo != "*" ) {
+          } else {
+            if (this._modalUploadService.tipoArchivo != "*") {
+
               //Registrar bitacora XML y PDF
               this.registrarBitacoraIntelisis(response["path"]);
-            } else {           
-                //Registrar bitacora Evidencia          
-                this.registrarBitacoraEvidencia(response["pathArchivo"]);            
+            } else {
+
+              //Registrar bitacora Evidencia          
+              this.registrarBitacoraEvidencia(response["pathArchivo"]);
             }
           }
-          
+
           this._modalUploadService.ocultarModal();
           this.cerrarModal();
           this._uiService.mostrarAlertaSuccess("Listo", response["mensaje"]);
@@ -96,10 +101,12 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
       });
   }
 
-  registrarBitacoraCuenta(path:string) {    
-     this._subirArchivoService
-          .anexarEvidenciaCuenta(path)
-          .subscribe();
+  registrarBitacoraCuenta(path: string) {
+  
+    const tipoArchivo= this.usuarioService.tipoArchivo==1?"Constancia de situacion fiscal":"Opinion de Cumplimiento";
+    this._subirArchivoService
+      .anexarEvidenciaCuenta(path,tipoArchivo)
+      .subscribe();
   }
 
   registrarBitacoraEvidencia(path: string) {

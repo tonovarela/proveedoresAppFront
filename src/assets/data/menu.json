@@ -4,8 +4,14 @@
     "titulo": "Comunicados",
     "url": "/comunicados",
     "admin":true
-  }
-  ,
+  },
+  {
+    "icono": "mdi mdi-newspaper",
+    "titulo": "Proveedores",
+    "url": "/listado",
+    "admin":true
+  },
+  
   {
     "icono": "fa fa-money",
     "titulo": "Facturas emitidas",

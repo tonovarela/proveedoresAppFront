@@ -13,10 +13,7 @@ import { Observable } from 'rxjs';
 export class SidebarComponent implements OnInit {
 
   menu$:Observable<any>;
-  constructor(public _usuarioService: UsuarioService,
-    public _sidebarService: SidebarService,
-
-  ) { }
+  constructor(public _usuarioService: UsuarioService,public _sidebarService: SidebarService) { }
 
   ngOnInit(): void {
     this.menu$ =this._sidebarService.menu.pipe(

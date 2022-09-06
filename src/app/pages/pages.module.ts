@@ -41,6 +41,9 @@ import { DisponibilidadComponent } from './comunicados/disponibilidad/disponibil
 
 import { ComunicadosProveedorComponent } from './comunicados/comunicados-proveedor/comunicados-proveedor.component';
 import { AnexoFacturaComponent } from './anexo-factura/anexo-factura.component';
+import { DocanexosComponent } from './docanexos/docanexos.component';
+import { ListadoComponent } from './listado/listado.component';
+import { PerfilProveedorComponent } from './perfil-proveedor/perfil-proveedor.component';
 registerLocaleData(es);
 
 @NgModule({
@@ -56,7 +59,7 @@ registerLocaleData(es);
     ComunicadosComponent,
     DetalleComponent,
     DisponibilidadComponent,    
-    ComunicadosProveedorComponent, AnexoFacturaComponent
+    ComunicadosProveedorComponent, AnexoFacturaComponent, DocanexosComponent, ListadoComponent, PerfilProveedorComponent
   ],
   providers: [ 
     //{provide:LOCALE_ID,useValue:"es-MX"},

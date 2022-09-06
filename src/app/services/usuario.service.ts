@@ -13,6 +13,8 @@ import { HttpClient } from '@angular/common/http';
 export class UsuarioService {
   url: string = environment.URL_SERVICIOS;
   filtroGeneral = new EventEmitter<any>();
+
+  tipoArchivo:number=0;
   filtroAplicar: any = null;
   usuario: Usuario = {};
   constructor(
@@ -66,8 +68,9 @@ export class UsuarioService {
     //   })
     // );
   }
-  obtenerHistorialOpinionCumplimiento() {
-    const url = `${this.url}/usuario/opinioncumplimiento/${this.usuario.Proveedor}`;
+  obtenerHistorialOpinionCumplimiento(proveedor:string=null) {
+    const _proveedor= proveedor==null?this.usuario.Proveedor:proveedor;
+  const url = `${this.url}/usuario/opinioncumplimiento/${_proveedor}`;      
     return this.http.get<ResponseOpinionCumplimiento>(url);
   }
   esAdmin() {

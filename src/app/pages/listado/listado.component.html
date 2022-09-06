@@ -1,0 +1,23 @@
+<ejs-grid #grid id="grid" 
+      (dataBound)='dataBound()'
+      height='350' [dataSource]="proveedores" allowReordering='true' allowSelection="false"
+        [selectionSettings]="selectOptions" (created)="created($event)" [editSettings]='editSettings' allowPaging="true"
+        allowFiltering="true" [filterSettings]='filterSettings' allowSorting="true" allowResizing='true'
+        [pageSettings]="pageSettings" >
+        <e-columns>
+          <e-column field="Alta" headerText=""   [allowFiltering]="false"  width=10>
+            <ng-template #template let-data>
+              <button class="btn btn-info btn-xs"  (click)="IrAnexo(data)">Ver</button>
+              
+            </ng-template>
+          </e-column>  
+          <e-column field="Proveedor" headerText="Proveedor" width=15>
+          </e-column>  
+          <e-column field="RFC" headerText="RFC" width=20>
+          </e-column>  
+          <e-column field="Nombre" headerText="Nombre" width=40>
+          </e-column>  
+        </e-columns>
+        
+</ejs-grid>
+

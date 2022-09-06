@@ -16,6 +16,9 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { Routes, RouterModule } from '@angular/router';
 import { VerificaAdminGuard } from '../services/guards/verifica-admin.guard';
+import { DocanexosComponent } from './docanexos/docanexos.component';
+import { ListadoComponent } from './listado/listado.component';
+import { PerfilProveedorComponent } from './perfil-proveedor/perfil-proveedor.component';
 const pagesRoutes: Routes = [
     {
         path: '', component: PagesComponent,
@@ -28,6 +31,9 @@ const pagesRoutes: Routes = [
             },
             
             { path: 'comunicados', component:ComunicadosComponent, data: { titulo: "Comunicados",modulo:"comunicados" },canActivate:[VerificaAdminGuard] },
+            { path:'listado', component:ListadoComponent,data:{titulo:"Proveedores",modulo:"#"},canActivate:[VerificaAdminGuard]},
+            { path:'perfil-proveedor', component:PerfilProveedorComponent,data:{titulo:"En este módulo no se validaran los documentos",modulo:"#"},canActivate:[VerificaAdminGuard]},
+            { path:'docanexos', component:DocanexosComponent,data:{titulo:"Documentos anexos",modulo:"#"},canActivate:[VerificaAdminGuard]},
             { path: 'comunicados/agregar', component:DetalleComponent, data: { titulo: "Agregar comunicado",modulo:"comunicados" } ,canActivate:[VerificaAdminGuard]},
             { path: 'comunicados/editar/:id', component:DetalleComponent, data: { titulo: "Editar comunicado",modulo:"comunicados" } ,canActivate:[VerificaAdminGuard]},
             { path: 'comunicados/disponibilidad/:id', component:DisponibilidadComponent, data: { titulo: "Comunicado por proveedor",modulo:"comunicados" },canActivate:[VerificaAdminGuard] },
