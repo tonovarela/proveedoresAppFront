@@ -95,4 +95,9 @@ export class UsuarioService {
     this.router.navigate(["/login"]);
   }
 
+  actualizarPassword(request: any) {
+   return this.http.patch(`${this.url}/usuario/password`,{...request});
+
+  }
+
 }

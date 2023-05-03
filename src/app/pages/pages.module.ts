@@ -1,8 +1,8 @@
 
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';    
-import { ToastrModule } from 'ngx-toastr';  
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from './../shared/shared.module';
 
@@ -10,11 +10,11 @@ import { SharedModule } from './../shared/shared.module';
 
 
 import { GridAllModule } from '@syncfusion/ej2-angular-grids';
-import { GridModule, PagerModule,DetailRowService, PageService, SortService, FilterService, ReorderService,ResizeService,SelectionService, ToolbarService,EditService } from '@syncfusion/ej2-angular-grids';
+import { GridModule, PagerModule, DetailRowService, PageService, SortService, FilterService, ReorderService, ResizeService, SelectionService, ToolbarService, EditService } from '@syncfusion/ej2-angular-grids';
 import { CheckBoxModule } from '@syncfusion/ej2-angular-buttons';
 import { DateRangePickerModule } from '@syncfusion/ej2-angular-calendars';
 import { DatePickerAllModule } from '@syncfusion/ej2-angular-calendars';
-//import { AutoCompleteModule } from '@syncfusion/ej2-angular-dropdowns';
+
 
 import { PipesModule } from './../pipes/pipes.module';
 
@@ -28,12 +28,12 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { PagesComponent } from './pages.component';
 
 import { ComponentesModule } from './../componentes/componentes.module';
-import { BrowserModule } from '@angular/platform-browser';
+
 import { PagosProgramadosComponent } from './pagos-programados/pagos-programados.component';
 import { ComunicadosComponent } from './comunicados/comunicados.component';
 import { RichTextEditorModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { DetalleComponent } from './comunicados/detalle/detalle.component';
-import { CommonModule } from '@angular/common';
+
 
 import es from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
@@ -44,6 +44,7 @@ import { AnexoFacturaComponent } from './anexo-factura/anexo-factura.component';
 import { DocanexosComponent } from './docanexos/docanexos.component';
 import { ListadoComponent } from './listado/listado.component';
 import { PerfilProveedorComponent } from './perfil-proveedor/perfil-proveedor.component';
+import { CambiarPasswordComponent } from './cambiar-password/cambiar-password.component';
 registerLocaleData(es);
 
 @NgModule({
@@ -54,37 +55,40 @@ registerLocaleData(es);
     ContraRecibosComponent,
     PagosAprobadosComponent,
     AccountSettingsComponent,
-    PerfilComponent,    
+    PerfilComponent,
     PagosProgramadosComponent,
     ComunicadosComponent,
     DetalleComponent,
-    DisponibilidadComponent,    
-    ComunicadosProveedorComponent, AnexoFacturaComponent, DocanexosComponent, ListadoComponent, PerfilProveedorComponent
+    DisponibilidadComponent,
+    ComunicadosProveedorComponent,
+    AnexoFacturaComponent,
+    DocanexosComponent,
+    ListadoComponent,
+    PerfilProveedorComponent,
+    CambiarPasswordComponent
   ],
-  providers: [ 
+  providers: [
     //{provide:LOCALE_ID,useValue:"es-MX"},
-  PageService,SortService,DetailRowService, FilterService,ReorderService,ResizeService,SelectionService,ToolbarService,EditService],
-  imports: [  
-    SharedModule,  
+    PageService, SortService, DetailRowService, FilterService, ReorderService, ResizeService, SelectionService, ToolbarService, EditService],
+  imports: [
+    SharedModule,
     PAGESROUTES,
     FormsModule,
-    ReactiveFormsModule,
-    //BrowserModule,
-    //CommonModule,
+    ReactiveFormsModule,    
     GridAllModule,
     GridModule,
     DatePickerAllModule,
     CheckBoxModule,
     ComponentesModule,
-     PagerModule,
-     PipesModule,
-     RichTextEditorModule,
-     BrowserAnimationsModule, 
-     DateRangePickerModule,       
-     ToastrModule.forRoot({
-       preventDuplicates:true
-     }),
-     NgbModule
+    PagerModule,
+    PipesModule,
+    RichTextEditorModule,
+    BrowserAnimationsModule,
+    DateRangePickerModule,
+    ToastrModule.forRoot({
+      preventDuplicates: true
+    }),
+    NgbModule
   ]
 })
 export class PagesModule { }

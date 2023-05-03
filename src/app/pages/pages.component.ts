@@ -4,6 +4,7 @@ declare function iniciar_plugins();
 import { loadCldr, L10n, setCulture } from "@syncfusion/ej2-base";
 import { traduccion } from '../i18n/es-MX';
 
+
 declare var require: any;
 loadCldr(
   require('cldr-data/supplemental/numberingSystems.json'),
@@ -20,12 +21,15 @@ loadCldr(
 })
 export class PagesComponent implements OnInit {
 
+  
   constructor() { }
 
   ngOnInit(): void {
     iniciar_plugins();
     L10n.load(traduccion);
     setCulture("es");
+
+   
   }
 
 }

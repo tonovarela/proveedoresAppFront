@@ -90,10 +90,7 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     window.addEventListener('resize', this.onresize.bind(this));
-    const { cambiarContrasenia } = this._usuarioService.usuario;
-    if (cambiarContrasenia=="1"){
-      console.log("Cambiando la contraseña");
-    }
+    
 
     this._usuarioService.usuario.PuedeGenerarContraRecibo = true;
     this._comunicadoService.verificarNotificacion.emit(true);
