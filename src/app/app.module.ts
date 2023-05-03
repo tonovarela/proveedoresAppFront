@@ -24,8 +24,7 @@ import { ComponentesModule } from './componentes/componentes.module';
     LoginComponent,
     NopagefoundComponent,    
   ],
-  imports: [        
-    //BrowserModule,
+  imports: [            
     HttpClientModule,
     FormsModule,        
     ReactiveFormsModule,

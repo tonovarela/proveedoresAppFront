@@ -5,6 +5,7 @@ export interface Usuario {
     Nombre?: string;
     RFC?: string;
     RegimenFiscal?:string;
+    cambiarContrasenia?:string;
     //PuedeAnexarDocumento?:boolean;
     PuedeGenerarContraRecibo?:boolean;   
     MontoMaxContraRecibo?:number;    

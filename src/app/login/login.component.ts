@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ResponseLogin } from '../models/proveedor';
-import { of ,forkJoin} from 'rxjs';
+import { forkJoin} from 'rxjs';
 declare function iniciar_plugins();
 @Component({
   selector: 'app-login',
@@ -95,16 +95,5 @@ export class LoginComponent implements OnInit {
    
    
    
-    // this._usuarioService.login(usuario).subscribe((resp: ResponseLogin) => {
-    //   if (resp.validacion == false) {
-    //     this._uiService.mostrarAlertaError("Acceso", "Login incorrecto");
-
-    //   } else {
-    //    this.cargarSesion();
-
-    //   }
-
-    // });
-
   }
 }

@@ -50,9 +50,8 @@ export class UsuarioService {
       })
     );
   }
-  autorizacionCR() {
-    //const url = `${this.url}/usuario/autorizacioncr/${this.usuario.Proveedor}`;
-    //this.usuario.PuedeGenerarContraRecibo=false;
+  
+  autorizacionCR() {  
     return this.facturaService.obtenerPagosAprobados(this.usuario.Proveedor).pipe(
       map(data=>{
         const autorizacion =data.filter(d=>d["esRequerido"]);
