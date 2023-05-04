@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "dev": "./node_modules/.bin/ng serve",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
@@ -14,7 +15,7 @@
     "@angular/animations": "^9.1.9",
     "@angular/common": "~9.0.2",
     "@angular/compiler": "~9.0.2",
-    "@angular/core": "^16.0.0",
+    "@angular/core": "^9.0.2",
     "@angular/forms": "~9.0.2",
     "@angular/localize": "~9.0.2",
     "@angular/platform-browser": "~9.0.2",
@@ -42,8 +43,8 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^16.0.0",
-    "@angular/cli": "^16.0.0",
+    "@angular-devkit/build-angular": "~0.900.3",
+    "@angular/cli": "^9.0.3",
     "@angular/compiler-cli": "~9.0.2",
     "@angular/language-service": "~9.0.2",
     "@types/jasmine": "~3.5.0",

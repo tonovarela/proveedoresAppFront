@@ -21,7 +21,7 @@ export class CambiarPasswordComponent implements OnInit {
     this.formUpdate = this.fb.group({
       password1: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(20)]],
       password2: ['', [Validators.required]],
-    }, { validators: [this.checkPasswords] });
+    }, { validators: [this.checkPasswords,this.passwordNoRFC] });
   }
 
 
@@ -31,6 +31,15 @@ export class CambiarPasswordComponent implements OnInit {
     return pass === confirmPass ? null : { notMatch: true }
   }
 
+  passwordNoRFC: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
+    const { RFC } = this.usuarioService.usuario;
+    let pass = group.get('password1').value;
+    //let confirmPass = group.get('password2').value
+    return pass !== RFC ? null : { noRFC: true }
+  }
+
+
+
   actualizarPassword(event: any) {
     const { Proveedor: proveedor } = this.usuarioService.usuario;
     const { password1: password } = this.formUpdate.value;
@@ -38,10 +47,10 @@ export class CambiarPasswordComponent implements OnInit {
     this.actualizandoPassword = true
     this.usuarioService.actualizarPassword(request).subscribe(response => {
       this.uiService.mostrarAlertaSuccess("Proveedores", response['mensaje']);
-      setTimeout(()=>{
+      setTimeout(() => {
         this.usuarioService.logout();
-      },1000)
-      
+      }, 1000)
+
     });
 
 
