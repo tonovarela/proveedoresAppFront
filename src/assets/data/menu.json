@@ -10,8 +10,7 @@
     "titulo": "Proveedores",
     "url": "/listado",
     "admin":true
-  },
-  
+  },  
   {
     "icono": "fa fa-money",
     "titulo": "Facturas emitidas",

@@ -46,6 +46,7 @@ const pagesRoutes: Routes = [
             { path: 'contra-recibos', component: ContraRecibosComponent, data: { titulo: "Contra recibos pendientes",modulo:"contra-recibos" },canActivate:[ProveedorGuard] },
             { path: 'pagos-aprobados', component: PagosAprobadosComponent, data: { titulo: "Pagos aprobados" ,modulo:"pagos-aprobados"} ,canActivate:[ProveedorGuard]},
             { path: 'pagos-programados', component: PagosProgramadosComponent, data: { titulo: "Pagos programados" ,modulo:"pagos-programados"} ,canActivate:[ProveedorGuard]},
+            { path:'repse',component:},
             { path: 'cambiar-password', component: CambiarPasswordComponent },
             { path: 'account-settings', component:AccountSettingsComponent,data:{titulo:"Settings" ,modulo:"#"}  },
             { path: 'perfil', component:PerfilComponent,data:{titulo:"Perfil",modulo:"#" }  },

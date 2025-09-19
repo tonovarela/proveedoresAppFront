@@ -36,6 +36,10 @@ export class SidebarComponent implements OnInit {
 
   }
 
+  esREPSE(){
+    return this._usuarioService.esREPSE();
+  }
+
 
 
 }

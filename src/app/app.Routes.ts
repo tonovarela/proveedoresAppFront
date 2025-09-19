@@ -9,8 +9,7 @@ const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
     {
         path: '', component: PagesComponent,
-        canActivate: [LoginGuard],
-        //loadChildren: './pages/pages.module#PagesModule'
+        canActivate: [LoginGuard],        
         loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule)
     },
     { path: '**', component: NopagefoundComponent },

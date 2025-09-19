@@ -75,6 +75,10 @@ export class UsuarioService {
   esAdmin() {
     return this.usuario.idRol == "1";
   }
+
+  esREPSE(){
+    return this.usuario.REPSE=="SI";
+  }
   estaLogueado() {
     return this.usuario != null;
   }

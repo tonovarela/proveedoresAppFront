@@ -4,6 +4,7 @@ export interface Usuario {
     Estatus?: string;
     Nombre?: string;
     RFC?: string;
+    REPSE?:string;
     RegimenFiscal?:string;
     cambiarContrasenia?:string;
     //PuedeAnexarDocumento?:boolean;
