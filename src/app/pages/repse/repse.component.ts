@@ -1,12 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { OpinionCumplimiento } from 'src/app/models/opinion_cumplimiento';
-import { Usuario } from 'src/app/models/proveedor';
-import { ModalUploadService } from 'src/app/services/modal-upload.service';
-import { ProveedorService } from 'src/app/services/proveedor.service';
-import { UsuarioService } from 'src/app/services/usuario.service';
-import { SubirArchivoService } from 'src/app/services/subir-archivo.service';
+import { OpinionCumplimiento, Usuario } from 'src/app/models';
+import { ProveedorService,SubirArchivoService,UsuarioService,ModalUploadService } from 'src/app/services';
+
 
 @Component({
   selector: 'app-repse',
@@ -24,7 +21,9 @@ export class RepseComponent implements OnInit ,OnDestroy{
               private _subirArchivoService: SubirArchivoService,
               private _usuarioService:UsuarioService,
               private _modalUploadSevice:ModalUploadService) { }
-  ngOnDestroy(): void {
+
+              
+ngOnDestroy(): void {
     this.subscriptionNotificacion.unsubscribe();
   }
 

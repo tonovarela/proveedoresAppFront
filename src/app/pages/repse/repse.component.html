@@ -1,6 +1,6 @@
 <div class="row animated fadeIn ">
 
-    <div class="col-lg-7">
+    <div class="col-lg-6">
         <button class="btn btn-info btn-xs" (click)="regresar()">Regresar</button>
         <hr>
         <div class="card">
@@ -10,7 +10,7 @@
                 <select [(ngModel)]="tipoArchivo" >
                     <option value =0 selected>Seleccione tipo de documento a subir</option>
                     <option value="1">Constancia de situacion fiscal</option>
-                    <option value=2>Opinión del cumplimiento</option>
+                    <option value="2">Opinión del cumplimiento</option>
                 </select>                
                 <button type="button" *ngIf="tipoArchivo!=0" (click)="subirArchivo()"
                     class="btn btn-info pull-right waves-effect waves-light m-r-10"><i class="fa fa-upload"></i>Subir
@@ -18,34 +18,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-5">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Proveedor</h4>
-                <h6 class="card-subtitle"></h6>
-                <form class="form p-t-20">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon"><i class="ti-user"></i></div>
-                            <input [ngModel]="usuario.Proveedor" disabled name="nombre" required class="form-control"
-                                type="text">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon"><i class="fa fa-vcard-o"></i></div>
-                            <input [ngModel]="usuario.RFC" disabled name="email" required class="form-control"
-                                type="email">
-                        </div>
-                    </div>
 
-
-
-                </form>
-            </div>
-        </div>
-        
-    </div>    
 </div>
 <div class="row" *ngIf="historicoOpinionCumplimiento.length>0">    
     <div class="col-lg-7">
@@ -61,9 +34,7 @@
                              </small>
                             <h5 class="mb-1 m-t-10" >{{documento.nombre}}</h5>
                             <small class="text-muted"> {{documento.fecha | date:'dd-MM-y, h:mm:ss a'}}</small>
-                        </div>
-                        
-                        
+                        </div>                                                
                     </a>                                        
                 </div>
             </div>

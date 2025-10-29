@@ -45,6 +45,7 @@ import { DocanexosComponent } from './docanexos/docanexos.component';
 import { ListadoComponent } from './listado/listado.component';
 import { PerfilProveedorComponent } from './perfil-proveedor/perfil-proveedor.component';
 import { CambiarPasswordComponent } from './cambiar-password/cambiar-password.component';
+import { RepseComponent } from './repse/repse.component';
 registerLocaleData(es);
 
 @NgModule({
@@ -65,6 +66,7 @@ registerLocaleData(es);
     DocanexosComponent,
     ListadoComponent,
     PerfilProveedorComponent,
+    RepseComponent,
     CambiarPasswordComponent
   ],
   providers: [
