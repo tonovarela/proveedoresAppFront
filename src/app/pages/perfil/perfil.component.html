@@ -1,6 +1,6 @@
 <div class="row animated fadeIn ">
 
-    <div class="col-lg-7">
+    <div class="col">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">DOCUMENTOS</h4>
@@ -16,7 +16,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-5">
+    <!-- <div class="col-lg-5">
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Proveedor</h4>
@@ -43,29 +43,58 @@
             </div>
         </div>
         
-    </div>    
+    </div>     -->
 </div>
 <div class="row" *ngIf="historicoOpinionCumplimiento.length>0">    
-    <div class="col-lg-7">
-        <div class="card">
-            <div class="card-body">                    
-                <div class="list-group"  >
-                    <h4>Historical de documentos</h4>
-                    <a style="cursor:default" href="javascript:void(0)" class="list-group-item "
-                     *ngFor="let documento of historicoOpinionCumplimiento">                     
-                        <div class="d-flex w-80 justify-content-between ">                            
-                            <small>
-                                <app-anexo-icono tipo="pdf"></app-anexo-icono>
-                             </small>
-                            <h5 class="mb-1 m-t-10" >{{documento.nombre}}</h5>
-                            <small class="text-muted"> {{documento.fecha | date:'dd-MM-y, h:mm:ss a'}}</small>
-                        </div>
-                        
-                        
-                    </a>                                        
+    <div class="col-6">
+        <div class="card mt-2">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center ">
+                    <h4 class="card-title mb-0">
+                        <i class="fa fa-history text-primary mr-2"></i>
+                        Historial de documentos
+                    </h4>
+                    <span class="badge badge-info">{{historicoOpinionCumplimiento.length}} documento(s)</span>
+                </div>
+                
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item border-left-0 border-right-0 px-0 py-2"
+                         *ngFor="let documento of historicoOpinionCumplimiento; let i = index">                        
+                        <div class="d-flex align-items-center">
+                            <!-- Icono del documento -->
+                            <div class="mr-3">
+                                <div class="bg-light rounded-circle p-1 d-flex align-items-center justify-content-center" 
+                                     style="width: 50px; height: 50px;">
+                                    <app-anexo-icono tipo="pdf"></app-anexo-icono>
+                                </div>
+                            </div>                            
+                            <!-- Información del documento -->
+                            <div class="grow">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class=" font-weight-bold text-dark">
+                                            {{documento.nombre}}
+                                        </h6>
+                                        <div class="d-flex align-items-center text-muted">
+                                            <i class="fa fa-calendar-o mr-2"></i>
+                                            <small>{{documento.fecha | date:'dd/MM/yyyy, h:mm:ss a'}}</small>
+                                        </div>
+                                    </div>                                                                        
+                                </div>                                                               
+                            </div>
+                        </div>                        
+                        <!-- Separador entre elementos (excepto el último) -->
+                        <hr *ngIf="i < historicoOpinionCumplimiento.length - 1" class="mt-3 mb-0">
+                    </div>
+                </div>
+                
+                <!-- Mensaje cuando no hay documentos -->
+                <div *ngIf="historicoOpinionCumplimiento.length === 0" 
+                     class="text-center py-4 text-muted">
+                    <i class="fa fa-file-o fa-3x mb-3"></i>
+                    <p>No hay documentos en el historial</p>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
