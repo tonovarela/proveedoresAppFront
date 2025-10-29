@@ -66,7 +66,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   filtrarFacturas(facturas?: Factura[]) {
-
     if (facturas != undefined) {
       this.facturasFiltradas = facturas.filter(x => x.modulo == this.moduloActivo);
     } else {
@@ -79,7 +78,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     const proveedor = this._usuarioService.usuario.Proveedor;    
     this.tienePendienteComunicadosPendientes=false;
     this.comunicadosPendientesPorLeer=[];
-    this._comunicadoService.obtenerPendientesPorLeer(proveedor).subscribe((response:ResponseComunicadosPorLeer) => {      
+    this._comunicadoService
+    .obtenerPendientesPorLeer(proveedor)
+    .subscribe((response:ResponseComunicadosPorLeer) => {      
       if (response.total > 0) {
         this.comunicadosPendientesPorLeer = response.comunicadosPendientes;
         this.tienePendienteComunicadosPendientes=true;

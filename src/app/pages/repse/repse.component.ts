@@ -24,7 +24,11 @@ export class RepseComponent implements OnInit ,OnDestroy{
 
               
 ngOnDestroy(): void {
+
+  if (this.subscriptionNotificacion){
     this.subscriptionNotificacion.unsubscribe();
+  }
+  
   }
 
   ngOnInit(): void {    
@@ -34,12 +38,14 @@ ngOnDestroy(): void {
     }       
     this.usuario= this._proveedorService.usuario; 
     this.cargarHistoricoCumplimiento();
-    this.subscriptionNotificacion = this._subirArchivoService
+    this.subscriptionNotificacion = 
+    this._subirArchivoService
      .notificacionSubirOpinionCumplimiento
      .subscribe(x => {
        this.cargarHistoricoCumplimiento();
      });
   }
+  
 
   subirArchivo() {     
      this._proveedorService.tipoArchivo= this.tipoArchivo.toString();
