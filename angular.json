@@ -121,5 +121,8 @@
       }
     }
   },
-  "defaultProject": "proveedoresApp"
+  "defaultProject": "proveedoresApp",
+  "cli": {
+    "analytics": false
+  }
 }
