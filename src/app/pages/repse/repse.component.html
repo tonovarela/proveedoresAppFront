@@ -20,7 +20,10 @@
     </div>
 
 </div>
-<div class="row" *ngIf="historicoOpinionCumplimiento.length>0">    
+
+
+<input type="file"(change)="ngOnFile($event)" placeholder="Cargar" accept=".zip">
+<!-- <div class="row" *ngIf="historicoOpinionCumplimiento.length>0">    
     <div class="col-lg-7">
         <div class="card">
             <div class="card-body">                    
@@ -41,4 +44,4 @@
         </div>
 
     </div>
-</div>
+</div> -->

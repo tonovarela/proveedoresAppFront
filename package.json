@@ -34,6 +34,7 @@
     "cldr-data": "^36.0.0",
     "core-js": "^3.6.5",
     "file-saver": "^2.0.2",
+    "jszip": "^3.10.1",
     "moment": "^2.26.0",
     "ngx-toastr": "^12.1.0",
     "pdfmake": "^0.1.65",
