@@ -1,47 +1,38 @@
+<button class="btn btn-info " (click)="regresar()">Regresar</button>
+<hr>
 <div class="row animated fadeIn ">
 
-    <div class="col-lg-6">
-        <button class="btn btn-info btn-xs" (click)="regresar()">Regresar</button>
-        <hr>
+    
+    <div class="col-6">                
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">DOCUMENTOS</h4>
-                <p>En este apartado podrás subir la documentación que emite el SAT cuando el departamento de administración te lo solicite.</p>
-                <select [(ngModel)]="tipoArchivo" >
-                    <option value =0 selected>Seleccione tipo de documento a subir</option>
-                    <option value="1">Constancia de situacion fiscal</option>
-                    <option value="2">Opinión del cumplimiento</option>
-                </select>                
-                <button type="button" *ngIf="tipoArchivo!=0" (click)="subirArchivo()"
-                    class="btn btn-info pull-right waves-effect waves-light m-r-10"><i class="fa fa-upload"></i>Subir
-                    archivo</button>
+                <h4 class="card-title">Recibo de nómina Trabajadores XML</h4>                
+                <button type="button"  (click)="subirArchivo()" class="btn btn-info pull-right waves-effect waves-light m-r-10"><i class="fa fa-upload"></i>Subir archivo</button>
             </div>
         </div>
     </div>
+    <div class="col-6">                
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Recibo de nómina Trabajadores PDF</h4>                
+                <button type="button"  (click)="subirArchivo()" class="btn btn-info pull-right waves-effect waves-light m-r-10"><i class="fa fa-upload"></i>Subir archivo</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-6" *ngFor="let doc of DocumentosRepse">                
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{doc.descripcion}}</h4>                
+                <button type="button"  (click)="subirArchivo()" class="btn btn-info pull-right waves-effect waves-light m-r-10"><i class="fa fa-upload"></i>Subir archivo</button>
+            </div>
+        </div>
+    </div>
+
+
+    
 
 </div>
 
-
-<input type="file"(change)="ngOnFile($event)" placeholder="Cargar" accept=".zip">
-<!-- <div class="row" *ngIf="historicoOpinionCumplimiento.length>0">    
-    <div class="col-lg-7">
-        <div class="card">
-            <div class="card-body">                    
-                <div class="list-group"  >
-                    <h4>Historical de documentos</h4>
-                    <a style="cursor:default" href="javascript:void(0)" class="list-group-item "
-                     *ngFor="let documento of historicoOpinionCumplimiento">                     
-                        <div class="d-flex w-80 justify-content-between ">                            
-                            <small>
-                                <app-anexo-icono tipo="pdf"></app-anexo-icono>
-                             </small>
-                            <h5 class="mb-1 m-t-10" >{{documento.nombre}}</h5>
-                            <small class="text-muted"> {{documento.fecha | date:'dd-MM-y, h:mm:ss a'}}</small>
-                        </div>                                                
-                    </a>                                        
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div> -->
+<!-- <input type="file"(change)="ngOnFile($event)" placeholder="Cargar" accept=".zip"> -->

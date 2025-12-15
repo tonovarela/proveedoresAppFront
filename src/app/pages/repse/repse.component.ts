@@ -8,6 +8,15 @@ import { ProveedorService,SubirArchivoService,UsuarioService,ModalUploadService 
 import * as JSZip from 'jszip/dist/jszip';
 import { switchMap, tap, filter, first } from 'rxjs/operators';
 
+
+interface DocumentoRepseView {
+  descripcion:string;
+  id_documento?:number;
+  nombreArchivo:string;
+  fechaSubida:Date;
+  estatus:boolean;
+}
+
  interface ZipFile {
    name: string;
    dir: boolean;
@@ -30,9 +39,28 @@ interface ResponseXML {
 })
 export class RepseComponent implements OnInit ,OnDestroy{
 
-  tipoArchivo:number=0;
+  //tipoArchivo:number=0;
   usuario: Usuario = {};
-  historicoOpinionCumplimiento: OpinionCumplimiento[] = [];
+
+  DocumentosRepse:DocumentoRepseView[]=[
+    { descripcion:"Copia del registro  REPSE vigente", id_documento:null, nombreArchivo:"", fechaSubida:null, estatus:false },
+    { descripcion:"Constancia de situación fiscal", id_documento:null, nombreArchivo:"", fechaSubida:null, estatus:false },
+    { descripcion:"Declaracion de entero de retenció de sueldos y salarios y comprobante de pago", id_documento:null, nombreArchivo:"", fechaSubida:null, estatus:false },
+    { descripcion:"Declaracion definitiva y comprobante de pago de IVA", id_documento:null, nombreArchivo:"", fechaSubida:null, estatus:false },
+    { descripcion:"Declaracion definitiva y comprobante de pago de ISR", id_documento:null, nombreArchivo:"", fechaSubida:null, estatus:false },
+    { descripcion:"Cédula de determinacion de cuotas IMSS", id_documento:null, nombreArchivo:"", fechaSubida:null, estatus:false },
+    { descripcion:"Resumen de liquidacion de IMSS", id_documento:null, nombreArchivo:"", fechaSubida:null, estatus:false },
+    { descripcion:"Comprobante de pago IMSS", id_documento:null, nombreArchivo:"", fechaSubida:null, estatus:false },
+    { descripcion:"Opinion de cumplimiento SAT", id_documento:null, nombreArchivo:"", fechaSubida:null, estatus:false },
+    { descripcion:"Opinion de cumplimiento IMSS", id_documento:null, nombreArchivo:"", fechaSubida:null, estatus:false },
+    { descripcion:"Opinion de cumplimiento INFONAVIT", id_documento:null, nombreArchivo:"", fechaSubida:null, estatus:false },
+    { descripcion:"Cédula de determinación de aportaciones y amortización IMSS-INFONAVIT", id_documento:null, nombreArchivo:"", fechaSubida:null, estatus:false },
+    { descripcion:"Resumen de liquidacion IMSS-INFONAVIT", id_documento:null, nombreArchivo:"", fechaSubida:null, estatus:false },
+    { descripcion:"Comprobante de pago IMSS-INFONAVIT", id_documento:null, nombreArchivo:"", fechaSubida:null, estatus:false },
+    { descripcion:"Declaración informativa IMSS ()", id_documento:null, nombreArchivo:"", fechaSubida:null, estatus:false },
+
+  ];
+  
   subscriptionNotificacion: Subscription;
   constructor(private _proveedorService:ProveedorService, 
               private _router:Router,               
@@ -55,18 +83,11 @@ ngOnDestroy(): void {
      return;
     }       
     this.usuario= this._proveedorService.usuario; 
-    this.cargarHistoricoCumplimiento();
-    this.subscriptionNotificacion = 
-    this._subirArchivoService
-     .notificacionSubirOpinionCumplimiento
-     .subscribe(x => {
-       this.cargarHistoricoCumplimiento();
-     });
+        
   }
   
 
-  subirArchivo() {     
-     this._proveedorService.tipoArchivo= this.tipoArchivo.toString();
+  subirArchivo() {          
      this._proveedorService.revisarArchivo="0";
      this._modalUploadSevice.mostrarModal("pdf", null);
   }
@@ -76,13 +97,7 @@ ngOnDestroy(): void {
     this._router.navigateByUrl("/listado");
   }
 
-  cargarHistoricoCumplimiento() {
-    const proveedor = this._proveedorService.usuario.Proveedor;
-    this._usuarioService.obtenerHistorialOpinionCumplimiento(proveedor)
-      .subscribe(data => {
-        this.historicoOpinionCumplimiento = data.documentos;
-      });
-  }
+  
 
 
   async leerArchivoXML(fileZip:any):Promise<ResponseXML>{     
