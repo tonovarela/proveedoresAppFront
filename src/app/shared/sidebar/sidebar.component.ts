@@ -39,6 +39,7 @@ export class SidebarComponent implements OnInit {
 
   }
 
+  //Tiene solicitudes REPSE pendientes
   esREPSE(){  
     return this._usuarioService.esREPSE();
   }

@@ -12,6 +12,12 @@
     "admin":true
   },  
   {
+    "icono": "mdi mdi-newspaper",
+    "titulo": "Solicitudes REPSE",
+    "url": "/solicitud-repse",
+    "admin":true
+  },  
+  {
     "icono": "fa fa-money",
     "titulo": "Facturas emitidas",
     "url": "/facturas-emitidas",

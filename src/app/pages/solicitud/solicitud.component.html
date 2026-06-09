@@ -1,0 +1,22 @@
+<ejs-grid #grid id="grid"
+allowReordering='true' 
+[dataSource]="solicitudes" 
+      allowSelection="false"
+      [selectionSettings]="selectOptions" 
+      [editSettings]='editSettings'
+       allowPaging="true" 
+       [allowFiltering]="true"
+      [filterSettings]='filterSettings'
+       allowSorting="true"
+       allowResizing='true'
+      [pageSettings]="pageSettings"
+(dataBound)='dataBound()' 
+>
+      <e-columns>
+        <!-- <e-column field='id' headerText='ID' width='100' textAlign="Right" isPrimaryKey="true" [visible]="false"></e-column>
+        <e-column field='fecha' headerText='Fecha' width='120' format='yMd' textAlign="Right"></e-column>
+        <e-column field='concepto' headerText='Concepto' width='150'></e-column>
+        <e-column field='monto' headerText='Monto' width='120' format="C2" textAlign="Right"></e-column>
+        <e-column field='tipoMovimiento' headerText='Tipo de movimiento' width='150'></e-column> -->
+      </e-columns>
+

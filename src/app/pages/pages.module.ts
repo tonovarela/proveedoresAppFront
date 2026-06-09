@@ -46,6 +46,7 @@ import { ListadoComponent } from './listado/listado.component';
 import { PerfilProveedorComponent } from './perfil-proveedor/perfil-proveedor.component';
 import { CambiarPasswordComponent } from './cambiar-password/cambiar-password.component';
 import { RepseComponent } from './repse/repse.component';
+import { SolicitudComponent } from './solicitud/solicitud.component';
 registerLocaleData(es);
 
 @NgModule({
@@ -67,7 +68,8 @@ registerLocaleData(es);
     ListadoComponent,
     PerfilProveedorComponent,
     RepseComponent,
-    CambiarPasswordComponent
+    CambiarPasswordComponent,
+    SolicitudComponent
   ],
   providers: [
     //{provide:LOCALE_ID,useValue:"es-MX"},

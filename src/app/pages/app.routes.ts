@@ -21,6 +21,7 @@ import { ListadoComponent } from './listado/listado.component';
 import { PerfilProveedorComponent } from './perfil-proveedor/perfil-proveedor.component';
 import { CambiarPasswordComponent } from './cambiar-password/cambiar-password.component';
 import { RepseComponent } from './repse/repse.component';
+import { SolicitudComponent } from './solicitud/solicitud.component';
 const pagesRoutes: Routes = [
     {
         path: '', component: PagesComponent,
@@ -31,23 +32,22 @@ const pagesRoutes: Routes = [
                 component: DashboardComponent,            
                 data: { titulo: 'Dashboard' }
             },
-            
+            { path:'solicitud-repse', component:SolicitudComponent,data:{titulo:"Solicitudes  REPSE",modulo:"repse"},canActivate:[VerificaAdminGuard]},
+
             { path: 'comunicados', component:ComunicadosComponent, data: { titulo: "Comunicados",modulo:"comunicados" },canActivate:[VerificaAdminGuard] },
             { path:'listado', component:ListadoComponent,data:{titulo:"Proveedores",modulo:"#"},canActivate:[VerificaAdminGuard]},
             { path:'perfil-proveedor', component:PerfilProveedorComponent,data:{titulo:"En este módulo no se validaran los documentos",modulo:"#"},canActivate:[VerificaAdminGuard]},
             { path:'docanexos', component:DocanexosComponent,data:{titulo:"Documentos anexos",modulo:"#"},canActivate:[VerificaAdminGuard]},
             { path: 'comunicados/agregar', component:DetalleComponent, data: { titulo: "Agregar comunicado",modulo:"comunicados" } ,canActivate:[VerificaAdminGuard]},
             { path: 'comunicados/editar/:id', component:DetalleComponent, data: { titulo: "Editar comunicado",modulo:"comunicados" } ,canActivate:[VerificaAdminGuard]},
-            { path: 'comunicados/disponibilidad/:id', component:DisponibilidadComponent, data: { titulo: "Comunicado por proveedor",modulo:"comunicados" },canActivate:[VerificaAdminGuard] },
-
-            
+            { path: 'comunicados/disponibilidad/:id', component:DisponibilidadComponent, data: { titulo: "Comunicado por proveedor",modulo:"comunicados" },canActivate:[VerificaAdminGuard] },            
             { path: 'comunicados/proveedor', component:ComunicadosProveedorComponent, data: { titulo: "Avisos",modulo:"comunicados" },canActivate:[ProveedorGuard] },                        
             { path: 'facturas-emitidas', component: PendientesCobroComponent, data: { titulo: "Facturas emitidas",modulo:"pendientes-cobro" } ,canActivate:[ProveedorGuard]},
             { path: 'anexo-factura/:id', component: AnexoFacturaComponent, data: { titulo: "Anexo Factura",modulo:"anexo-factura" } ,canActivate:[ProveedorGuard]},
             { path: 'contra-recibos', component: ContraRecibosComponent, data: { titulo: "Contra recibos pendientes",modulo:"contra-recibos" },canActivate:[ProveedorGuard] },
             { path: 'pagos-aprobados', component: PagosAprobadosComponent, data: { titulo: "Pagos aprobados" ,modulo:"pagos-aprobados"} ,canActivate:[ProveedorGuard]},
             { path: 'pagos-programados', component: PagosProgramadosComponent, data: { titulo: "Pagos programados" ,modulo:"pagos-programados"} ,canActivate:[ProveedorGuard]},
-            { path:'repse',component:RepseComponent,data:{titulo:"REPSE",modulo:"repse"},canActivate:[ProveedorGuard]},
+            { path:'repse', component:RepseComponent,data:{titulo:"REPSE",modulo:"repse"},canActivate:[ProveedorGuard]},            
             { path: 'cambiar-password', component: CambiarPasswordComponent },
             { path: 'account-settings', component:AccountSettingsComponent,data:{titulo:"Settings" ,modulo:"#"}  },
             { path: 'perfil', component:PerfilComponent,data:{titulo:"Perfil",modulo:"#" }  },
