@@ -1,0 +1,98 @@
+<!-- Modal Agregar Solicitud -->
+<div class="modal fade" [class.show]="showModal" [style.display]="showModal ? 'block' : 'none'" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+    <div class="modal-content modal-solicitud">
+
+      <div class="modal-header-solicitud">
+        <div class="d-flex align-items-center gap-2">
+          <div class="modal-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+              <path d="M3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0-5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-1z"/>
+            </svg>
+          </div>
+          <div>
+            <h5 class="modal-titulo mb-0">Nueva Solicitud</h5>
+            <small class="modal-subtitulo">Completa los campos requeridos</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body px-4 py-4">
+        <form #formSolicitud="ngForm">
+
+          <div class="campo-grupo position-relative">
+            <label class="campo-label">Proveedor <span class="text-danger">*</span></label>
+            <input
+              #inputProveedor
+              type="text"
+              class="form-control campo-input"
+              name="busquedaProveedor"
+              [(ngModel)]="busquedaProveedor"
+              (ngModelChange)="onBuscarProveedor($event, inputProveedor)"
+              (keydown)="onTeclaAutocomplete($event)"
+              placeholder="Escribe el nombre del proveedor..."
+              autocomplete="off"
+              [class.is-valid]="nuevaSolicitud.proveedor"
+            />
+            <input type="hidden" name="proveedor" [(ngModel)]="nuevaSolicitud.proveedor" required />
+            <ul class="autocomplete-lista" *ngIf="mostrarSugerencias">
+              <li
+                class="autocomplete-item"
+                *ngFor="let prov of sugerenciasProveedor; let i = index"
+                [class.autocomplete-item--activo]="i === indiceSeleccionado"
+                (mousedown)="seleccionarProveedor(prov)"
+              >
+                <span class="autocomplete-nombre">{{ prov.nombre }}</span>
+                <span class="autocomplete-clave">{{ prov.proveedor }}</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="row g-3 mt-1">
+            <div class="col-6">
+              <div class="campo-grupo">
+                <label class="campo-label">Año <span class="text-danger">*</span></label>
+                <select class="form-select campo-input" name="anio" [(ngModel)]="nuevaSolicitud.anio" required>
+                  <option value="">Selecciona...</option>
+                  <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="campo-grupo">
+                <label class="campo-label">Mes <span class="text-danger">*</span></label>
+                <select class="form-select campo-input" name="mes" [(ngModel)]="nuevaSolicitud.mes" required>
+                  <option value="">Selecciona...</option>
+                  <option *ngFor="let m of meses; let i = index" [value]="i + 1">{{ m }}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="campo-grupo mt-3">
+            <label class="campo-label">
+              Nota
+              <span class="campo-opcional">(opcional)</span>
+            </label>
+            <textarea class="form-control campo-input" name="nota" [(ngModel)]="nuevaSolicitud.nota" rows="3" placeholder="Escribe una nota adicional..."></textarea>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer-solicitud">
+        <button type="button" class="btn btn-outline-secondary btn-footer" (click)="cerrarModal()">Cancelar</button>
+        <button type="button" class="btn btn-primary btn-footer" (click)="guardarSolicitud(formSolicitud)" [disabled]="formSolicitud.invalid">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="me-1" viewBox="0 0 16 16">
+            <path d="M10.854 7.646a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 10.293l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.414A2 2 0 0 0 13.414 3L11 .586A2 2 0 0 0 9.586 0H4zm0 1h5.586a1 1 0 0 1 .707.293l2.414 2.414A1 1 0 0 1 14 4.414V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+          </svg>
+          Guardar solicitud
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="showModal" *ngIf="showModal"></div>

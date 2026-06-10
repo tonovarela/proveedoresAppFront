@@ -1,0 +1,169 @@
+/* ── Modal contenedor ───────────────────────────────────────── */
+.modal-solicitud {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  overflow: visible;
+}
+
+/* Bootstrap aplica overflow:hidden a .modal-content, esto lo cancela */
+:host ::ng-deep .modal-content {
+  overflow: visible;
+}
+
+:host ::ng-deep .modal-body {
+  overflow: visible;
+}
+
+/* ── Cabecera ────────────────────────────────────────────────── */
+.modal-header-solicitud {
+  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+  padding: 1.25rem 1.5rem;
+  color: #fff;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+}
+
+.modal-titulo {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.01em;
+}
+
+.modal-subtitulo {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ── Campos del formulario ───────────────────────────────────── */
+.campo-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+  overflow: visible;
+}
+
+.campo-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #495057;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0;
+}
+
+.campo-opcional {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: #adb5bd;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-left: 4px;
+}
+
+.campo-input {
+  border-radius: 8px;
+  border-color: #dee2e6;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.campo-input:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12);
+}
+
+/* ── Autocomplete ────────────────────────────────────────────── */
+.autocomplete-lista {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  margin: 0;
+  padding: 4px 0;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  max-height: 210px;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.autocomplete-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  gap: 8px;
+}
+
+.autocomplete-item:hover {
+  background: #f0f4ff;
+}
+
+.autocomplete-item--activo {
+  background: #0d6efd;
+}
+
+.autocomplete-item--activo .autocomplete-nombre,
+.autocomplete-item--activo .autocomplete-clave {
+  color: #fff;
+}
+
+.autocomplete-nombre {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #212529;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.autocomplete-clave {
+  font-size: 0.78rem;
+  color: #6c757d;
+  flex-shrink: 0;
+  background: #f1f3f5;
+  padding: 1px 7px;
+  border-radius: 20px;
+}
+
+.autocomplete-item--activo .autocomplete-clave {
+  background: rgba(255,255,255,0.2);
+}
+
+/* ── Footer ──────────────────────────────────────────────────── */
+.modal-footer-solicitud {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  padding: 1rem 1.5rem;
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  border-radius: 0 0 12px 12px;
+}
+
+.btn-footer {
+  border-radius: 8px;
+  padding: 0.45rem 1.2rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}

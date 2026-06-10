@@ -1,3 +1,18 @@
+<div class="d-flex justify-content-end mb-2">
+  <button class="btn btn-primary btn-sm d-flex align-items-center gap-1" (click)="abrirModal()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+    </svg>
+    Agregar solicitud
+  </button>
+</div>
+
+<!-- Modal Independiente -->
+<app-modal-solicitud 
+  #modalSolicitud
+  (solicitudGuardada)="onSolicitudGuardada($event)"
+></app-modal-solicitud>
+
 <ejs-grid #grid id="grid"
 allowReordering='true' 
 [dataSource]="solicitudes" 
@@ -13,10 +28,11 @@ allowReordering='true'
 (dataBound)='dataBound()' 
 >
       <e-columns>
-        <!-- <e-column field='id' headerText='ID' width='100' textAlign="Right" isPrimaryKey="true" [visible]="false"></e-column>
-        <e-column field='fecha' headerText='Fecha' width='120' format='yMd' textAlign="Right"></e-column>
-        <e-column field='concepto' headerText='Concepto' width='150'></e-column>
-        <e-column field='monto' headerText='Monto' width='120' format="C2" textAlign="Right"></e-column>
-        <e-column field='tipoMovimiento' headerText='Tipo de movimiento' width='150'></e-column> -->
+        
+        <e-column field='proveedor' headerText='Proveedor' width='120' ></e-column>
+        <e-column field='prefijo' headerText='Prefijo' width='150'></e-column>
+        <e-column field='fecha_registro' headerText='Fecha de registro' format='dd-MM-yyyy' width='120' ></e-column>
+        <e-column field='estado' headerText='Tipo de movimiento' width='150'></e-column> 
+        <e-column field='totalNotas' headerText='Total de notas' width='150'></e-column> 
       </e-columns>
 
