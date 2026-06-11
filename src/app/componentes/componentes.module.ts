@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 import { TotalesComponent } from './totales/totales.component';
 import { AnexoIconoComponent } from './anexo-icono/anexo-icono.component';
 import { SnowEffectComponent } from './snow-effect/snow-effect.component';
+import { RepseDocumentosComponent } from './repse-documentos/repse-documentos.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { SnowEffectComponent } from './snow-effect/snow-effect.component';
     BusquedaComponent,
    TotalesComponent,
    AnexoIconoComponent,
-   SnowEffectComponent
+   SnowEffectComponent,
+   RepseDocumentosComponent
   ],
   exports:[
    LoaderComponent,
@@ -33,8 +35,9 @@ import { SnowEffectComponent } from './snow-effect/snow-effect.component';
    BusquedaComponent,
    TotalesComponent,
    AnexoIconoComponent,
-   SnowEffectComponent
-  ],  
+   SnowEffectComponent,
+   RepseDocumentosComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,

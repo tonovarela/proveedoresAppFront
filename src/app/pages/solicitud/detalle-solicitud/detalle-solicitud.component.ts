@@ -26,6 +26,11 @@ export class DetalleSolicitudComponent implements OnInit {
   cargarDetalle(): void {
     const solicitudHistory = history.state?.solicitud;
     const solicitudDelServicio = this.solicitudService.getSolicitudSeleccionada();
+    if (solicitudDelServicio ==null){
+      this.router.navigate(['/solicitud-repse']);
+      console.warn('No hay solicitud seleccionada en el servicio.');
+    }
+    console.log('Solicitud desde history.state:', solicitudDelServicio);
     const solicitud = solicitudHistory || solicitudDelServicio;
     
     if (solicitud) {

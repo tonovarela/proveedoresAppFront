@@ -1,1 +1,83 @@
 /* Estilos específicos del componente solicitud */
+
+/* Combo de estado dentro del grid */
+.combo-estado {
+  width: 100%;
+  min-width: 130px;
+  padding: 4px 28px 4px 10px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #344767;
+  background-color: #fff;
+  border: 1px solid #d2d6da;
+  border-radius: 6px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* Flecha personalizada */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%236c757d' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 10px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.combo-estado:hover {
+  border-color: #a0a8b0;
+}
+
+.combo-estado:focus {
+  outline: none;
+  border-color: #5e72e4;
+  box-shadow: 0 0 0 2px rgba(94, 114, 228, 0.2);
+}
+
+.combo-estado:disabled {
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.combo-estado option {
+  color: #344767;
+}
+
+/* Colores por estado */
+.combo-estado.estado-aprobado {
+  color: #1b5e20;
+  background-color: #e6f4ea;
+  border-color: #a3d9b1;
+}
+
+.combo-estado.estado-rechazado {
+  color: #8a1c1c;
+  background-color: #fdecea;
+  border-color: #f3b7b1;
+}
+
+.combo-estado.estado-pendiente {
+  color: #8a6100;
+  background-color: #fff8e1;
+  border-color: #f5d98b;
+}
+
+.combo-estado.estado-default {
+  color: #344767;
+  background-color: #fff;
+  border-color: #d2d6da;
+}
+
+.combo-estado.estado-aprobado:focus {
+  border-color: #2e7d32;
+  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+}
+
+.combo-estado.estado-rechazado:focus {
+  border-color: #c62828;
+  box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.2);
+}
+
+.combo-estado.estado-pendiente:focus {
+  border-color: #f9a825;
+  box-shadow: 0 0 0 2px rgba(249, 168, 37, 0.2);
+}

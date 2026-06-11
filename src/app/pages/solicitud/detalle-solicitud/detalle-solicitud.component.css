@@ -1,0 +1,159 @@
+/* ===== Detalle de Solicitud — alineado al tema Material Pro ===== */
+
+.detalle-solicitud-container {
+  font-family: 'Montserrat', sans-serif;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 8px 4px 24px;
+}
+
+/* ---- Header ---- */
+.detalle-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.detalle-title {
+  color: #455a64;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.detalle-subtitle {
+  color: #99abb4;
+  font-size: 13px;
+}
+
+.btn-volver {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background-color: #fff;
+  color: #398bf7;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-volver:hover {
+  background-color: #398bf7;
+  color: #fff;
+}
+
+/* ---- Tarjeta ---- */
+.card-section {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.card-header-custom {
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.card-header-custom h6 {
+  color: #455a64;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.card-body {
+  padding: 24px;
+}
+
+.card-footer-custom {
+  display: flex;
+  align-items: center;
+  padding: 14px 24px;
+  background-color: #f7f9fc;
+  border-top: 1px solid #f0f2f5;
+}
+
+/* ---- Grid de info ---- */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px 28px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-item--full {
+  grid-column: 1 / -1;
+}
+
+.info-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #99abb4;
+}
+
+.info-value {
+  font-size: 15px;
+  color: #455a64;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.info-detail {
+  font-size: 13px;
+  color: #67757c;
+}
+
+.id-chip {
+  background-color: #eef4fb;
+  color: #398bf7;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+/* ---- Badge de estado ---- */
+.estado-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.estado-success {
+  background-color: #e8fdeb;
+  color: #04b381;
+}
+
+.estado-warning {
+  background-color: #fff8ec;
+  color: #e9ab2e;
+}
+
+.estado-danger {
+  background-color: #f9e7eb;
+  color: #e6294b;
+}
+
+.estado-secondary {
+  background-color: #eef0f3;
+  color: #67757c;
+}
+
+/* ---- Responsivo ---- */
+@media (max-width: 575px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}

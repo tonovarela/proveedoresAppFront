@@ -1,0 +1,29 @@
+<div class="row animated fadeIn">
+
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Recibo de nómina Trabajadores XML</h4>
+                <button type="button" (click)="subirArchivo()" class="btn btn-info pull-right waves-effect waves-light m-r-10"><i class="fa fa-upload"></i>Subir archivo</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Recibo de nómina Trabajadores PDF</h4>
+                <button type="button" (click)="subirArchivo()" class="btn btn-info pull-right waves-effect waves-light m-r-10"><i class="fa fa-upload"></i>Subir archivo</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6" *ngFor="let doc of DocumentosRepse">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{doc.descripcion}}</h4>
+                <button type="button" (click)="subirArchivo()" class="btn btn-info pull-right waves-effect waves-light m-r-10"><i class="fa fa-upload"></i>Subir archivo</button>
+            </div>
+        </div>
+    </div>
+
+</div>

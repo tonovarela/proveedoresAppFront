@@ -2,6 +2,7 @@ export interface Solicitud {
     id_solicitud?:string,
     proveedor:string,
     nombreProveedor?:string,
+    nombre?:string,
     rfc?:string,
     anio?:number,
     mes?:number,
@@ -19,13 +20,21 @@ export interface EstadoSolicitud {
 }
 
 export interface ResponseSolicitudes {
-    solicitudes?:Solicitud[],
+    solicitudes:Solicitud[],
+    estados:EstadoSolicitud[]
 }
 
-
-interface RequestSolicitud {
+export interface RequestSolicitud {
   proveedor:string;
   prefijo:string;
   id_usuario:number;
   mensaje:string;
 }
+
+
+export interface EstadoSolicitud {
+  id_estado?:number,
+  descripcion?:string
+}
+
+
