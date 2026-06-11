@@ -1,8 +1,7 @@
 
+import { CommonModule } from '@angular/common';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToastrModule } from 'ngx-toastr';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from './../shared/shared.module';
 
@@ -79,6 +78,7 @@ registerLocaleData(es);
     //{provide:LOCALE_ID,useValue:"es-MX"},
     PageService, SortService, DetailRowService, FilterService, ReorderService, ResizeService, SelectionService, ToolbarService, EditService],
   imports: [
+    CommonModule,
     SharedModule,
     PAGESROUTES,
     FormsModule,
@@ -91,11 +91,7 @@ registerLocaleData(es);
     PagerModule,
     PipesModule,
     RichTextEditorModule,
-    BrowserAnimationsModule,
     DateRangePickerModule,
-    ToastrModule.forRoot({
-      preventDuplicates: true
-    }),
     NgbModule
   ]
 })

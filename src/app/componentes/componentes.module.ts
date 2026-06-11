@@ -1,5 +1,4 @@
 import { PipesModule } from './../pipes/pipes.module';
-import { BrowserModule } from '@angular/platform-browser';
 import { LoaderComponent } from './loader/loader.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -36,8 +35,7 @@ import { SnowEffectComponent } from './snow-effect/snow-effect.component';
    AnexoIconoComponent,
    SnowEffectComponent
   ],  
-  imports: [    
-    BrowserModule,
+  imports: [
     CommonModule,
     FormsModule,
     PipesModule,

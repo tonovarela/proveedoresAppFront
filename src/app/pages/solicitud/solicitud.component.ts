@@ -77,8 +77,7 @@ export class SolicitudComponent implements OnInit {
  }
 
  verDetalleSolicitud(solicitud: Solicitud) {
-   this.router.navigate(['/pages/solicitud-repse/detalle', solicitud.id_solicitud], {
-     state: { solicitud }
-   });
+   this.solicitudService.setSolicitudSeleccionada(solicitud);
+   this.router.navigate(['solicitud-repse/detalle', solicitud.id_solicitud]);
  }
 }

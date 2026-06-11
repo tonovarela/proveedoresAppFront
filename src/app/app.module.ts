@@ -2,8 +2,10 @@ import { FechaPipe } from './pipes/fecha.pipe';
 import { PagesModule } from './pages/pages.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { CheckBoxModule } from '@syncfusion/ej2-angular-buttons';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -24,17 +26,21 @@ import { ComponentesModule } from './componentes/componentes.module';
     LoginComponent,
     NopagefoundComponent,    
   ],
-  imports: [            
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,        
     ReactiveFormsModule,
     PagesModule,
-    FormsModule,
     ComponentesModule,
     CheckBoxModule,    
     APP_ROUTES,
     NgbModule,
-    CommonModule
+    CommonModule,
+    ToastrModule.forRoot({
+      preventDuplicates: true
+    })
   ],
   
   providers: [CurrencyPipe,DatePipe,FechaPipe,ToolbarService, LinkService, ImageService, HtmlEditorService],

@@ -24,18 +24,19 @@ export class DetalleSolicitudComponent implements OnInit {
   }
 
   cargarDetalle(): void {
-    // Obtener del route params o del state
-    const solicitudId = this.route.snapshot.paramMap.get('id');
-    const solicitudState = this.router.getCurrentNavigation()?.extras?.state?.solicitud;
+    const solicitudHistory = history.state?.solicitud;
+    const solicitudDelServicio = this.solicitudService.getSolicitudSeleccionada();
+    const solicitud = solicitudHistory || solicitudDelServicio;
     
-    if (solicitudState) {
-      this.solicitud = solicitudState;
+    if (solicitud) {
+      this.solicitud = solicitud;
       this.totalNotas = this.solicitud?.totalNotas || 0;
-      // TODO: Cargar movimientos asociados si es necesario
       this.cargarMovimientos();
-    } else if (solicitudId) {
-      // Si viene por ruta, cargar desde el servicio
-      // TODO: Implementar método en servicio para obtener detalle por ID
+    } else {
+      const solicitudId = this.route.snapshot.paramMap.get('id');
+      if (solicitudId) {
+        console.warn('Solicitud no encontrada. ID:', solicitudId);
+      }
     }
   }
 
@@ -45,7 +46,7 @@ export class DetalleSolicitudComponent implements OnInit {
   }
 
   volverAtras(): void {
-    this.router.navigate(['/pages/solicitud-repse']);
+    this.router.navigate(['/solicitud-repse']);
   }
 
   editarSolicitud(): void {

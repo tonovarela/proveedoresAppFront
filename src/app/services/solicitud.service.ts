@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { of } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { ResponseSolicitudes } from '../models/solicitud';
+import { ResponseSolicitudes, Solicitud } from '../models/solicitud';
 import { ProveedorAsignado } from '../models/proveedorAsignado';
 
 export interface ResponseBusquedaProveedores {
@@ -27,6 +27,7 @@ const PROVEEDORES_MOCK: ProveedorAsignado[] = [
 })
 export class SolicitudService {
   URL_SERVICE: string = environment.URL_SERVICIOS;
+  solicitudSeleccionada: Solicitud | null = null;
 
   constructor(private _http: HttpClient) { }
 
@@ -43,4 +44,11 @@ export class SolicitudService {
     return of({ proveedores: resultado });
   }
 
+  public setSolicitudSeleccionada(solicitud: Solicitud): void {
+    this.solicitudSeleccionada = solicitud;
+  }
+
+  public getSolicitudSeleccionada(): Solicitud | null {
+    return this.solicitudSeleccionada;
+  }
 }
