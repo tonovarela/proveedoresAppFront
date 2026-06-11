@@ -69,7 +69,7 @@ export class DisponibilidadComponent implements OnInit {
   }
 
   cambiarAsignacion(proveedorAsignado:ProveedorAsignado){
-      proveedorAsignado.asignado=!proveedorAsignado.asignado;
+      proveedorAsignado.Asignado=!proveedorAsignado.Asignado;
       this.editando=true;
       this._comunicadoService.cambiarDisponibilidadProveedor(proveedorAsignado,this.id_comunicado)
       .pipe(
@@ -82,7 +82,7 @@ export class DisponibilidadComponent implements OnInit {
       )
       .subscribe(x=>{
        this.proveedorAsignados=this.proveedorAsignados.map(x=>{      
-         if (x.proveedor!=proveedorAsignado.proveedor){
+         if (x.Proveedor!=proveedorAsignado.Proveedor){
            return x
          }else{
            return proveedorAsignado;  

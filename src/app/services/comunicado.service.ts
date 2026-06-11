@@ -65,10 +65,10 @@ export class ComunicadoService {
 
   cambiarDisponibilidadProveedor(proveedorAsignado: ProveedorAsignado, idComunicado: string) {
     return this.http.post(`${this.URL}/api/comunicado/${idComunicado}/cambiarDisponibilidadProveedor`, {
-      Proveedor: proveedorAsignado.proveedor.trim(),
-      Nombre: proveedorAsignado.nombre,
-      RFC: proveedorAsignado.rfc,
-      asignado: proveedorAsignado.asignado == false ? 0 : 1
+      Proveedor: proveedorAsignado.Proveedor.trim(),
+      Nombre: proveedorAsignado.Nombre,
+      RFC: proveedorAsignado.RFC,
+      Asignado: proveedorAsignado.Asignado == false ? 0 : 1
     });
   }
 

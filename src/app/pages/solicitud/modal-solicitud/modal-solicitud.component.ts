@@ -96,9 +96,9 @@ export class ModalSolicitudComponent implements OnInit {
   }
 
   seleccionarProveedor(prov: ProveedorAsignado) {
-    this.nuevaSolicitud.proveedor = prov.proveedor || '';
-    this.nuevaSolicitud.nombreProveedor = prov.nombre || '';
-    this.busquedaProveedor = prov.nombre || '';
+    this.nuevaSolicitud.proveedor = prov.Proveedor || '';
+    this.nuevaSolicitud.nombreProveedor = prov.Nombre || '';
+    this.busquedaProveedor = prov.Nombre || '';
     this.sugerenciasProveedor = [];
     this.mostrarSugerencias = false;
     this.indiceSeleccionado = -1;
