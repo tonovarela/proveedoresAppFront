@@ -22,6 +22,7 @@ import { PerfilProveedorComponent } from './perfil-proveedor/perfil-proveedor.co
 import { CambiarPasswordComponent } from './cambiar-password/cambiar-password.component';
 import { RepseComponent } from './repse/repse.component';
 import { SolicitudComponent } from './solicitud/solicitud.component';
+import { DetalleSolicitudComponent } from './solicitud/detalle-solicitud/detalle-solicitud.component';
 const pagesRoutes: Routes = [
     {
         path: '', component: PagesComponent,
@@ -33,6 +34,7 @@ const pagesRoutes: Routes = [
                 data: { titulo: 'Dashboard' }
             },
             { path:'solicitud-repse', component:SolicitudComponent,data:{titulo:"Solicitudes  REPSE",modulo:"repse"},canActivate:[VerificaAdminGuard]},
+            { path:'solicitud-repse/detalle/:id', component:DetalleSolicitudComponent,data:{titulo:"Detalle Solicitud",modulo:"repse"},canActivate:[VerificaAdminGuard]},
 
             { path: 'comunicados', component:ComunicadosComponent, data: { titulo: "Comunicados",modulo:"comunicados" },canActivate:[VerificaAdminGuard] },
             { path:'listado', component:ListadoComponent,data:{titulo:"Proveedores",modulo:"#"},canActivate:[VerificaAdminGuard]},

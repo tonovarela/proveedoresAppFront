@@ -110,8 +110,11 @@ export class ModalSolicitudComponent implements OnInit {
   }
 
   guardarSolicitud(form: NgForm) {
-    if (form.invalid) { return; }    
-    this.solicitudGuardada.emit(this.nuevaSolicitud);
+    if (form.invalid) { return; }
+    const solicitudFormateada = {
+      ...this.nuevaSolicitud      
+    };
+    this.solicitudGuardada.emit(solicitudFormateada);
     this.cerrarModal();
   }
 }

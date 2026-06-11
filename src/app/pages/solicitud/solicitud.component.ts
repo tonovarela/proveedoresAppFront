@@ -1,14 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Grid, EditSettingsModel, PageSettingsModel, FilterSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { Solicitud } from '../../models/solicitud';
 import { SolicitudService } from 'src/app/services/solicitud.service';
 import { ModalSolicitudComponent } from './modal-solicitud/modal-solicitud.component';
+import { UsuarioService } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-solicitud',
   templateUrl: './solicitud.component.html',
   styleUrls: ['./solicitud.component.css']
 })
+
+
 export class SolicitudComponent implements OnInit {
  @ViewChild('modalSolicitud') modalSolicitud: ModalSolicitudComponent;
  @ViewChild('grid') grid: Grid;
@@ -20,11 +24,15 @@ export class SolicitudComponent implements OnInit {
  formatoptions = { type: 'dateTime', format: 'dd/MM/yyyy' };
  selectOptions: any = { };
 
- constructor(private solicitudService: SolicitudService) { }
+ constructor(private solicitudService: SolicitudService, private usuarioService: UsuarioService, private router: Router) { }
 
  ngOnInit(): void {
+    this.cargarSolicitudes();
+ }
+
+
+ cargarSolicitudes() {
    this.solicitudService.obtenerSolicitudes().subscribe((response) => {
-       console.log(response.solicitudes);
      if (response.solicitudes) {
        this.solicitudes = response.solicitudes;
      }
@@ -56,12 +64,21 @@ export class SolicitudComponent implements OnInit {
  }
 
  onSolicitudGuardada(solicitud: any) {
-   console.log('Solicitud guardada en padre:', solicitud);
-   // TODO: Agregar la solicitud a la lista o hacer llamada al servicio
-   this.solicitudService.obtenerSolicitudes().subscribe((response) => {
-     if (response.solicitudes) {
-       this.solicitudes = response.solicitudes;
-     }
+   
+   const id_usuario = this.usuarioService.usuario!.Id_Usuario;     
+   const nuevaSolicitud : any = {
+     proveedor: solicitud.proveedor,
+     prefijo: `${solicitud.anio}/${String(solicitud.mes).padStart(2, '0') }/${solicitud.proveedor}`,     
+     mensaje: solicitud.nota,
+     id_usuario
+   };
+   console.log('Solicitud formateada para envío:', nuevaSolicitud);
+       
+ }
+
+ verDetalleSolicitud(solicitud: Solicitud) {
+   this.router.navigate(['/pages/solicitud-repse/detalle', solicitud.id_solicitud], {
+     state: { solicitud }
    });
  }
 }

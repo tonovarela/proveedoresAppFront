@@ -1,5 +1,6 @@
 export interface Usuario {
     idRol?:string;
+    Id_Usuario?:number;
     Proveedor?: string; //Id proveedor
     Estatus?: string;
     Nombre?: string;
