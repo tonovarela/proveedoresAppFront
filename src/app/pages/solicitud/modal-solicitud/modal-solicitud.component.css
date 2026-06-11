@@ -150,6 +150,16 @@
   font-size: 0.78rem;
 }
 
+.autocomplete-item-no-found {
+  cursor: not-allowed;
+  justify-content: center;
+  background-color: #f8f9fa;
+}
+
+.autocomplete-item-no-found:hover {
+  background: #f8f9fa;
+}
+
 /* ── Selects (Combos) ────────────────────────────────────────────── */
 .campo-select {
   padding: 0.65rem 2.5rem 0.65rem 0.875rem !important;

@@ -32,6 +32,7 @@ export class ModalSolicitudComponent implements OnInit {
   busquedaProveedor = '';
   sugerenciasProveedor: ProveedorAsignado[] = [];
   mostrarSugerencias = false;
+  sinResultados = false;
   indiceSeleccionado = -1;
   private busqueda$ = new Subject<string>();
 
@@ -45,7 +46,13 @@ export class ModalSolicitudComponent implements OnInit {
       switchMap(termino => this.solicitudService.buscarProveedores(termino))
     ).subscribe(response => {
       this.sugerenciasProveedor = response.proveedores || [];
-      this.mostrarSugerencias = this.sugerenciasProveedor.length > 0;
+      if (this.sugerenciasProveedor.length > 0) {
+        this.mostrarSugerencias = true;
+        this.sinResultados = false;
+      } else {
+        this.mostrarSugerencias = true;
+        this.sinResultados = true;
+      }
       this.indiceSeleccionado = -1;
     });
   }
@@ -58,6 +65,7 @@ export class ModalSolicitudComponent implements OnInit {
     this.busquedaProveedor = '';
     this.sugerenciasProveedor = [];
     this.mostrarSugerencias = false;
+    this.sinResultados = false;
     this.indiceSeleccionado = -1;
     this.showModal = true;
   }
@@ -71,12 +79,14 @@ export class ModalSolicitudComponent implements OnInit {
     } else {
       this.sugerenciasProveedor = [];
       this.mostrarSugerencias = false;
+      this.sinResultados = false;
     }
   }
 
   onTeclaAutocomplete(event: KeyboardEvent) {
     if (!this.mostrarSugerencias) { return; }
     const total = this.sugerenciasProveedor.length;
+    if (total === 0 && event.key !== 'Escape') { return; }
     if (event.key === 'ArrowDown') {
       event.preventDefault();
       this.indiceSeleccionado = (this.indiceSeleccionado + 1) % total;
@@ -91,6 +101,7 @@ export class ModalSolicitudComponent implements OnInit {
     } else if (event.key === 'Escape') {
       this.sugerenciasProveedor = [];
       this.mostrarSugerencias = false;
+      this.sinResultados = false;
       this.indiceSeleccionado = -1;
     }
   }
@@ -101,6 +112,7 @@ export class ModalSolicitudComponent implements OnInit {
     this.busquedaProveedor = prov.Nombre || '';
     this.sugerenciasProveedor = [];
     this.mostrarSugerencias = false;
+    this.sinResultados = false;
     this.indiceSeleccionado = -1;
   }
 

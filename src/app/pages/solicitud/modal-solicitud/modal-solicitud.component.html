@@ -51,6 +51,9 @@
                   </span>
                 </span>
               </li>
+              <li class="autocomplete-item autocomplete-item-no-found" *ngIf="sinResultados" (mousedown)="$event.preventDefault()">
+                <span class="autocomplete-nombre text-muted" style="color: #6c757d;">NO ENCONTRADO</span>
+              </li>
             </ul>
           </div>
 
