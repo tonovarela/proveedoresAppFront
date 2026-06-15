@@ -1,0 +1,47 @@
+/* ===== Panel tipo tab que engloba todo el componente ===== */
+.tab-panel {
+  position: relative;
+  margin-top: 14px;
+}
+
+/* Pestaña sobre el borde superior del panel */
+.tab-panel__tab {
+  position: absolute;
+  top: -16px;
+  left: 16px;
+  z-index: 1;
+  display: inline-block;
+  padding: 8px 22px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: #fff;
+  background-color: #398bf7;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Cuerpo con borde alrededor de todo el contenido */
+.tab-panel__body {
+  border: 2px solid #398bf7;
+  border-radius: 0 8px 8px 8px;
+  padding: 24px 16px 8px;
+}
+
+/* ===== Tarjeta de documento con icono ===== */
+.doc-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.doc-card__icon {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+}
+
+.doc-card__content {
+  flex: 1 1 auto;
+  min-width: 0;
+}

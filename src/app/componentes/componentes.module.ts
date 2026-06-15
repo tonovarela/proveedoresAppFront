@@ -13,6 +13,7 @@ import { TotalesComponent } from './totales/totales.component';
 import { AnexoIconoComponent } from './anexo-icono/anexo-icono.component';
 import { SnowEffectComponent } from './snow-effect/snow-effect.component';
 import { RepseDocumentosComponent } from './repse-documentos/repse-documentos.component';
+import { MensajesComponent } from './mensajes/mensajes.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { RepseDocumentosComponent } from './repse-documentos/repse-documentos.co
    TotalesComponent,
    AnexoIconoComponent,
    SnowEffectComponent,
-   RepseDocumentosComponent
+   RepseDocumentosComponent,
+   MensajesComponent
   ],
   exports:[
    LoaderComponent,
@@ -36,7 +38,8 @@ import { RepseDocumentosComponent } from './repse-documentos/repse-documentos.co
    TotalesComponent,
    AnexoIconoComponent,
    SnowEffectComponent,
-   RepseDocumentosComponent
+   RepseDocumentosComponent,
+   MensajesComponent
   ],
   imports: [
     CommonModule,

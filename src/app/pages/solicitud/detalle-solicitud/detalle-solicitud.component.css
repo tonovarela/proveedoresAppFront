@@ -2,9 +2,41 @@
 
 .detalle-solicitud-container {
   font-family: 'Montserrat', sans-serif;
-  max-width: 760px;
-  margin: 0 auto;
+  margin: 0;
   padding: 8px 4px 24px;
+}
+
+/* ---- Layout: fila superior (tarjeta + mensajes) y documentos abajo ---- */
+.detalle-fila-superior {
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+  margin-bottom: 24px;
+  max-height: 420px;
+}
+
+.detalle-fila-superior .card-section {
+  flex: 0 0 760px;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  max-height: 420px;
+}
+
+/* La tarjeta crece y el cuerpo desplaza su contenido si excede el alto */
+.detalle-fila-superior .card-section .card-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+.detalle-mensajes {
+  flex: 1 1 0;
+  min-width: 0;
+  max-height: 420px;
+}
+
+.detalle-documentos {
+  width: 100%;
 }
 
 /* ---- Header ---- */
@@ -131,27 +163,47 @@
   letter-spacing: 0.3px;
 }
 
-.estado-success {
-  background-color: #e8fdeb;
-  color: #04b381;
+.estado-aprobado {
+  color: #1b5e20;
+  background-color: #e6f4ea;
+  border: 1px solid #a3d9b1;
 }
 
-.estado-warning {
-  background-color: #fff8ec;
-  color: #e9ab2e;
+.estado-rechazado {
+  color: #8a1c1c;
+  background-color: #fdecea;
+  border: 1px solid #f3b7b1;
 }
 
-.estado-danger {
-  background-color: #f9e7eb;
-  color: #e6294b;
+.estado-pendiente {
+  color: #8a6100;
+  background-color: #fff8e1;
+  border: 1px solid #f5d98b;
 }
 
-.estado-secondary {
-  background-color: #eef0f3;
-  color: #67757c;
+.estado-default {
+  color: #344767;
+  background-color: #fff;
+  border: 1px solid #d2d6da;
 }
 
 /* ---- Responsivo ---- */
+@media (max-width: 991px) {
+  .detalle-fila-superior {
+    flex-direction: column;
+  }
+
+  .detalle-fila-superior .card-section {
+    flex: 1 1 auto;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .detalle-mensajes {
+    width: 100%;
+  }
+}
+
 @media (max-width: 575px) {
   .info-grid {
     grid-template-columns: 1fr;

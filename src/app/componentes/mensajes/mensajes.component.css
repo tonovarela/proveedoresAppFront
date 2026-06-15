@@ -1,0 +1,162 @@
+/* ===== Componente de Mensajes — alineado al tema Material Pro ===== */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.mensajes-card {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.mensajes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid #f0f2f5;
+  flex: 0 0 auto;
+}
+
+.mensajes-header h6 {
+  color: #455a64;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.mensajes-contador {
+  background-color: #eef4fb;
+  color: #398bf7;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 30px;
+}
+
+.mensajes-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* ---- Mensaje individual ---- */
+.mensaje-item {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.mensaje-item--propio {
+  justify-content: flex-end;
+}
+
+.mensaje-burbuja {
+  max-width: 80%;
+  background-color: #f7f9fc;
+  border: 1px solid #f0f2f5;
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.mensaje-item--propio .mensaje-burbuja {
+  background-color: #eef4fb;
+  border-color: #dbe8f9;
+}
+
+.mensaje-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.mensaje-autor {
+  font-size: 12px;
+  font-weight: 600;
+  color: #455a64;
+}
+
+.mensaje-fecha {
+  font-size: 11px;
+  color: #99abb4;
+}
+
+.mensaje-contenido {
+  margin: 0;
+  font-size: 14px;
+  color: #67757c;
+  word-break: break-word;
+  white-space: pre-line;
+}
+
+.mensajes-vacio {
+  margin: 0;
+  text-align: center;
+  color: #99abb4;
+  font-size: 14px;
+}
+
+/* ---- Captura de mensajes ---- */
+.mensajes-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  background-color: #f7f9fc;
+  border-top: 1px solid #f0f2f5;
+  flex: 0 0 auto;
+}
+
+.mensajes-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 38px;
+  padding: 0 14px;
+  font-size: 14px;
+  color: #455a64;
+  background-color: #fff;
+  border: 1px solid #e4e8ee;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.mensajes-input:focus {
+  border-color: #398bf7;
+}
+
+.mensajes-enviar {
+  flex: 0 0 auto;
+  height: 38px;
+  padding: 0 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #398bf7;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+.mensajes-enviar:hover:not(:disabled) {
+  background-color: #2f7be0;
+}
+
+.mensajes-enviar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

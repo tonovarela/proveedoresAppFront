@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Solicitud } from '../../../models/solicitud';
+import { Mensaje } from '../../../models';
 import { SolicitudService } from '../../../services/solicitud.service';
 
 @Component({
@@ -11,6 +12,33 @@ import { SolicitudService } from '../../../services/solicitud.service';
 export class DetalleSolicitudComponent implements OnInit {
   solicitud: Solicitud | null = null;
   movimientos: any[] = [];
+  usuario: string = 'Juan Pérez';
+  mensajes: Mensaje[] = [
+    {
+      autor: 'Sistema',
+      contenido: 'Solicitud recibida y registrada correctamente.',
+      fecha: new Date('2026-06-10T09:15:00'),
+      propio: false
+    },
+    {
+      autor: 'Juan Pérez',
+      contenido: 'Adjunté la constancia de situación fiscal actualizada.',
+      fecha: new Date('2026-06-11T12:30:00'),
+      propio: true
+    },
+    {
+      autor: 'Revisor REPSE',
+      contenido: 'Falta el comprobante de pago de IMSS del último periodo. Favor de subirlo.',
+      fecha: new Date('2026-06-12T16:45:00'),
+      propio: false
+    },
+    {
+      autor: 'Juan Pérez',
+      contenido: 'Listo, ya cargué el comprobante de pago de IMSS.',
+      fecha: new Date('2026-06-13T10:05:00'),
+      propio: true
+    }
+  ];
   totalNotas: number = 0;
 
   constructor(
@@ -50,6 +78,11 @@ export class DetalleSolicitudComponent implements OnInit {
     this.movimientos = [];
   }
 
+  agregarMensaje(mensaje: Mensaje): void {
+    this.mensajes = [...this.mensajes, mensaje];
+    console.log('Nuevo mensaje:', mensaje);
+  }
+
   volverAtras(): void {
     this.router.navigate(['/solicitud-repse']);
   }
@@ -72,15 +105,17 @@ export class DetalleSolicitudComponent implements OnInit {
   }
 
   getEstadoClass(): string {
-    switch (this.solicitud?.id_estado) {
-      case 1:
-        return 'success';
-      case 2:
-        return 'warning';
-      case 3:
-        return 'danger';
-      default:
-        return 'secondary';
+    const descripcion = (this.solicitud?.estado ?? '').toLowerCase();
+
+    if (descripcion.includes('aprob') || descripcion.includes('acept') || descripcion.includes('autoriz')) {
+      return 'aprobado';
     }
+    if (descripcion.includes('rechaz') || descripcion.includes('cancel') || descripcion.includes('denegad')) {
+      return 'rechazado';
+    }
+    if (descripcion.includes('pendiente') || descripcion.includes('proceso') || descripcion.includes('revis')) {
+      return 'pendiente';
+    }
+    return 'default';
   }
 }

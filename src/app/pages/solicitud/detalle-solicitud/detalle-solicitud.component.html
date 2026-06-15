@@ -1,63 +1,66 @@
 <div class="detalle-solicitud-container">
   <!-- Header -->
   <div class="detalle-header">
-    <div class="d-flex align-items-start gap-3">
-      <button class="btn-volver" (click)="volverAtras()" title="Volver">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
-        </svg>
-      </button>
-      <div>
-        <h4 class="detalle-title mb-2 mt-2 px-2">Detalle de Solicitud</h4>
-        <small class="detalle-subtitle">{{ solicitud?.prefijo }}</small>
-      </div>
-    </div>
-    <span class="estado-badge" [ngClass]="'estado-' + getEstadoClass()">{{ solicitud?.estado }}</span>
+    <button class="btn-volver" (click)="volverAtras()" title="Volver">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+      </svg>
+    </button>
   </div>
 
-  <!-- Tarjeta de información -->
-  <div class="card-section">
-    <div class="card-header-custom">
-      <h6 class="mb-0">Información General</h6>
-    </div>
-    <div class="card-body">
-      <div class="info-grid">
-        <div class="info-item">
-          <span class="info-label">Proveedor</span>
-          <span class="info-value">{{ solicitud?.proveedor }}</span>
-          <small class="info-detail" *ngIf="solicitud?.nombre">{{ solicitud?.nombre }}</small>
-        </div>
+  <!-- Fila superior: tarjeta de detalle + mensajes -->
+  <div class="detalle-fila-superior">
+    <!-- Tarjeta de información -->
+    <div class="card-section">
+      <div class="card-header-custom">
+        <h6 class="mb-0">Información General</h6>
+      </div>
+      <div class="card-body">
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">Prefijo</span>
+            <span class="info-value">{{ solicitud?.prefijo }}</span>
+          </div>
 
-        <div class="info-item">
-          <span class="info-label">Fecha de registro</span>
-          <span class="info-value">{{ solicitud?.fecha_registro | date:'dd-MM-yyyy' }}</span>
-        </div>
+          <div class="info-item">
+            <span class="info-label">Proveedor</span>
+            <span class="info-value">{{ solicitud?.proveedor }}</span>
+            <small class="info-detail" *ngIf="solicitud?.nombre">{{ solicitud?.nombre }}</small>
+          </div>
 
-        <div class="info-item">
-          <span class="info-label">Estado</span>
-          <span class="estado-badge align-self-start" [ngClass]="'estado-' + getEstadoClass()">
-            {{ solicitud?.estado }}
-          </span>
-        </div>
+          <div class="info-item">
+            <span class="info-label">Fecha de registro</span>
+            <span class="info-value">{{ solicitud?.fecha_registro | date:'dd-MM-yyyy' }}</span>
+          </div>
 
-        <div class="info-item">
-          <span class="info-label">Total de notas</span>
-          <span class="info-value">{{ solicitud?.totalNotas || 0 }}</span>
+          <div class="info-item">
+            <span class="info-label">Estado</span>
+            <span class="estado-badge align-self-start" [ngClass]="'estado-' + getEstadoClass()">
+              {{ solicitud?.estado }}
+            </span>
+          </div>       
         </div>
+      </div>
 
-        <div class="info-item info-item--full">
-          <span class="info-label">Nota</span>
-          <span class="info-value" *ngIf="solicitud?.nota; else sinNota">{{ solicitud?.nota }}</span>
-          <ng-template #sinNota>
-            <span class="info-value text-muted">Sin nota adicional</span>
-          </ng-template>
-        </div>
+      <div class="card-footer-custom">
+        <span class="info-label me-2">ID Solicitud</span>
+        <code class="id-chip">{{ solicitud?.id_solicitud }}</code>
       </div>
     </div>
 
-    <div class="card-footer-custom">
-      <span class="info-label me-2">ID Solicitud</span>
-      <code class="id-chip">{{ solicitud?.id_solicitud }}</code>
-    </div>
+    <!-- Mensajes (al lado de la tarjeta de detalle) -->
+    <app-mensajes
+      class="detalle-mensajes"
+      titulo="Mensajes"
+      [mensajes]="mensajes"
+      [usuario]="usuario"
+      [puedeCapturarMensajes]="solicitud?.estado !== 'Aceptado'"
+      (enviarMensaje)="agregarMensaje($event)">
+    </app-mensajes>
+  </div>
+
+  <!-- Documentos REPSE (ancho completo) -->
+  <div class="detalle-documentos">
+    <app-repse-documentos [idSolicitud]="solicitud?.id_solicitud"></app-repse-documentos>
   </div>
 </div>

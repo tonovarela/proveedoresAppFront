@@ -1,0 +1,43 @@
+<div class="mensajes-card">
+  <div class="mensajes-header">
+    <h6 class="mb-0">{{ titulo }}</h6>
+    <span class="mensajes-contador" *ngIf="mensajes?.length">{{ mensajes.length }}</span>
+  </div>
+
+  <div class="mensajes-body" #mensajesBody>
+    <ng-container *ngIf="mensajes?.length; else sinMensajes">
+      <div
+        class="mensaje-item"
+        [class.mensaje-item--propio]="mensaje.propio"
+        *ngFor="let mensaje of mensajes; trackBy: trackByMensaje">
+        <div class="mensaje-burbuja">
+          <div class="mensaje-meta" *ngIf="mensaje.autor || mensaje.fecha">
+            <span class="mensaje-autor" *ngIf="mensaje.autor">{{ mensaje.autor }}</span>
+            <span class="mensaje-fecha" *ngIf="mensaje.fecha">{{ mensaje.fecha | date:'dd-MM-yyyy HH:mm' }}</span>
+          </div>
+          <p class="mensaje-contenido">{{ mensaje.contenido }}</p>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #sinMensajes>
+      <p class="mensajes-vacio">{{ textoVacio }}</p>
+    </ng-template>
+  </div>
+
+  <div class="mensajes-footer" *ngIf="puedeCapturarMensajes">
+    <input
+      type="text"
+      class="mensajes-input"
+      placeholder="Escribe un mensaje..."
+      [(ngModel)]="nuevoMensaje"
+      (keyup.enter)="emitirMensaje()">
+    <button
+      type="button"
+      class="mensajes-enviar"
+      [disabled]="!nuevoMensaje.trim()"
+      (click)="emitirMensaje()">
+      Enviar
+    </button>
+  </div>
+</div>
