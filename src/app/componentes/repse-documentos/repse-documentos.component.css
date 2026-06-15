@@ -30,6 +30,16 @@
 
 /* ===== Tarjeta de documento con icono ===== */
 .doc-card {
+  position: relative;
+  height: calc(100% - 30px);
+  border: 1px solid #e6e9f0;
+  border-left: 4px solid var(--doc-accent, #398bf7);
+  border-radius: 8px;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.doc-card__body {
   display: flex;
   align-items: flex-start;
   gap: 14px;
@@ -37,11 +47,62 @@
 
 .doc-card__icon {
   flex: 0 0 auto;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
+  padding: 6px;
+  border-radius: 10px;
+  background-color: var(--doc-soft, #eef4ff);
 }
 
 .doc-card__content {
   flex: 1 1 auto;
   min-width: 0;
+}
+
+.doc-card__badge {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--doc-accent, #398bf7);
+  background-color: var(--doc-soft, #eef4ff);
+  border-radius: 12px;
+}
+
+.doc-card__title {
+  margin-bottom: 14px;
+  font-size: 15px;
+  line-height: 1.35;
+  color: #2b2f3a;
+}
+
+.doc-card__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  background-color: var(--doc-accent, #398bf7);
+  border: none;
+}
+
+.doc-card__btn:hover,
+.doc-card__btn:focus {
+  color: #fff;
+  background-color: var(--doc-accent-dark, #2f74d0);
+}
+
+/* ===== Temas por tipo de documento ===== */
+.doc-card--zip {
+  --doc-accent: #F59E0B;
+  --doc-accent-dark: #d4870a;
+  --doc-soft: #FEF3C7;
+}
+
+.doc-card--pdf {
+  --doc-accent: #E0457B;
+  --doc-accent-dark: #c93a6c;
+  --doc-soft: #FCE7EF;
 }
