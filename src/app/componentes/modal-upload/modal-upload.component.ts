@@ -19,13 +19,8 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
   archivoSubir: File;
   archivoSubiendo: boolean = false;
 
-
   tipoArchivo = '';
-
-
-
   detalleErroresCP: RevisionCP[] = [];
-
 
   @ViewChild('archivo') archivoRef: ElementRef;
 
@@ -56,11 +51,17 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
     this.archivoSubir = null;
     this.archivoSubiendo = false;
   }
+  subirRepse(){
+    console.log("Subir archivo REPSE");
+       if (!this.archivoSubir) {
+      return;
+    }      
+  }
   subirArchivo() {
 
     if (!this.archivoSubir) {
       return;
-    }
+    }      
     this.archivoSubiendo = true;
     this.tipoArchivo = this._modalUploadService.tipoArchivo;
     this._subirArchivoService.revisarArchivo(this.archivoSubir,

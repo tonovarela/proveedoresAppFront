@@ -27,6 +27,12 @@ export class ModalUploadService {
     this.tipoArchivo = tipoArchivo;      
   }
 
+  mostrarModalRepse(tipoArchivo: string, {id_solicitud, id_tipo_documento}: {id_solicitud: string, id_tipo_documento: string} ) {  
+    this.oculto = '';    
+    this.movimiento=null;
+    this.tipoArchivo = tipoArchivo;      
+  }
+
   
 
 }

@@ -179,7 +179,7 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     this.docEnSubida = doc;
     this._proveedorService.revisarArchivo = '0';
     const tipoArchivo = doc.tipo.includes('ZIP') ? 'zip' : 'pdf';
-    this._modalUploadService.mostrarModal(tipoArchivo, null);
+    this._modalUploadService.mostrarModalRepse(tipoArchivo, {id_solicitud: this.solicitud?.id_solicitud!, id_tipo_documento: doc.id_tipo_documento!});
   }
 
   descargarDocumento(doc: DocumentoRepse): void {
@@ -201,12 +201,10 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     this._uiService.mostrarAlertaSuccess('Archivo eliminado', 'El archivo se eliminó correctamente.');
   }
 
-  async aprobarDocumento(doc: DocumentoRepse): Promise<void> {
-    
+  async aprobarDocumento(doc: DocumentoRepse): Promise<void> {    
     doc.estado = 'Aceptado';
     const {id_tipo_documento} = doc!;
-    const id_solicitud = this.solicitud?.id_solicitud!;    
-    console.log(`Aprobar documento: id_tipo_documento=${id_tipo_documento}, id_solicitud=${id_solicitud}`);          
+    const id_solicitud = this.solicitud?.id_solicitud!;        
     await this.solicitudService.actualizarEstadoDocumento({
       id_solicitud,
       id_tipo_documento,

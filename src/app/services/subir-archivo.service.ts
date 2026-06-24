@@ -19,6 +19,7 @@ import { ProveedorService } from './proveedor.service';
 export class SubirArchivoService {
   public notificacion = new EventEmitter<Movimiento>();
   public notificacionSubirOpinionCumplimiento= new EventEmitter<boolean>();
+  URL_REPSE :string = environment.URL_SERVICIOS;
   URL_SERVICE: string =
     environment.URL_VALIDADORFILE;
   //"http://localhost:44382";
@@ -52,8 +53,18 @@ export class SubirArchivoService {
   }
 
 
-  public subirOpinionCumplimiento(archivo: File) {
+  public subirArchivoRepse(archivo:File,resto:any){
 
+
+    const url = `${this.URL_REPSE}/api/anexocumplimiento`;
+    const formData = new FormData();    
+    formData.append('archivo', archivo, archivo.name);
+
+
+  }
+
+  public subirOpinionCumplimiento(archivo: File) {
+     
     const url = `${this.URL_SERVICE}/api/anexocumplimiento`;
     const formData = new FormData();
     formData.append('proveedor', this._proveedorService.usuario.Proveedor.trim());
