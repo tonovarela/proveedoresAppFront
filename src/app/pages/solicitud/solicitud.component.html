@@ -43,15 +43,9 @@ allowReordering='true'
       </e-columns>
 
       <ng-template #estadoTemplate let-data>
-        <select class="combo-estado"
-                [ngClass]="claseEstado(data.id_estado)"
-                [disabled]="esEstadoAceptado(data)"
-                [ngModel]="data.id_estado"
-                (ngModelChange)="cambiarEstado(data, $event)">
-          <option *ngFor="let estado of estados" [ngValue]="estado.id_estado">
-            {{ estado.descripcion }}
-          </option>
-        </select>
+        <span class="combo-estado" [ngClass]="claseEstado(data.id_estado)">
+          {{ data.estado }}
+        </span>
       </ng-template>
 
       <ng-template #actionTemplate let-data>

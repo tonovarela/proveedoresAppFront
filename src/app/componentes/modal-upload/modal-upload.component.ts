@@ -189,7 +189,15 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
       } else {
         this.mensaje = `El archivo debe de ser una imagen o un PDF `;
       }
+    }
 
+    if (this._modalUploadService.tipoArchivo === "zip") {
+      const mimeType = archivo.type.toLowerCase();
+      if (mimeType.indexOf("zip") >= 0 || mimeType === "application/octet-stream") {
+        this.mensaje = "";
+      } else {
+        this.mensaje = `El archivo debe de ser de tipo ZIP`;
+      }
     }
 
     if (this.mensaje.length > 0) {

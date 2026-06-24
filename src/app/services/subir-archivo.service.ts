@@ -33,7 +33,7 @@ export class SubirArchivoService {
 
 
   public revisarArchivo(archivo: File, tipoArchivo: string, movimiento: PagoAprobado | Movimiento) {
-    if (movimiento == null && tipoArchivo == "pdf") {
+    if (movimiento == null && (tipoArchivo === 'pdf' || tipoArchivo === 'zip')) {
       return this.subirOpinionCumplimiento(archivo);
     }
 

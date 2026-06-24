@@ -1,18 +1,14 @@
 <div class="detalle-solicitud-container">
-  <!-- Header -->
-  <div class="detalle-header">
-    <button class="btn-volver" (click)="volverAtras()" title="Volver">
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
-      </svg>
-    </button>
-  </div>
-
   <!-- Fila superior: tarjeta de detalle + mensajes -->
   <div class="detalle-fila-superior">
     <!-- Tarjeta de información -->
     <div class="card-section">
       <div class="card-header-custom">
+        <button class="btn-volver" (click)="volverAtras()" title="Volver">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+          </svg>
+        </button>
         <h6 class="mb-0">Información General</h6>
       </div>
       <div class="card-body">
@@ -60,7 +56,95 @@
   </div>
 
   <!-- Documentos REPSE (ancho completo) -->
-  <!-- <div class="detalle-documentos">
-    <app-repse-documentos [idSolicitud]="solicitud?.id_solicitud"></app-repse-documentos>
-  </div> -->
+  <div class="detalle-documentos">
+    <div class="card-section" #docContainer>
+      <div class="card-header-custom">
+        <h6 class="mb-0">Documentos REPSE</h6>
+      </div>
+      <ejs-grid #gridDocs [dataSource]="documentosRepse" [editSettings]="editSettings"
+        [pageSettings]="pageSettings" allowPaging="true" allowSorting="true"
+        allowFiltering="true" [filterSettings]="filterSettings"
+        allowResizing="true" (dataBound)="dataBoundDocs()">
+        <e-columns>
+          <e-column field="descripcion" headerText="Documento" width="250" [filter]="filterMenu"></e-column>
+          <e-column field="tipo" headerText="Tipo" width="100" textAlign="Center">
+            <ng-template #template let-data>
+              <span class="doc-tipo-badge" [ngClass]="'doc-tipo-' + (data.tipo.includes('ZIP') ? 'zip' : 'pdf')">
+                {{ data.tipo }}
+              </span>
+            </ng-template>
+          </e-column>
+          <e-column headerText="Archivo" width="120" textAlign="Center" allowSorting="false" allowFiltering="false">
+            <ng-template #template let-data>
+              <button *ngIf="!data.nombreArchivo"
+                class="btn btn-sm doc-upload-btn waves-effect"
+                (click)="subirDocumento(data)"
+                [title]="'Subir ' + data.tipo">
+                <i [ngClass]="data.tipo.includes('ZIP') ? 'fa fa-file-archive-o' : 'fa fa-file-pdf-o'"></i> Subir
+              </button>
+              <button *ngIf="data.nombreArchivo"
+                class="btn btn-sm doc-download-btn waves-effect"
+                (click)="descargarDocumento(data)"
+                [title]="data.nombreArchivo">
+                <i class="fa fa-download"></i> Descargar
+              </button>
+            </ng-template>
+          </e-column>
+          <e-column field="estado" headerText="Estado" width="110" textAlign="Center">
+            <ng-template #template let-data>
+              <span class="estado-doc-badge" [ngClass]="'estado-doc-' + data.estado">
+                {{ data.estado | titlecase }}
+              </span>
+            </ng-template>
+          </e-column>
+          <e-column headerText="Acciones" width="150" textAlign="Center" allowSorting="false" allowFiltering="false">
+            <ng-template #template let-data>
+              <div class="doc-acciones">
+                <button class="btn btn-sm doc-btn-aprobar waves-effect"
+                  [disabled]="data.estado === 'aprobado'"
+                  (click)="aprobarDocumento(data)" title="Aprobar">
+                  <i class="fa fa-check"></i> Aprobar
+                </button>
+                <button class="btn btn-sm doc-btn-rechazar waves-effect"
+                  [disabled]="data.estado === 'rechazado'"
+                  (click)="abrirModalRechazo(data)" title="Rechazar">
+                  <i class="fa fa-times"></i> Rechazar
+                </button>
+              </div>
+            </ng-template>
+          </e-column>
+        </e-columns>
+      </ejs-grid>
+    </div>
+  </div>
 </div>
+
+<!-- Modal: motivo de rechazo -->
+<ng-template #modalMotivo let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Motivo de rechazo</h5>
+    <button type="button" class="close" aria-label="Cerrar" (click)="modal.dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p class="rechazo-doc-nombre">
+      <strong>{{ docSeleccionado?.descripcion }}</strong>
+    </p>
+    <div class="form-group">
+      <label class="info-label">Indique el motivo de rechazo</label>
+      <textarea class="form-control rechazo-textarea" rows="4" maxlength="500"
+        placeholder="Describa el motivo..."
+        [(ngModel)]="motivoRechazo">
+      </textarea>
+      <small class="text-muted d-block text-right mt-1">{{ motivoRechazo.length }}/500</small>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn doc-btn-cancelar waves-effect"
+      (click)="modal.dismiss()">Cancelar</button>
+    <button type="button" class="btn doc-btn-rechazar-solid waves-effect"
+      [disabled]="!motivoRechazo.trim()"
+      (click)="confirmarRechazo(modal)">Confirmar rechazo</button>
+  </div>
+</ng-template>
