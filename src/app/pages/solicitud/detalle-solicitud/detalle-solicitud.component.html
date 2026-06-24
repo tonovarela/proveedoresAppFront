@@ -74,39 +74,48 @@
               </span>
             </ng-template>
           </e-column>
-          <e-column headerText="Archivo" width="120" textAlign="Center" allowSorting="false" allowFiltering="false">
+          <e-column headerText="Archivo" width="180" textAlign="Center" allowSorting="false" allowFiltering="false">
             <ng-template #template let-data>
-              <button *ngIf="!data.nombreArchivo"
+              <button *ngIf="!data.nombre"
                 class="btn btn-sm doc-upload-btn waves-effect"
                 (click)="subirDocumento(data)"
                 [title]="'Subir ' + data.tipo">
                 <i [ngClass]="data.tipo.includes('ZIP') ? 'fa fa-file-archive-o' : 'fa fa-file-pdf-o'"></i> Subir
               </button>
-              <button *ngIf="data.nombreArchivo"
-                class="btn btn-sm doc-download-btn waves-effect"
-                (click)="descargarDocumento(data)"
-                [title]="data.nombreArchivo">
-                <i class="fa fa-download"></i> Descargar
-              </button>
+              <div *ngIf="data.nombre" class="doc-archivo">
+                <a href="javascript:void(0)"
+                  class="doc-download-link"
+                  (click)="descargarDocumento(data)"
+                  [title]="data.nombre">
+                  <i class="fa fa-download"></i> 
+                </a>
+                <button class="btn btn-sm doc-btn-eliminar waves-effect"
+                  (click)="eliminarDocumento(data)"
+                  title="Eliminar">
+                  <i class="fa fa-trash"></i> 
+                </button>
+              </div>
             </ng-template>
           </e-column>
           <e-column field="estado" headerText="Estado" width="110" textAlign="Center">
             <ng-template #template let-data>
-              <span class="estado-doc-badge" [ngClass]="'estado-doc-' + data.estado">
+              <span class="estado-doc-badge" [ngClass]="'estado-doc-' + getEstadoDocClass(data.estado)">
                 {{ data.estado | titlecase }}
+                
               </span>
             </ng-template>
           </e-column>
           <e-column headerText="Acciones" width="150" textAlign="Center" allowSorting="false" allowFiltering="false">
             <ng-template #template let-data>
-              <div class="doc-acciones">
+               
+              <div class="doc-acciones" *ngIf="data.estado!=='Aceptado' && data.nombre" >
                 <button class="btn btn-sm doc-btn-aprobar waves-effect"
-                  [disabled]="data.estado === 'aprobado'"
+                  [disabled]=" data.estado === 'Aceptado'"
                   (click)="aprobarDocumento(data)" title="Aprobar">
                   <i class="fa fa-check"></i> Aprobar
                 </button>
                 <button class="btn btn-sm doc-btn-rechazar waves-effect"
-                  [disabled]="data.estado === 'rechazado'"
+                  [disabled]=" data.estado === 'Rechazado'"
                   (click)="abrirModalRechazo(data)" title="Rechazar">
                   <i class="fa fa-times"></i> Rechazar
                 </button>

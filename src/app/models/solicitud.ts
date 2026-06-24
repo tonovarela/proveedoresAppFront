@@ -38,3 +38,39 @@ export interface EstadoSolicitud {
 }
 
 
+
+
+export type EstadoDocumento = 'Requerimiento' | 'En revision' | 'Rechazado' | 'Aceptado';
+
+
+
+export interface DocumentoRepse {
+  id_tipo_documento: string;
+  descripcion: string;
+  tipo: string;
+  ruta?: string;
+  nombre?: string;
+  fechaSubida: Date | null;
+  estado: EstadoDocumento;
+}
+
+export interface ResponseDocumentosSolicitud {
+  documentos: DocumentoSolicitud[]
+}
+
+export interface DocumentoSolicitud {
+
+  id_tipo_documento?:string,
+  descripcion?:string,
+  formato?:string,
+  nomenclatura?:string,
+  estadoDocumento?:string,
+  descripcionEstado?:string,
+  ruta?:string,
+  nombre?:string,
+  fecha_registro?:Date
+
+}
+
+
+

@@ -3,7 +3,10 @@ import { HttpClient, HttpParams } from "@angular/common/http";
 import { of } from "rxjs";
 import { environment } from "src/environments/environment";
 import {
+  DocumentoRepse,
+  EstadoDocumento,
   RequestSolicitud,
+  ResponseDocumentosSolicitud,
   ResponseSolicitudes,
   Solicitud,
 } from "../models/solicitud";
@@ -57,5 +60,32 @@ export class SolicitudService {
 
   public actualizarEstado(request: { id_solicitud: string; id_estado: number; estado_previo: number }) {
     return this._http.put(`${this.URL_SERVICE}/solicitud/actualizar/estado`, request);
+  }
+
+
+  public documentos($id_solicitud: string) {
+      return this._http.get<ResponseDocumentosSolicitud>(`${this.URL_SERVICE}/documentos/${$id_solicitud}`)
+      .pipe(
+        map((response) => {
+          if (response.documentos && response.documentos.length > 0) {
+            const documentos: DocumentoRepse[] = response.documentos.map((d) => ({
+              id_tipo_documento: d.id_tipo_documento || '',
+              descripcion: d.descripcion || '',
+              ruta: d.ruta || '',
+              nombre: d.nombre || '',
+              tipo: d.formato || '',
+              nombreArchivo: d.ruta|| '',
+            
+              fechaSubida: d.fecha_registro ? new Date(d.fecha_registro) : null,
+              estado: d.descripcionEstado as EstadoDocumento ,              
+            }));
+            return { documentos };
+        }
+        return { documentos: [] };
+      }));
+  }
+
+  public actualizarEstadoDocumento(request: { id_solicitud: string; id_tipo_documento: string; id_estado:number; motivo?: string }) {
+    return this._http.put(`${this.URL_SERVICE}/documentos/actualizar/estado`, request);
   }
 }

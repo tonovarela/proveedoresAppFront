@@ -239,6 +239,41 @@
   border-color: #2e7d32;
 }
 
+.doc-archivo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.doc-download-link {
+  font-size: 12px;
+  color: #2e7d32;
+  text-decoration: underline;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.doc-download-link:hover {
+  color: #1b5e20;
+}
+
+.doc-btn-eliminar {
+  font-size: 12px;
+  padding: 3px 10px;
+  background-color: #fdecec;
+  color: #c62828;
+  border: 1px solid #f4b6b6;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.doc-btn-eliminar:hover {
+  background-color: #c62828;
+  color: #fff;
+  border-color: #c62828;
+}
+
 .estado-doc-badge {
   display: inline-block;
   padding: 3px 10px;
@@ -248,22 +283,38 @@
   letter-spacing: 0.3px;
 }
 
-.estado-doc-pendiente {
+/* Requerimiento: documento solicitado, pendiente de subir */
+.estado-doc-requerimiento {
+  background-color: #eef4fb;
+  color: #1c4f8a;
+  border: 1px solid #c9ddf9;
+}
+
+/* En revision: documento subido, en proceso de revisión */
+.estado-doc-revision {
   background-color: #fff8e1;
   color: #8a6100;
   border: 1px solid #f5d98b;
 }
 
+/* Aceptado */
 .estado-doc-aprobado {
   background-color: #e6f4ea;
   color: #1b5e20;
   border: 1px solid #a3d9b1;
 }
 
+/* Rechazado */
 .estado-doc-rechazado {
   background-color: #fdecea;
   color: #8a1c1c;
   border: 1px solid #f3b7b1;
+}
+
+.estado-doc-default {
+  background-color: #fff;
+  color: #344767;
+  border: 1px solid #d2d6da;
 }
 
 .doc-acciones {

@@ -8,17 +8,10 @@ import { Grid, PageSettingsModel, EditSettingsModel, FilterSettingsModel } from 
 import { ModalUploadService } from '../../../services/modal-upload.service';
 import { ProveedorService } from '../../../services/proveedor.service';
 import { SubirArchivoService } from '../../../services/subir-archivo.service';
+import { UiService } from '../../../services/ui.service';
 import { Subscription } from 'rxjs';
+import { DocumentoRepse, EstadoDocumento } from '../../../models/solicitud';
 
-type EstadoDocumento = 'pendiente' | 'aprobado' | 'rechazado';
-
-interface DocumentoRepse {
-  descripcion: string;
-  tipo: string;
-  nombreArchivo: string;
-  fechaSubida: Date | null;
-  estado: EstadoDocumento;
-}
 
 @Component({
   selector: 'app-detalle-solicitud',
@@ -46,25 +39,7 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
   filterSettings: FilterSettingsModel = { type: 'CheckBox' };
   filterMenu: FilterSettingsModel = { type: 'Menu' };
 
-  documentosRepse: DocumentoRepse[] = [
-    { descripcion: 'Recibo de nómina Trabajadores XML', tipo: 'ZIP · XML', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Recibo de nómina Trabajadores PDF', tipo: 'ZIP · PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Copia del registro REPSE vigente', tipo: 'PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Constancia de situación fiscal', tipo: 'PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Declaración de entero de retención de sueldos y salarios y comprobante de pago', tipo: 'PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Declaración definitiva y comprobante de pago de IVA', tipo: 'PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Declaración definitiva y comprobante de pago de ISR', tipo: 'PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Cédula de determinación de cuotas IMSS', tipo: 'PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Resumen de liquidación de IMSS', tipo: 'PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Comprobante de pago IMSS', tipo: 'PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Opinión de cumplimiento SAT', tipo: 'PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Opinión de cumplimiento IMSS', tipo: 'PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Opinión de cumplimiento INFONAVIT', tipo: 'PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Cédula de determinación de aportaciones y amortización IMSS-INFONAVIT', tipo: 'PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Resumen de liquidación IMSS-INFONAVIT', tipo: 'PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Comprobante de pago IMSS-INFONAVIT', tipo: 'PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-    { descripcion: 'Declaración informativa IMSS', tipo: 'PDF', nombreArchivo: '', fechaSubida: null, estado: 'pendiente' },
-  ];
+  documentosRepse: DocumentoRepse[] = [];
   mensajes: Mensaje[] = [
     {
       autor: 'Sistema',
@@ -100,15 +75,17 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     public _modalUploadService: ModalUploadService,
     private _proveedorService: ProveedorService,
     private _subirArchivoService: SubirArchivoService,
+    private _uiService: UiService,
     private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
     this.cargarDetalle();
+      
     this.uploadSub = this._subirArchivoService.notificacionSubirOpinionCumplimiento
       .subscribe(() => {
         if (this.docEnSubida) {
-          this.docEnSubida.nombreArchivo = this._modalUploadService.tipoArchivo === 'zip'
+          this.docEnSubida.nombre= this._modalUploadService.tipoArchivo === 'zip'
             ? 'archivo.zip'
             : 'archivo.pdf';
           this.docEnSubida = null;
@@ -135,6 +112,8 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     this.ajustarAlturaGrid();
   }
 
+   
+
   ajustarAlturaGrid(): void {
     if (!this.gridDocs || !this.docContainerRef) { return; }
     const container = this.docContainerRef.nativeElement as HTMLElement;
@@ -146,20 +125,27 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     this.gridDocs.height = Math.max(newHeight, 200);
   }
 
-  cargarDetalle(): void {
+
+    private async cargarDocumentos(id_solicitud: string):Promise<void> {    
+    const responseDocuments = await this.solicitudService.documentos(id_solicitud ).toPromise();
+     this.documentosRepse = responseDocuments.documentos;
+  }
+
+  async cargarDetalle(): Promise<void> {
     const solicitudHistory = history.state?.solicitud;
     const solicitudDelServicio = this.solicitudService.getSolicitudSeleccionada();
     if (solicitudDelServicio ==null){
       this.router.navigate(['/solicitud-repse']);
       console.warn('No hay solicitud seleccionada en el servicio.');
     }
-    console.log('Solicitud desde history.state:', solicitudDelServicio);
-    const solicitud = solicitudHistory || solicitudDelServicio;
     
+    const solicitud = solicitudHistory || solicitudDelServicio;
+
     if (solicitud) {
       this.solicitud = solicitud;
       this.totalNotas = this.solicitud?.totalNotas || 0;
-      this.cargarMovimientos();
+      await this.cargarDocumentos(this.solicitud.id_solicitud!);
+      
     } else {
       const solicitudId = this.route.snapshot.paramMap.get('id');
       if (solicitudId) {
@@ -168,10 +154,10 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
 
-  cargarMovimientos(): void {
-    // TODO: Implementar obtención de movimientos del servicio
-    this.movimientos = [];
-  }
+  // cargarMovimientos(): void {
+  //   // TODO: Implementar obtención de movimientos del servicio
+  //   this.movimientos = [];
+  // }
 
   agregarMensaje(mensaje: Mensaje): void {
     this.mensajes = [...this.mensajes, mensaje];
@@ -182,17 +168,7 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     this.router.navigate(['/solicitud-repse']);
   }
 
-  editarSolicitud(): void {
-    // TODO: Implementar edición de solicitud
-    console.log('Editar solicitud:', this.solicitud);
-  }
-
-  eliminarSolicitud(): void {
-    if (confirm('¿Estás seguro de que deseas eliminar esta solicitud?')) {
-      // TODO: Implementar eliminación
-      console.log('Eliminar solicitud:', this.solicitud?.id_solicitud);
-    }
-  }
+  
 
   descargarPDF(): void {
     // TODO: Implementar descarga de PDF
@@ -207,12 +183,37 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   descargarDocumento(doc: DocumentoRepse): void {
-    console.log('Descargar:', doc.nombreArchivo);
+    console.log('Descargar:', doc.nombre);
   }
 
-  aprobarDocumento(doc: DocumentoRepse): void {
-    doc.estado = 'aprobado';
+  async eliminarDocumento(doc: DocumentoRepse): Promise<void> {
+    const result = await this._uiService.mostrarAlertaConfirmacion(
+      '¿Eliminar archivo?',
+      `Se eliminará el archivo de "${doc.descripcion}". Esta acción no se puede deshacer.`,
+      'Sí, eliminar',
+      'Cancelar'
+    );
+    if (!result.value) { return; }
+
+    doc.nombre = undefined;
+    doc.ruta = undefined;
     this.gridDocs.refresh();
+    this._uiService.mostrarAlertaSuccess('Archivo eliminado', 'El archivo se eliminó correctamente.');
+  }
+
+  async aprobarDocumento(doc: DocumentoRepse): Promise<void> {
+    
+    doc.estado = 'Aceptado';
+    const {id_tipo_documento} = doc!;
+    const id_solicitud = this.solicitud?.id_solicitud!;    
+    console.log(`Aprobar documento: id_tipo_documento=${id_tipo_documento}, id_solicitud=${id_solicitud}`);          
+    await this.solicitudService.actualizarEstadoDocumento({
+      id_solicitud,
+      id_tipo_documento,
+      id_estado:4,
+      motivo: ''
+    }).toPromise();
+    await this.cargarDocumentos(id_solicitud);
   }
 
   abrirModalRechazo(doc: DocumentoRepse): void {
@@ -221,27 +222,51 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     this.modalService.open(this.modalMotivoRef, { size: 'md', centered: true });
   }
 
-  confirmarRechazo(modal: any): void {
+  async confirmarRechazo(modal: any): Promise<void> {
     if (!this.motivoRechazo.trim() || !this.docSeleccionado) { return; }
-    this.docSeleccionado.estado = 'rechazado';
-    this.gridDocs.refresh();
+    this.docSeleccionado.estado = 'Rechazado';
+    const id_tipo_documento = this.docSeleccionado.id_tipo_documento!;
+    const id_solicitud = this.solicitud?.id_solicitud!;    
+    await this.solicitudService.actualizarEstadoDocumento({
+      id_solicitud,
+      id_tipo_documento,
+      id_estado:3,
+      motivo: this.motivoRechazo.trim()
+    }).toPromise();
+    await  this.cargarDocumentos(id_solicitud);
     modal.close();
     this.docSeleccionado = null;
     this.motivoRechazo = '';
   }
 
   getEstadoClass(): string {
-    const descripcion = (this.solicitud?.estado ?? '').toLowerCase();
+    const estado = (this.solicitud?.estado ?? '').toLowerCase();
 
-    if (descripcion.includes('aprob') || descripcion.includes('acept') || descripcion.includes('autoriz')) {
-      return 'aprobado';
+    switch (estado) {
+      case 'aceptado':
+        return 'aprobado';
+      case 'rechazado':
+        return 'rechazado';
+      case 'requerimiento':
+      case 'en revision':
+        return 'pendiente';
+      default:
+        return 'default';
     }
-    if (descripcion.includes('rechaz') || descripcion.includes('cancel') || descripcion.includes('denegad')) {
-      return 'rechazado';
+  }
+
+  getEstadoDocClass(estado: EstadoDocumento): string {
+    switch (estado) {
+      case 'Aceptado':
+        return 'aprobado';
+      case 'Rechazado':
+        return 'rechazado';
+      case 'En revision':
+        return 'revision';
+      case 'Requerimiento':
+        return 'requerimiento';
+      default:
+        return 'default';
     }
-    if (descripcion.includes('pendiente') || descripcion.includes('proceso') || descripcion.includes('revis')) {
-      return 'pendiente';
-    }
-    return 'default';
   }
 }
