@@ -51,11 +51,25 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
     this.archivoSubir = null;
     this.archivoSubiendo = false;
   }
-  subirRepse(){
-    console.log("Subir archivo REPSE");
-       if (!this.archivoSubir) {
+  subirRepse() {
+    if (!this.archivoSubir) {
       return;
-    }      
+    }
+    this.archivoSubiendo = true;
+    this.tipoArchivo = this._modalUploadService.tipoArchivo;
+    this._subirArchivoService
+      .subirArchivoRepse(this.archivoSubir, this._modalUploadService.repseInfo)
+      .subscribe((response) => {
+        this.archivoSubiendo = false;
+        if (response['esIgual'] || response['ok']) {
+          this._subirArchivoService.notificacionSubirOpinionCumplimiento.emit(true);
+          this.cerrarModal();
+          this._uiService.mostrarAlertaSuccess('Listo', response['mensaje']);
+        } else {
+          this.mensaje = response['mensaje'];
+          this.errores = response['errores'] || [];
+        }
+      });
   }
   subirArchivo() {
 

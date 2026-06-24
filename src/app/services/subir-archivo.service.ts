@@ -53,13 +53,20 @@ export class SubirArchivoService {
   }
 
 
-  public subirArchivoRepse(archivo:File,resto:any){
+  public subirArchivoRepse(archivo: File, { id_solicitud, id_tipo_documento }: { id_solicitud: string, id_tipo_documento: string }): Observable<any> {
+    console.log("Subiendo archivo REPSE:", archivo.name, "para solicitud:", id_solicitud, "y tipo de documento:", id_tipo_documento );
 
+     const formData = new FormData();
+     formData.append('id_solicitud', id_solicitud);
+     formData.append('id_tipo_documento', id_tipo_documento);
+     formData.append('archivo', archivo, archivo.name);
 
-    const url = `${this.URL_REPSE}/api/anexocumplimiento`;
-    const formData = new FormData();    
-    formData.append('archivo', archivo, archivo.name);
+     //TODO: Queda pendiente el endpoint para subir el archivo REPSE, actualmente se está usando un endpoint de prueba
+      return Observable.of({ mensaje: "Listo", esIgual: true }).delay(500);
+    // const url = `${this.URL_REPSE}/api/anexocumplimiento`;
+    
 
+    
 
   }
 

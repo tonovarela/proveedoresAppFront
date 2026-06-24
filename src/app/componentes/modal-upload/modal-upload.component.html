@@ -28,7 +28,10 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" (click)="subirArchivo()"
-                        *ngIf="archivoSubir && mensaje.length==0 && !archivoSubiendo" class="btn btn-primary">Subir
+                        *ngIf="!_modalUploadService.esRepse && archivoSubir && mensaje.length==0 && !archivoSubiendo" class="btn btn-primary">Subir
+                        archivo</button>
+                    <button type="button" (click)="subirRepse()"
+                        *ngIf="_modalUploadService.esRepse && archivoSubir && mensaje.length==0 && !archivoSubiendo" class="btn btn-primary">Subir
                         archivo</button>
                     <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cerrar</button>
                 </div>
