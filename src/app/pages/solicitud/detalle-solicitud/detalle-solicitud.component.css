@@ -16,8 +16,8 @@
 }
 
 .detalle-fila-superior .card-section {
-  flex: 0 0 760px;
-  max-width: 760px;
+  flex: 2 1 0;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   max-height: 420px;
@@ -30,7 +30,7 @@
 }
 
 .detalle-mensajes {
-  flex: 1 1 0;
+  flex: 3 1 0;
   min-width: 0;
   max-height: 420px;
 }
