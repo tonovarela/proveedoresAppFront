@@ -85,6 +85,11 @@ export class SolicitudService {
       }));
   }
 
+  public eliminarDocumento(request: { id_solicitud: string; id_tipo_documento: string ,nombre:string}) {
+    //return this._http.delete(`${this.URL_SERVICE}/documentos/eliminar`, { params: new HttpParams().set('id_solicitud', request.id_solicitud).set('id_tipo_documento', request.id_tipo_documento).set('nombre', request.nombre) });
+    return  this._http.delete(`${this.URL_SERVICE}/documentos/eliminar`, { body: request });
+  }
+
   public actualizarEstadoDocumento(request: { id_solicitud: string; id_tipo_documento: string; id_estado:number; motivo?: string }) {
     return this._http.put(`${this.URL_SERVICE}/documentos/actualizar/estado`, request);
   }

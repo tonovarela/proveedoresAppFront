@@ -19,6 +19,7 @@ import { ProveedorService } from './proveedor.service';
 export class SubirArchivoService {
   public notificacion = new EventEmitter<Movimiento>();
   public notificacionSubirOpinionCumplimiento= new EventEmitter<boolean>();
+  public notificacionSubirArchivoRepse= new EventEmitter<boolean>();
   URL_REPSE :string = environment.URL_SERVICIOS;
   URL_SERVICE: string =
     environment.URL_VALIDADORFILE;
@@ -54,19 +55,14 @@ export class SubirArchivoService {
 
 
   public subirArchivoRepse(archivo: File, { id_solicitud, id_tipo_documento }: { id_solicitud: string, id_tipo_documento: string }): Observable<any> {
-    console.log("Subiendo archivo REPSE:", archivo.name, "para solicitud:", id_solicitud, "y tipo de documento:", id_tipo_documento );
-
+  
      const formData = new FormData();
      formData.append('id_solicitud', id_solicitud);
      formData.append('id_tipo_documento', id_tipo_documento);
-     formData.append('archivo', archivo, archivo.name);
-
-     //TODO: Queda pendiente el endpoint para subir el archivo REPSE, actualmente se está usando un endpoint de prueba
-      return Observable.of({ mensaje: "Listo", esIgual: true }).delay(500);
-    // const url = `${this.URL_REPSE}/api/anexocumplimiento`;
-    
-
-    
+     formData.append('archivo', archivo, archivo.name);    
+      const url = `${this.URL_REPSE}/documentos`;
+      return this._http.post(url, formData)      
+        
 
   }
 

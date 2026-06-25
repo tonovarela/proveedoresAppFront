@@ -82,13 +82,15 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
   ngOnInit(): void {
     this.cargarDetalle();
       
-    this.uploadSub = this._subirArchivoService.notificacionSubirOpinionCumplimiento
-      .subscribe(() => {
+    this.uploadSub = this._subirArchivoService.notificacionSubirArchivoRepse
+      .subscribe(() => {        
         if (this.docEnSubida) {
           this.docEnSubida.nombre= this._modalUploadService.tipoArchivo === 'zip'
             ? 'archivo.zip'
             : 'archivo.pdf';
           this.docEnSubida = null;
+          //console.log('Actualizando lista de documentos...');
+          this.cargarDetalle();
           this.gridDocs.refresh();
         }
       });
@@ -154,11 +156,7 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
 
-  // cargarMovimientos(): void {
-  //   // TODO: Implementar obtención de movimientos del servicio
-  //   this.movimientos = [];
-  // }
-
+  
   agregarMensaje(mensaje: Mensaje): void {
     this.mensajes = [...this.mensajes, mensaje];
     console.log('Nuevo mensaje:', mensaje);
@@ -194,9 +192,12 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
       'Cancelar'
     );
     if (!result.value) { return; }
+     await this.solicitudService.eliminarDocumento({id_solicitud: this.solicitud?.id_solicitud!,id_tipo_documento: doc.id_tipo_documento!,nombre: doc.nombre!}).toPromise();
+
 
     doc.nombre = undefined;
     doc.ruta = undefined;
+    this.cargarDetalle();
     this.gridDocs.refresh();
     this._uiService.mostrarAlertaSuccess('Archivo eliminado', 'El archivo se eliminó correctamente.');
   }

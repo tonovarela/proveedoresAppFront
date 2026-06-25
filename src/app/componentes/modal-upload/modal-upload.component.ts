@@ -61,13 +61,13 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
       .subirArchivoRepse(this.archivoSubir, this._modalUploadService.repseInfo)
       .subscribe((response) => {
         this.archivoSubiendo = false;
-        if (response['esIgual'] || response['ok']) {
-          this._subirArchivoService.notificacionSubirOpinionCumplimiento.emit(true);
+        if (response['ok']) {
+          this._subirArchivoService.notificacionSubirArchivoRepse.emit(true);
           this.cerrarModal();
           this._uiService.mostrarAlertaSuccess('Listo', response['mensaje']);
         } else {
           this.mensaje = response['mensaje'];
-          this.errores = response['errores'] || [];
+          
         }
       });
   }
