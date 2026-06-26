@@ -87,10 +87,16 @@ export class SolicitudService {
 
   public eliminarDocumento(request: { id_solicitud: string; id_tipo_documento: string ,nombre:string}) {
     //return this._http.delete(`${this.URL_SERVICE}/documentos/eliminar`, { params: new HttpParams().set('id_solicitud', request.id_solicitud).set('id_tipo_documento', request.id_tipo_documento).set('nombre', request.nombre) });
-    return  this._http.delete(`${this.URL_SERVICE}/documentos/eliminar`, { body: request });
+    return  this._http.post(`${this.URL_SERVICE}/documentos/eliminar`, {  ...request });
   }
 
   public actualizarEstadoDocumento(request: { id_solicitud: string; id_tipo_documento: string; id_estado:number; motivo?: string }) {
     return this._http.put(`${this.URL_SERVICE}/documentos/actualizar/estado`, request);
+  }
+
+
+  public descargarDocumento(id_solicitud: string, id_tipo_documento: string) {
+    const url = `${this.URL_SERVICE}/documentos/descargar/${id_solicitud}?tipo=${id_tipo_documento}`;
+    return this._http.get(url, { responseType: 'blob' });
   }
 }

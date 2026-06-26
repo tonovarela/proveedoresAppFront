@@ -83,7 +83,8 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     this.cargarDetalle();
       
     this.uploadSub = this._subirArchivoService.notificacionSubirArchivoRepse
-      .subscribe(() => {        
+      .subscribe((esCompleto) => {        
+          
         if (this.docEnSubida) {
           this.docEnSubida.nombre= this._modalUploadService.tipoArchivo === 'zip'
             ? 'archivo.zip'
@@ -168,11 +169,7 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
 
   
 
-  descargarPDF(): void {
-    // TODO: Implementar descarga de PDF
-    console.log('Descargar PDF de solicitud:', this.solicitud?.id_solicitud);
-  }
-
+  
   subirDocumento(doc: DocumentoRepse): void {
     this.docEnSubida = doc;
     this._proveedorService.revisarArchivo = '0';
@@ -181,7 +178,20 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   descargarDocumento(doc: DocumentoRepse): void {
-    console.log('Descargar:', doc.nombre);
+    
+    this.solicitudService.descargarDocumento(this.solicitud?.id_solicitud!, doc.id_tipo_documento!)
+      .subscribe((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = doc.nombre || 'documento';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);  
+      }, (error) => {
+        console.error('Error al descargar el documento:', error);
+      });
   }
 
   async eliminarDocumento(doc: DocumentoRepse): Promise<void> {
@@ -206,12 +216,17 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     doc.estado = 'Aceptado';
     const {id_tipo_documento} = doc!;
     const id_solicitud = this.solicitud?.id_solicitud!;        
-    await this.solicitudService.actualizarEstadoDocumento({
+    const request =await this.solicitudService.actualizarEstadoDocumento({
       id_solicitud,
       id_tipo_documento,
       id_estado:4,
       motivo: ''
     }).toPromise();
+    const solicitudAprobada = request["solicitudAprobada"];
+    if (solicitudAprobada) {
+      this._uiService.mostrarAlertaSuccess('Documento aprobado', 'La solicitud está en estado de "Aceptado"');
+    }
+    
     await this.cargarDocumentos(id_solicitud);
   }
 

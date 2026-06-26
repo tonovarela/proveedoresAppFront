@@ -89,7 +89,8 @@
                   [title]="data.nombre">
                   <i class="fa fa-download"></i> 
                 </a>
-                <button class="btn btn-sm doc-btn-eliminar waves-effect"
+                
+                <button *ngIf="data.estado!='Aceptado'" class="btn btn-sm doc-btn-eliminar waves-effect"
                   (click)="eliminarDocumento(data)"
                   title="Eliminar">
                   <i class="fa fa-trash"></i> 

@@ -7,6 +7,8 @@ import { RevisionCP } from 'src/app/models/movimiento';
 import { ExcelService } from 'src/app/services/excel-service.service';
 
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { catchError } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-modal-upload',
@@ -58,11 +60,18 @@ export class ModalUploadComponent implements OnInit, OnDestroy {
     this.archivoSubiendo = true;
     this.tipoArchivo = this._modalUploadService.tipoArchivo;
     this._subirArchivoService
-      .subirArchivoRepse(this.archivoSubir, this._modalUploadService.repseInfo)
+      .subirArchivoRepse(this.archivoSubir, this._modalUploadService.repseInfo).pipe(
+        catchError((error) => {
+          this.archivoSubiendo = false;
+          this.mensaje = error.error.mensaje || 'Error al subir el archivo';
+          return error;
+        })
+      )
       .subscribe((response) => {
         this.archivoSubiendo = false;
+
         if (response['ok']) {
-          this._subirArchivoService.notificacionSubirArchivoRepse.emit(true);
+          this._subirArchivoService.notificacionSubirArchivoRepse.emit(false);
           this.cerrarModal();
           this._uiService.mostrarAlertaSuccess('Listo', response['mensaje']);
         } else {
