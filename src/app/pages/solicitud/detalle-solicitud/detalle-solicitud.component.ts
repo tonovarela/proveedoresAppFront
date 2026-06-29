@@ -30,6 +30,7 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
   docSeleccionado: DocumentoRepse | null = null;
   docEnSubida: DocumentoRepse | null = null;
   aprobandoDocumento: boolean = false;
+  panelColapsado: boolean = true;
   motivoRechazo: string = '';
   solicitud: Solicitud | null = null;
   movimientos: any[] = [];
@@ -170,6 +171,12 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
 
   volverAtras(): void {
     this.router.navigate(['/solicitud-repse']);
+  }
+
+  togglePanel(): void {
+    this.panelColapsado = !this.panelColapsado;
+    // Recalcular la altura del grid cuando el panel cambia de tamaño
+    setTimeout(() => this.ajustarAlturaGrid());
   }
 
   

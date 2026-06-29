@@ -1,14 +1,35 @@
 <div class="detalle-solicitud-container">
+  <!-- Barra del panel colapsable -->
+  <div class="detalle-toggle-bar">
+    <button class="btn-volver" (click)="volverAtras()" title="Volver">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
+      </svg>
+    </button>
+    <button class="detalle-toggle-btn" (click)="togglePanel()"
+      [attr.aria-expanded]="!panelColapsado"
+      [title]="panelColapsado ? 'Mostrar información y mensajes' : 'Ocultar información y mensajes'">
+      <i class="fa" [ngClass]="panelColapsado ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
+      <span>{{ panelColapsado ? 'Mostrar información y mensajes' : 'Ocultar información y mensajes' }}</span>
+    </button>
+
+    <!-- Resumen visible solo cuando el panel está colapsado -->
+    <div class="detalle-resumen" *ngIf="panelColapsado">
+      <div class="detalle-resumen-item">
+        <span class="info-label">Proveedor</span>
+        <span class="info-value">{{ solicitud?.proveedor }}</span>
+      </div>
+      <span class="estado-badge" [ngClass]="'estado-' + getEstadoClass()">
+        {{ solicitud?.estado }}
+      </span>
+    </div>
+  </div>
+
   <!-- Fila superior: tarjeta de detalle + mensajes -->
-  <div class="detalle-fila-superior">
+  <div class="detalle-fila-superior" *ngIf="!panelColapsado">
     <!-- Tarjeta de información -->
     <div class="card-section">
-      <div class="card-header-custom" >
-        <button class="btn-volver" (click)="volverAtras()" title="Volver">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
-          </svg>
-        </button>
+      <div class="card-header-custom">
         <h6 class="mb-0">Información General</h6>
       </div>
       <div class="card-body" style="overflow-y: hidden;">
