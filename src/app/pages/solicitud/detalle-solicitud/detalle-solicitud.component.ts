@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Solicitud } from '../../../models/solicitud';
@@ -11,6 +12,7 @@ import { SubirArchivoService } from '../../../services/subir-archivo.service';
 import { UiService } from '../../../services/ui.service';
 import { Subscription } from 'rxjs';
 import { DocumentoRepse, EstadoDocumento } from '../../../models/solicitud';
+import { UsuarioService } from 'src/app/services';
 
 
 @Component({
@@ -23,13 +25,19 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
   @ViewChild('gridDocs') gridDocs: Grid;
   @ViewChild('docContainer') docContainerRef: ElementRef;
   @ViewChild('modalMotivo') modalMotivoRef: any;
+  @ViewChild('modalPdf') modalPdfRef: any;
 
   private resizeBound = this.onResizeDocs.bind(this);
   private uploadSub: Subscription;
 
   docSeleccionado: DocumentoRepse | null = null;
+  docPdfSeleccionado: DocumentoRepse | null = null;
+  pdfUrl: SafeResourceUrl | null = null;
+  cargandoPdf: boolean = false;
+  private pdfObjectUrl: string | null = null;
   docEnSubida: DocumentoRepse | null = null;
   aprobandoDocumento: boolean = false;
+  rechazandoDocumento: boolean = false;
   panelColapsado: boolean = true;
   motivoRechazo: string = '';
   solicitud: Solicitud | null = null;
@@ -46,44 +54,26 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
   get documentosAceptados(): number {
     return this.documentosRepse.filter(doc => doc.estado === 'Aceptado').length;
   }
-  mensajes: Mensaje[] = [
-    {
-      autor: 'Sistema',
-      contenido: 'Solicitud recibida y registrada correctamente.',
-      fecha: new Date('2026-06-10T09:15:00'),
-      propio: false
-    },
-    {
-      autor: 'Juan Pérez',
-      contenido: 'Adjunté la constancia de situación fiscal actualizada.',
-      fecha: new Date('2026-06-11T12:30:00'),
-      propio: true
-    },
-    {
-      autor: 'Revisor REPSE',
-      contenido: 'Falta el comprobante de pago de IMSS del último periodo. Favor de subirlo.',
-      fecha: new Date('2026-06-12T16:45:00'),
-      propio: false
-    },
-    {
-      autor: 'Juan Pérez',
-      contenido: 'Listo, ya cargué el comprobante de pago de IMSS.',
-      fecha: new Date('2026-06-13T10:05:00'),
-      propio: true
-    }
-  ];
+  mensajes : Mensaje[] = [];
+  
   totalNotas: number = 0;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private usuarioService: UsuarioService,
     private solicitudService: SolicitudService,
     public _modalUploadService: ModalUploadService,
     private _proveedorService: ProveedorService,
     private _subirArchivoService: SubirArchivoService,
     private _uiService: UiService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private sanitizer: DomSanitizer
   ) { }
+
+  esPdf(doc: DocumentoRepse): boolean {
+    return !doc.tipo.includes('ZIP');
+  }
 
   ngOnInit(): void {
     this.cargarDetalle();
@@ -109,6 +99,7 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
   ngOnDestroy(): void {
     window.removeEventListener('resize', this.resizeBound);
     if (this.uploadSub) { this.uploadSub.unsubscribe(); }
+    this.limpiarPdf();
   }
 
   dataBoundDocs(): void {
@@ -144,6 +135,11 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     this.solicitud = response.solicitud;
     this.totalNotas = this.solicitud?.totalNotas || 0;
   }
+  private async obtenerNotas(id_solicitud: string): Promise<void> {
+    const id_usuarioLogueado = `${this.usuarioService.usuario?.Id_Usuario || ''}`;
+    const response = await this.solicitudService.obtenerNotas(id_solicitud, id_usuarioLogueado).toPromise();
+    this.mensajes = response.mensajes;
+  }
 
   async cargarDetalle(): Promise<void> {
     const solicitudHistory = history.state?.solicitud;
@@ -157,8 +153,9 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
 
     if (solicitud) {
       const id_solicitud = solicitud.id_solicitud!;
-      await this.obtenerSolicitud(id_solicitud);
+      await this.obtenerSolicitud(id_solicitud);      
       await this.cargarDocumentos(id_solicitud);
+      await this.obtenerNotas(id_solicitud);
 
     } else {
       const solicitudId = this.route.snapshot.paramMap.get('id');
@@ -167,26 +164,24 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
       }
     }
   }
-
   
-  agregarMensaje(mensaje: Mensaje): void {
-    this.mensajes = [...this.mensajes, mensaje];
-    console.log('Nuevo mensaje:', mensaje);
-  }
+  // agregarMensaje(mensaje: Mensaje): void {
+  //   this.mensajes = [...this.mensajes, mensaje];
+  //   console.log('Nuevo mensaje:', mensaje);
+  // }
+
 
   volverAtras(): void {
     this.router.navigate(['/solicitud-repse']);
   }
 
   togglePanel(): void {
-    this.panelColapsado = !this.panelColapsado;
-    // Recalcular la altura del grid cuando el panel cambia de tamaño
+    this.panelColapsado = !this.panelColapsado;    
     setTimeout(() => this.ajustarAlturaGrid());
   }
 
   
 
-  
   subirDocumento(doc: DocumentoRepse): void {
     this.docEnSubida = doc;
     this._proveedorService.revisarArchivo = '0';
@@ -194,8 +189,71 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     this._modalUploadService.mostrarModalRepse(tipoArchivo, {id_solicitud: this.solicitud?.id_solicitud!, id_tipo_documento: doc.id_tipo_documento!});
   }
 
+  abrirDocumento(doc: DocumentoRepse): void {
+    if (this.esPdf(doc)) {
+      this.previsualizarPdf(doc);
+    } else {
+      this.descargarDocumento(doc);
+    }
+  }
+
+  previsualizarPdf(doc: DocumentoRepse): void {
+    this.docPdfSeleccionado = doc;
+    this.cargandoPdf = true;
+    this.limpiarPdf();
+    const ref = this.modalService.open(this.modalPdfRef, {
+      size: 'xl',
+      centered: true,
+      windowClass: 'modal-pdf-preview'
+    });
+    ref.result.then(
+      () => this.cerrarPreviewPdf(),
+      () => this.cerrarPreviewPdf()
+    );
+
+    this.solicitudService.descargarDocumento(this.solicitud?.id_solicitud!, doc.id_tipo_documento!)
+      .subscribe((blob) => {
+        const pdfBlob = new Blob([blob], { type: 'application/pdf' });
+        this.pdfObjectUrl = window.URL.createObjectURL(pdfBlob);
+        this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.pdfObjectUrl);
+        this.cargandoPdf = false;
+      }, (error) => {
+        //console.error('Error al cargar el documento:', error);
+        this.cargandoPdf = false;
+        ref.dismiss();
+      });
+  }
+
+  async aprobarDesdePreview(modal: any): Promise<void> {
+    const doc = this.docPdfSeleccionado;
+    modal.close();
+    if (doc) {
+      await this.aprobarDocumento(doc);
+    }
+  }
+
+  rechazarDesdePreview(modal: any): void {
+    const doc = this.docPdfSeleccionado;
+    modal.close();
+    if (doc) {
+      this.abrirModalRechazo(doc);
+    }
+  }
+
+  private cerrarPreviewPdf(): void {
+    this.docPdfSeleccionado = null;
+    this.limpiarPdf();
+  }
+
+  private limpiarPdf(): void {
+    if (this.pdfObjectUrl) {
+      window.URL.revokeObjectURL(this.pdfObjectUrl);
+      this.pdfObjectUrl = null;
+    }
+    this.pdfUrl = null;
+  }
+
   descargarDocumento(doc: DocumentoRepse): void {
-    
     this.solicitudService.descargarDocumento(this.solicitud?.id_solicitud!, doc.id_tipo_documento!)
       .subscribe((blob) => {
         const url = window.URL.createObjectURL(blob);
@@ -209,6 +267,17 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
       }, (error) => {
         console.error('Error al descargar el documento:', error);
       });
+  }
+
+  async sustituirDocumento(doc: DocumentoRepse): Promise<void> {
+    const result = await this._uiService.mostrarAlertaConfirmacion(
+      '¿Sustituir archivo?',
+      `Se reemplazará el archivo rechazado de "${doc.descripcion}" por uno nuevo.`,
+      'Sí, sustituir',
+      'Cancelar'
+    );
+    if (!result.value) { return; }    
+    this.subirDocumento(doc);
   }
 
   async eliminarDocumento(doc: DocumentoRepse): Promise<void> {
@@ -235,8 +304,10 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
       doc.estado = 'Aceptado';
       const {id_tipo_documento} = doc!;
       const id_solicitud = this.solicitud?.id_solicitud!;
+      const id_usuario = `${this.usuarioService.usuario?.Id_Usuario || ''}`;
       const request =await this.solicitudService.actualizarEstadoDocumento({
         id_solicitud,
+        id_usuario,
         id_tipo_documento,
         id_estado:4,
         motivo: ''
@@ -258,25 +329,35 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
   abrirModalRechazo(doc: DocumentoRepse): void {
     this.docSeleccionado = doc;
     this.motivoRechazo = '';
-    this.modalService.open(this.modalMotivoRef, { size: 'md', centered: true });
+    this.rechazandoDocumento = false;
+    this.modalService.open(this.modalMotivoRef, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
   }
 
   async confirmarRechazo(modal: any): Promise<void> {
+    if (this.rechazandoDocumento) { return; }
     if (!this.motivoRechazo.trim() || !this.docSeleccionado) { return; }
-    this.docSeleccionado.estado = 'Rechazado';
-    const id_tipo_documento = this.docSeleccionado.id_tipo_documento!;
-    const id_solicitud = this.solicitud?.id_solicitud!;    
-    await this.solicitudService.actualizarEstadoDocumento({
-      id_solicitud,
-      id_tipo_documento,
-      id_estado:3,
-      motivo: this.motivoRechazo.trim()
-    }).toPromise();
-    await this.obtenerSolicitud(id_solicitud);
-    await this.cargarDocumentos(id_solicitud);
-    modal.close();
-    this.docSeleccionado = null;
-    this.motivoRechazo = '';
+    this.rechazandoDocumento = true;
+    try {
+      this.docSeleccionado.estado = 'Rechazado';
+      const id_tipo_documento = this.docSeleccionado.id_tipo_documento!;
+      const id_solicitud = this.solicitud?.id_solicitud!;
+      const id_usuario = `${this.usuarioService.usuario?.Id_Usuario || ''}`;
+      await this.solicitudService.actualizarEstadoDocumento({
+        id_solicitud,
+        id_usuario,
+        id_tipo_documento,
+        id_estado:3,
+        motivo: this.motivoRechazo.trim()
+      }).toPromise();
+      await this.cargarDetalle();
+      modal.close();
+      this.docSeleccionado = null;
+      this.motivoRechazo = '';
+    } catch (error) {
+      console.error('Error al rechazar el documento:', error);
+    } finally {
+      this.rechazandoDocumento = false;
+    }
   }
 
   getEstadoClass(): string {

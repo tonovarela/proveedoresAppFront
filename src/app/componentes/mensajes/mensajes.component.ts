@@ -14,7 +14,7 @@ export class MensajesComponent implements AfterViewInit, OnChanges {
   /** Usuario que escribe los mensajes. */
   @Input() usuario: string = '';
   /** Habilita o bloquea la captura/emisión de nuevos mensajes. */
-  @Input() puedeCapturarMensajes: boolean = true;
+  @Input() puedeCapturarMensajes: boolean = false;
 
   @Output() enviarMensaje = new EventEmitter<Mensaje>();
 

@@ -10,9 +10,11 @@ import {
   ResponseSolicitud,
   ResponseSolicitudes,
   Solicitud,
+  SolicitudNotasResponse,
 } from "../models/solicitud";
 import { map } from "rxjs/operators";
 import { ResponseBusquedaCliente } from "../models/responseBusquedaCliente";
+import { Mensaje } from "../models";
 
 @Injectable({
   providedIn: "root",
@@ -95,7 +97,7 @@ export class SolicitudService {
     return  this._http.post(`${this.URL_SERVICE}/documentos/eliminar`, {  ...request });
   }
 
-  public actualizarEstadoDocumento(request: { id_solicitud: string; id_tipo_documento: string; id_estado:number; motivo?: string }) {
+  public actualizarEstadoDocumento(request: { id_solicitud: string; id_tipo_documento: string; id_estado:number; motivo?: string,id_usuario:string }) {
     return this._http.put(`${this.URL_SERVICE}/documentos/actualizar/estado`, request);
   }
 
@@ -104,4 +106,25 @@ export class SolicitudService {
     const url = `${this.URL_SERVICE}/documentos/descargar/${id_solicitud}?tipo=${id_tipo_documento}`;
     return this._http.get(url, { responseType: 'blob' });
   }
+  
+  public obtenerNotas(id_solicitud: string,id_usuarioLogueado:string) {
+    return this._http.get<SolicitudNotasResponse>(`${this.URL_SERVICE}/solicitud/notas/${id_solicitud}`).pipe(
+      map((response) => {
+        if (response.notas && response.notas.length > 0) {
+          const mensajes:Mensaje [] = response.notas.map(({id_usuario, autor, contenido, fecha_registro}) => ({
+            autor,
+            contenido,
+            fecha: fecha_registro,
+            es_propio: id_usuario === id_usuarioLogueado,                                
+          }));
+          return { mensajes };
+        }
+        return { mensajes: [] };
+      })
+    );
+  }
+
+
+
+
 }

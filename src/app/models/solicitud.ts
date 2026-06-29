@@ -76,5 +76,17 @@ export interface DocumentoSolicitud {
 
 }
 
+export interface SolicitudNotasResponse {
+  notas: SolicitudNota[]
+}
+
+export interface SolicitudNota {
+ 
+  id_usuario:string,
+   autor:string,
+  contenido:string,  
+  fecha_registro:Date
+}
+
 
 
