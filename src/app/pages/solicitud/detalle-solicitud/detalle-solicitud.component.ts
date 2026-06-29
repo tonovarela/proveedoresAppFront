@@ -136,9 +136,15 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
   }
 
 
-    private async cargarDocumentos(id_solicitud: string):Promise<void> {    
+    private async cargarDocumentos(id_solicitud: string):Promise<void> {
     const responseDocuments = await this.solicitudService.documentos(id_solicitud ).toPromise();
      this.documentosRepse = responseDocuments.documentos;
+  }
+
+  private async obtenerSolicitud(id_solicitud: string): Promise<void> {
+    const response = await this.solicitudService.obtener(id_solicitud).toPromise();
+    this.solicitud = response.solicitud;
+    this.totalNotas = this.solicitud?.totalNotas || 0;
   }
 
   async cargarDetalle(): Promise<void> {
@@ -148,14 +154,14 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
       this.router.navigate(['/solicitud-repse']);
       console.warn('No hay solicitud seleccionada en el servicio.');
     }
-    
+
     const solicitud = solicitudHistory || solicitudDelServicio;
 
     if (solicitud) {
-      this.solicitud = solicitud;
-      this.totalNotas = this.solicitud?.totalNotas || 0;
-      await this.cargarDocumentos(this.solicitud.id_solicitud!);
-      
+      const id_solicitud = solicitud.id_solicitud!;
+      await this.obtenerSolicitud(id_solicitud);
+      await this.cargarDocumentos(id_solicitud);
+
     } else {
       const solicitudId = this.route.snapshot.paramMap.get('id');
       if (solicitudId) {
@@ -242,6 +248,7 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
         this._uiService.mostrarAlertaSuccess('Documento aprobado', 'La solicitud está en estado de "Aceptado"');
       }
 
+      await this.obtenerSolicitud(id_solicitud);
       await this.cargarDocumentos(id_solicitud);
     } catch (error) {
       console.error('Error al aprobar el documento:', error);
@@ -267,7 +274,8 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
       id_estado:3,
       motivo: this.motivoRechazo.trim()
     }).toPromise();
-    await  this.cargarDocumentos(id_solicitud);
+    await this.obtenerSolicitud(id_solicitud);
+    await this.cargarDocumentos(id_solicitud);
     modal.close();
     this.docSeleccionado = null;
     this.motivoRechazo = '';
