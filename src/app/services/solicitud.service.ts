@@ -7,6 +7,7 @@ import {
   EstadoDocumento,
   RequestSolicitud,
   ResponseDocumentosSolicitud,
+  ResponseSolicitud,
   ResponseSolicitudes,
   Solicitud,
 } from "../models/solicitud";
@@ -24,6 +25,10 @@ export class SolicitudService {
 
   public obtenerSolicitudes() {
     return this._http.get<ResponseSolicitudes>(`${this.URL_SERVICE}/solicitud`);
+  }
+
+  public obtener(id_solicitud: string) {
+    return this._http.get<ResponseSolicitud>(`${this.URL_SERVICE}/solicitud/${id_solicitud}`);
   }
 
   public buscarProveedores(patron: string) {

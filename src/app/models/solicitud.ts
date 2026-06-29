@@ -19,6 +19,10 @@ export interface EstadoSolicitud {
     estado?:string
 }
 
+
+export interface ResponseSolicitud {
+    solicitud:Solicitud,
+}
 export interface ResponseSolicitudes {
     solicitudes:Solicitud[],
     estados:EstadoSolicitud[]
