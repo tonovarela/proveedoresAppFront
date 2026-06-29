@@ -3,7 +3,7 @@
   <div class="detalle-fila-superior">
     <!-- Tarjeta de información -->
     <div class="card-section">
-      <div class="card-header-custom">
+      <div class="card-header-custom" >
         <button class="btn-volver" (click)="volverAtras()" title="Volver">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"/>
@@ -11,7 +11,7 @@
         </button>
         <h6 class="mb-0">Información General</h6>
       </div>
-      <div class="card-body">
+      <div class="card-body" style="overflow-y: hidden;">
         <div class="info-grid">
           <div class="info-item">
             <span class="info-label">Prefijo</span>
@@ -58,11 +58,20 @@
   <!-- Documentos REPSE (ancho completo) -->
   <div class="detalle-documentos">
     <div class="card-section" #docContainer>
+      <div *ngIf="aprobandoDocumento" class="doc-loader-overlay">
+        <app-loader></app-loader>
+      </div>
       <div class="card-header-custom">
         <h6 class="mb-0">Documentos REPSE</h6>
+        <span class="doc-aceptados-badge">
+          <span class="doc-aceptados-num">{{ documentosAceptados }}</span>
+          <span class="doc-aceptados-texto">Aceptados de</span>
+          <span class="doc-aceptados-total">{{ documentosRepse.length }}</span>
+        </span>
       </div>
       <ejs-grid #gridDocs [dataSource]="documentosRepse" [editSettings]="editSettings"
-        [pageSettings]="pageSettings" allowPaging="true" allowSorting="true"
+      [pageSettings]="pageOptions"
+        allowPaging="true" allowSorting="true"
         allowFiltering="true" [filterSettings]="filterSettings"
         allowResizing="true" (dataBound)="dataBoundDocs()">
         <e-columns>

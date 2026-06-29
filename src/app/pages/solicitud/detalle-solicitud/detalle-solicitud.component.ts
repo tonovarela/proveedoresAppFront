@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Solicitud } from '../../../models/solicitud';
 import { Mensaje } from '../../../models';
 import { SolicitudService } from '../../../services/solicitud.service';
-import { Grid, PageSettingsModel, EditSettingsModel, FilterSettingsModel } from '@syncfusion/ej2-angular-grids';
+import { Grid, EditSettingsModel, FilterSettingsModel, Page, PageSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { ModalUploadService } from '../../../services/modal-upload.service';
 import { ProveedorService } from '../../../services/proveedor.service';
 import { SubirArchivoService } from '../../../services/subir-archivo.service';
@@ -29,17 +29,22 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
 
   docSeleccionado: DocumentoRepse | null = null;
   docEnSubida: DocumentoRepse | null = null;
+  aprobandoDocumento: boolean = false;
   motivoRechazo: string = '';
   solicitud: Solicitud | null = null;
   movimientos: any[] = [];
   usuario: string = 'Juan Pérez';
 
-  pageSettings: PageSettingsModel = { pageSize: 10, pageSizes: true };
   editSettings: EditSettingsModel = { allowEditing: false, allowDeleting: false };
   filterSettings: FilterSettingsModel = { type: 'CheckBox' };
   filterMenu: FilterSettingsModel = { type: 'Menu' };
+    pageOptions?: PageSettingsModel = { pageSize: 20, pageSizes: true, currentPage: 1 };
 
   documentosRepse: DocumentoRepse[] = [];
+
+  get documentosAceptados(): number {
+    return this.documentosRepse.filter(doc => doc.estado === 'Aceptado').length;
+  }
   mensajes: Mensaje[] = [
     {
       autor: 'Sistema',
@@ -89,8 +94,7 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
           this.docEnSubida.nombre= this._modalUploadService.tipoArchivo === 'zip'
             ? 'archivo.zip'
             : 'archivo.pdf';
-          this.docEnSubida = null;
-          //console.log('Actualizando lista de documentos...');
+          this.docEnSubida = null;          
           this.cargarDetalle();
           this.gridDocs.refresh();
         }
@@ -123,9 +127,10 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     const headerEl = container.querySelector('.card-header-custom') as HTMLElement;
     const headerH = headerEl ? headerEl.offsetHeight : 48;
     const containerTop = container.getBoundingClientRect().top;
-    const bottomPadding = 16;
-    const newHeight = window.innerHeight - containerTop - headerH - bottomPadding;
-    this.gridDocs.height = Math.max(newHeight, 200);
+    const bottomPadding = 5;
+    const newHeight = window.innerHeight - containerTop - headerH - bottomPadding;    
+    this.gridDocs.height = newHeight > 100 ? newHeight : 100;
+    
   }
 
 
@@ -212,22 +217,29 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     this._uiService.mostrarAlertaSuccess('Archivo eliminado', 'El archivo se eliminó correctamente.');
   }
 
-  async aprobarDocumento(doc: DocumentoRepse): Promise<void> {    
-    doc.estado = 'Aceptado';
-    const {id_tipo_documento} = doc!;
-    const id_solicitud = this.solicitud?.id_solicitud!;        
-    const request =await this.solicitudService.actualizarEstadoDocumento({
-      id_solicitud,
-      id_tipo_documento,
-      id_estado:4,
-      motivo: ''
-    }).toPromise();
-    const solicitudAprobada = request["solicitudAprobada"];
-    if (solicitudAprobada) {
-      this._uiService.mostrarAlertaSuccess('Documento aprobado', 'La solicitud está en estado de "Aceptado"');
+  async aprobarDocumento(doc: DocumentoRepse): Promise<void> {
+    this.aprobandoDocumento = true;
+    try {
+      doc.estado = 'Aceptado';
+      const {id_tipo_documento} = doc!;
+      const id_solicitud = this.solicitud?.id_solicitud!;
+      const request =await this.solicitudService.actualizarEstadoDocumento({
+        id_solicitud,
+        id_tipo_documento,
+        id_estado:4,
+        motivo: ''
+      }).toPromise();
+      const solicitudAprobada = request["solicitudAprobada"];
+      if (solicitudAprobada) {
+        this._uiService.mostrarAlertaSuccess('Documento aprobado', 'La solicitud está en estado de "Aceptado"');
+      }
+
+      await this.cargarDocumentos(id_solicitud);
+    } catch (error) {
+      console.error('Error al aprobar el documento:', error);
+    } finally {
+      this.aprobandoDocumento = false;
     }
-    
-    await this.cargarDocumentos(id_solicitud);
   }
 
   abrirModalRechazo(doc: DocumentoRepse): void {
