@@ -1,0 +1,530 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* ---- Layout: fila superior (tarjeta + mensajes) y documentos abajo ---- */
+.detalle-fila-superior {
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+  margin-bottom: 16px;
+  max-height: 300px;
+  flex-shrink: 0;
+}
+
+.detalle-fila-superior .detalle-info {
+  flex: 2 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  max-height: 420px;
+}
+
+.detalle-fila-superior .detalle-info .card-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+.detalle-mensajes {
+  flex: 3 1 0;
+  min-width: 0;
+  max-height: 420px;
+}
+
+.detalle-documentos {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.detalle-documentos .card-section {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.rechazo-modal-wrapper {
+  position: relative;
+}
+
+.doc-loader-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---- Tarjeta ---- */
+.card-section {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.card-header-custom {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f2f5;
+}
+
+.card-header-custom h6 {
+  color: #455a64;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.doc-aceptados-badge {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  background-color: #e6f4ea;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.doc-aceptados-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 11px;
+  background-color: #2e7d32;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.doc-aceptados-texto {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.doc-aceptados-total {
+  color: #455a64;
+  font-weight: 700;
+}
+
+.card-body {
+  padding: 24px;
+}
+
+.card-footer-custom {
+  display: flex;
+  align-items: center;
+  padding: 14px 24px;
+  background-color: #f7f9fc;
+  border-top: 1px solid #f0f2f5;
+}
+
+/* ---- Grid de info ---- */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px 28px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #99abb4;
+}
+
+.info-value {
+  font-size: 15px;
+  color: #455a64;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.info-detail {
+  font-size: 13px;
+  color: #67757c;
+}
+
+.id-chip {
+  background-color: #eef4fb;
+  color: #398bf7;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+/* ---- Badge de estado ---- */
+.estado-badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.estado-aprobado {
+  color: #1b5e20;
+  background-color: #e6f4ea;
+  border: 1px solid #a3d9b1;
+}
+
+.estado-rechazado {
+  color: #8a1c1c;
+  background-color: #fdecea;
+  border: 1px solid #f3b7b1;
+}
+
+.estado-pendiente {
+  color: #8a6100;
+  background-color: #fff8e1;
+  border: 1px solid #f5d98b;
+}
+
+.estado-default {
+  color: #344767;
+  background-color: #fff;
+  border: 1px solid #d2d6da;
+}
+
+/* ---- Grid de documentos ---- */
+.doc-tipo-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.doc-tipo-pdf {
+  background-color: #fdecea;
+  color: #c0392b;
+}
+
+.doc-tipo-zip {
+  background-color: #fff8e1;
+  color: #e67e22;
+}
+
+.doc-upload-btn {
+  font-size: 12px;
+  padding: 3px 10px;
+  background-color: #eef4fb;
+  color: #398bf7;
+  border: 1px solid #c9ddf9;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.doc-upload-btn:hover {
+  background-color: #398bf7;
+  color: #fff;
+  border-color: #398bf7;
+}
+
+.doc-archivo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.doc-download-link {
+  font-size: 12px;
+  color: #2e7d32;
+  text-decoration: underline;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.doc-download-link:hover {
+  color: #1b5e20;
+}
+
+.doc-btn-eliminar {
+  font-size: 12px;
+  padding: 3px 10px;
+  background-color: #fdecec;
+  color: #c62828;
+  border: 1px solid #f4b6b6;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.doc-btn-eliminar:hover {
+  background-color: #c62828;
+  color: #fff;
+  border-color: #c62828;
+}
+
+.doc-btn-sustituir {
+  font-size: 12px;
+  padding: 3px 10px;
+  background-color: #e8f1fd;
+  color: #1565c0;
+  border: 1px solid #b3d1f5;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.doc-btn-sustituir:hover {
+  background-color: #1565c0;
+  color: #fff;
+  border-color: #1565c0;
+}
+
+.doc-icon-sustituir {
+  vertical-align: middle;
+}
+
+.estado-doc-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 30px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.estado-doc-requerimiento {
+  background-color: #eef4fb;
+  color: #1c4f8a;
+  border: 1px solid #c9ddf9;
+}
+
+.estado-doc-revision {
+  background-color: #fff8e1;
+  color: #8a6100;
+  border: 1px solid #f5d98b;
+}
+
+.estado-doc-aprobado {
+  background-color: #e6f4ea;
+  color: #1b5e20;
+  border: 1px solid #a3d9b1;
+}
+
+.estado-doc-rechazado {
+  background-color: #fdecea;
+  color: #8a1c1c;
+  border: 1px solid #f3b7b1;
+}
+
+.estado-doc-default {
+  background-color: #fff;
+  color: #344767;
+  border: 1px solid #d2d6da;
+}
+
+.doc-acciones {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.doc-btn-aprobar {
+  font-size: 12px;
+  padding: 3px 10px;
+  background-color: #e6f4ea;
+  color: #1b5e20;
+  border: 1px solid #a3d9b1;
+  border-radius: 4px;
+}
+
+.doc-btn-aprobar:hover {
+  background-color: #1b5e20;
+  color: #fff;
+  border-color: #1b5e20;
+}
+
+.doc-btn-rechazar {
+  font-size: 12px;
+  padding: 3px 10px;
+  background-color: #fdecea;
+  color: #8a1c1c;
+  border: 1px solid #f3b7b1;
+  border-radius: 4px;
+}
+
+.doc-btn-rechazar:not(:disabled):hover {
+  background-color: #8a1c1c;
+  color: #fff;
+  border-color: #8a1c1c;
+}
+
+.doc-btn-aprobar:disabled,
+.doc-btn-rechazar:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.doc-btn-cancelar {
+  font-size: 13px;
+  padding: 6px 16px;
+  background-color: #398bf7;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+
+.doc-btn-cancelar:hover {
+  background-color: #2070d8;
+  color: #fff;
+}
+
+.doc-btn-rechazar-solid {
+  font-size: 13px;
+  padding: 6px 16px;
+  background-color: #c0392b;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+
+.doc-btn-rechazar-solid:hover {
+  background-color: #8a1c1c;
+  color: #fff;
+}
+
+.doc-btn-rechazar-solid:disabled {
+  background-color: #e0a09a;
+  cursor: not-allowed;
+}
+
+.rechazo-doc-nombre {
+  font-size: 14px;
+  color: #455a64;
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  background-color: #f7f9fc;
+  border-radius: 6px;
+  border-left: 3px solid #f3b7b1;
+}
+
+.rechazo-textarea {
+  font-size: 14px;
+  border-radius: 6px;
+  border-color: #d2d6da;
+  resize: vertical;
+}
+
+.rechazo-textarea:focus {
+  border-color: #398bf7;
+  box-shadow: 0 0 0 3px rgba(57, 139, 247, 0.12);
+}
+
+/* ---- Responsivo ---- */
+@media (max-width: 991px) {
+  .detalle-fila-superior {
+    flex-direction: column;
+  }
+
+  .detalle-fila-superior .detalle-info {
+    flex: 1 1 auto;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .detalle-mensajes {
+    width: 100%;
+  }
+}
+
+@media (max-width: 575px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Modal previsualización PDF ---- */
+.pdf-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pdf-preview-header .modal-title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.pdf-preview-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pdf-preview-icono {
+  flex: 0 0 auto;
+  color: #c62828;
+}
+
+.pdf-preview-nombre {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.pdf-preview-titulo .doc-tipo-badge {
+  flex: 0 0 auto;
+}
+
+.pdf-preview-acciones {
+  display: flex;
+  gap: 0.5rem;
+  flex: 0 0 auto;
+}
+
+.pdf-preview-body {
+  padding: 0;
+  height: 78vh;
+  position: relative;
+}
+
+.pdf-preview-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+::ng-deep .modal-pdf-preview .modal-dialog {
+  max-width: 95vw;
+  width: 1400px;
+}
+
+::ng-deep .modal-pdf-preview .modal-content {
+  height: 90vh;
+}
+
+::ng-deep .modal-pdf-preview .modal-body {
+  overflow: hidden;
+}

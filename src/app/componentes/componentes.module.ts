@@ -14,6 +14,13 @@ import { AnexoIconoComponent } from './anexo-icono/anexo-icono.component';
 import { SnowEffectComponent } from './snow-effect/snow-effect.component';
 import { RepseDocumentosComponent } from './repse-documentos/repse-documentos.component';
 import { MensajesComponent } from './mensajes/mensajes.component';
+import { DetalleSolicitudInfoComponent } from './detalle-solicitud-info/detalle-solicitud-info.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  GridAllModule, GridModule, PagerModule,
+  PageService, SortService, FilterService, ResizeService, ReorderService,
+  SelectionService, ToolbarService, EditService, DetailRowService
+} from '@syncfusion/ej2-angular-grids';
 
 
 @NgModule({
@@ -27,7 +34,8 @@ import { MensajesComponent } from './mensajes/mensajes.component';
    AnexoIconoComponent,
    SnowEffectComponent,
    RepseDocumentosComponent,
-   MensajesComponent
+   MensajesComponent,
+   DetalleSolicitudInfoComponent
   ],
   exports:[
    LoaderComponent,
@@ -39,14 +47,23 @@ import { MensajesComponent } from './mensajes/mensajes.component';
    AnexoIconoComponent,
    SnowEffectComponent,
    RepseDocumentosComponent,
-   MensajesComponent
+   MensajesComponent,
+   DetalleSolicitudInfoComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     PipesModule,
-    RouterModule,    
-    AutoCompleteModule,    
+    RouterModule,
+    AutoCompleteModule,
+    GridAllModule,
+    GridModule,
+    PagerModule,
+    NgbModule,
+  ],
+  providers: [
+    PageService, SortService, FilterService, ResizeService, ReorderService,
+    SelectionService, ToolbarService, EditService, DetailRowService
   ]
 })
 export class ComponentesModule { }
