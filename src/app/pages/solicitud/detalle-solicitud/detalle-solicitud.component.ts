@@ -89,9 +89,7 @@ export class DetalleSolicitudComponent implements OnInit, AfterViewInit, OnDestr
     this.cargarDetalle();
       
     this.uploadSub = this._subirArchivoService.notificacionSubirArchivoRepse
-      .subscribe((esCompleto) => {        
-        //TODO: Actualizar la informacion de la solicitud
-          
+      .subscribe((esCompleto) => {                  
         if (this.docEnSubida) {
           this.docEnSubida.nombre= this._modalUploadService.tipoArchivo === 'zip'
             ? 'archivo.zip'

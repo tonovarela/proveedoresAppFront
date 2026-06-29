@@ -78,7 +78,7 @@ export class SolicitudComponent implements OnInit {
    const id_usuario = this.usuarioService.usuario!.Id_Usuario;     
    const nuevaSolicitud : RequestSolicitud = {
      proveedor: solicitud.proveedor,
-     prefijo: `${solicitud.anio}/${String(solicitud.mes).padStart(2, '0') }/${solicitud.proveedor}`,     
+     prefijo: `${solicitud.proveedor}/${solicitud.anio}/${String(solicitud.mes).padStart(2, '0') }`,     
      mensaje: solicitud.nota,
      id_usuario
    };   
