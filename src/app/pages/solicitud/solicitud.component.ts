@@ -46,8 +46,8 @@ export class SolicitudComponent implements OnInit {
 
  cargarSolicitudes() {
   
-  const id_usuario = this.esAdmin() ? undefined : this.usuarioService.usuario!.Proveedor    
-   this.solicitudService.obtenerSolicitudes(id_usuario).subscribe((response) => {
+  const id_usuario = this.esAdmin() ? 0: this.usuarioService.usuario!.Proveedor    
+   this.solicitudService.obtenerSolicitudes(+id_usuario).subscribe((response) => {
      if (response.solicitudes) {
        this.solicitudes = response.solicitudes;
        this.estados = response.estados;

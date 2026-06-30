@@ -8,6 +8,7 @@ export interface Usuario {
     REPSE?:string;
     RegimenFiscal?:string;
     cambiarContrasenia?:string;
+    tieneSolicitudPendiente?:string;
     //PuedeAnexarDocumento?:boolean;
     PuedeGenerarContraRecibo?:boolean;   
     MontoMaxContraRecibo?:number;    

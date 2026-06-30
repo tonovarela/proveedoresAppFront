@@ -24,6 +24,7 @@ export class DetalleSolicitudInfoComponent implements OnChanges, AfterViewInit, 
 
   @Input() solicitud: Solicitud | null = null;
   @Input() panelColapsado: boolean = true;
+  @Input() esAdmin: boolean = false;
 
   /** Notifica al padre que la solicitud pudo cambiar (estado) y debe refrescarse. */
   @Output() solicitudActualizada = new EventEmitter<void>();

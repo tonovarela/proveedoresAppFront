@@ -28,6 +28,7 @@
 
   <!-- Detalle: información, mensajes y documentos -->
   <app-detalle-solicitud-info
+    [esAdmin]="esAdmin()"
     [solicitud]="solicitud"
     [panelColapsado]="panelColapsado"
     (solicitudActualizada)="refrescarSolicitud()">

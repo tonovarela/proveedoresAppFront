@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Solicitud } from '../../../models/solicitud';
 import { SolicitudService } from '../../../services/solicitud.service';
+import { UsuarioService } from 'src/app/services';
 
 
 @Component({
@@ -16,12 +17,17 @@ export class DetalleSolicitudComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private usuarioService:UsuarioService,
     private router: Router,
     private solicitudService: SolicitudService
   ) { }
 
   ngOnInit(): void {
     this.cargarSolicitud();
+  }
+
+  esAdmin(){
+    return this.usuarioService.esAdmin();
   }
 
   private async obtenerSolicitud(id_solicitud: string): Promise<void> {

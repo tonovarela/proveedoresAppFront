@@ -76,6 +76,16 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
   }
 
 
+   public tieneSolicitudesPendientes(): boolean {
+      const esAdmin = this._usuarioService.esAdmin();
+      if (esAdmin) {
+        return false;
+      }
+      const tieneSolicitudPendiente = this._usuarioService.usuario?.tieneSolicitudPendiente;      
+      return tieneSolicitudPendiente == '1';      
+    }
+
+
   verificarMovimientosAnexos() {
     const totalMovimientos = this.movimientos.length;
     const totalNoRequeridos = this.movimientos.filter(x => x.EV == "No Requerido").length;
@@ -87,8 +97,13 @@ export class PendientesCobroComponent implements OnInit, OnDestroy {
 
   }
 
+  irSolicitudes(){
+    this._router.navigateByUrl('/solicitud-repse');
+  }
+
 
   ngOnInit(): void {
+    this.tieneSolicitudesPendientes();
     window.addEventListener('resize', this.onresize.bind(this));
     
 

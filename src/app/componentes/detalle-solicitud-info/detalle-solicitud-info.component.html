@@ -112,7 +112,7 @@
             </span>
           </ng-template>
         </e-column>
-        <e-column headerText="Acciones" width="150" textAlign="Center" allowSorting="false" allowFiltering="false">
+        <e-column headerText="Acciones" width="150" *ngIf="esAdmin" textAlign="Center" allowSorting="false" allowFiltering="false">
           <ng-template #template let-data>
             <div class="doc-acciones" *ngIf="data.estado!=='Aceptado' && data.nombre && !esPdf(data)">
               <button class="btn btn-sm doc-btn-aprobar waves-effect"
@@ -183,7 +183,7 @@
     </h5>
 
     <div class="pdf-preview-acciones"
-      *ngIf="docPdfSeleccionado && docPdfSeleccionado.estado !== 'Aceptado'">
+      *ngIf="docPdfSeleccionado && docPdfSeleccionado.estado !== 'Aceptado' && esAdmin">
       <button class="btn btn-sm doc-btn-aprobar waves-effect"
         (click)="aprobarDesdePreview(modal)" title="Aprobar">
         <i class="fa fa-check"></i> Aprobar

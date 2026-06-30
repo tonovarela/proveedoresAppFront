@@ -11,6 +11,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { FechaDictionary } from 'src/app/utils/dates';
 import { ActivatedRoute } from '@angular/router';
 import { ComunicadoService } from 'src/app/services/comunicado.service';
+//import { es } from '@angular/common/locales/es';
 
 
 
@@ -33,8 +34,9 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
   formatoptions = { type: 'dateTime', format: 'dd/MM/y' };
   selectOptions: any = {
     //persistSelection: true, type: "Multiple",
-    //checkboxOnly: true 
+    //checkboxOnly: true     
   };
+  
   contraRecibos: Contrarecibo[] = [];
   _contraRecibo: Contrarecibo = {};
   _referencia: string = "";
@@ -44,6 +46,8 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
   public contenedorFiltroFechaEmision: any = null;
   public contenedorFiltroFechaVencimiento: any = null;
   public fecha: FechaDictionary = new FechaDictionary();
+
+  
 
   constructor(
     public _modalUploadService: ModalUploadService,
@@ -57,7 +61,7 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
 
 
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     window.addEventListener('resize', this.onresize.bind(this));
     this._comunicadoService.verificarNotificacion.emit(true);
     this.subscription = this._usuarioService
@@ -72,6 +76,8 @@ export class ContraRecibosComponent implements OnInit, OnDestroy {
         this.cargando = false;
       });
   }
+
+ 
 
   verDetalle(contrarecibo: Contrarecibo, referencia?: string) {
 
