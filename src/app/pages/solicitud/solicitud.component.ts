@@ -39,10 +39,15 @@ export class SolicitudComponent implements OnInit {
  ngOnInit(): void {
     this.cargarSolicitudes();
  }
+ esAdmin(): boolean {
+   return this.usuarioService.esAdmin();
+ }
 
 
  cargarSolicitudes() {
-   this.solicitudService.obtenerSolicitudes().subscribe((response) => {
+  
+  const id_usuario = this.esAdmin() ? undefined : this.usuarioService.usuario!.Proveedor    
+   this.solicitudService.obtenerSolicitudes(id_usuario).subscribe((response) => {
      if (response.solicitudes) {
        this.solicitudes = response.solicitudes;
        this.estados = response.estados;
@@ -83,16 +88,18 @@ export class SolicitudComponent implements OnInit {
      id_usuario
    };   
 
+   this.uiService.mostrarLoader('Registrando solicitud', 'Por favor espera un momento...');
+
    this.solicitudService.registrar(nuevaSolicitud)
    .pipe(
       catchError((error) => {
         if (error.status === 400 && error.error && error.error.message) {
-          this.uiService.mostrarAlertaError('Error al registrar solicitud', error.error.message);          
+          this.uiService.mostrarAlertaError('Error al registrar solicitud', error.error.message);
         } else {
-          this.uiService.mostrarAlertaError('Error al registrar solicitud', 'Ocurrió un error al registrar la solicitud. Por favor, inténtalo de nuevo.');          
-        }        
+          this.uiService.mostrarAlertaError('Error al registrar solicitud', 'Ocurrió un error al registrar la solicitud. Por favor, inténtalo de nuevo.');
+        }
         return [];
-      }),      
+      }),
    ).subscribe(()=>{
       this.uiService.mostrarAlertaSuccess('Solicitud registrada', 'La solicitud ha sido registrada exitosamente.');
       this.cargarSolicitudes();

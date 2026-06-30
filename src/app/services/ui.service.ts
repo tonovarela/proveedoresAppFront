@@ -59,6 +59,22 @@ export class UiService {
 
   }
 
+  mostrarLoader(titulo = 'Cargando...', mensaje = 'Por favor espere') {
+    swal.fire({
+      title: titulo,
+      text: mensaje,
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      onOpen: () => {
+        swal.showLoading();
+      }
+    });
+  }
+
+  ocultarLoader() {
+    swal.close();
+  }
+
   mostrarAlertaSuccess(titulo, mensaje) {
     swal.fire({
       icon: 'success',
@@ -69,4 +85,6 @@ export class UiService {
     });
 
   }
+
+
 }

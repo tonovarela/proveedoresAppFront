@@ -33,8 +33,8 @@ const pagesRoutes: Routes = [
                 component: DashboardComponent,            
                 data: { titulo: 'Dashboard' }
             },
-            { path:'solicitud-repse', component:SolicitudComponent,data:{titulo:"Solicitudes  REPSE",modulo:"repse"},canActivate:[VerificaAdminGuard]},
-            { path:'solicitud-repse/detalle/:id', component:DetalleSolicitudComponent,data:{titulo:"Detalle Solicitud",modulo:"repse"},canActivate:[VerificaAdminGuard]},
+            { path:'solicitud-repse', component:SolicitudComponent,data:{titulo:"Solicitudes  REPSE",modulo:"repse"},canActivate:[]},
+            { path:'solicitud-repse/detalle/:id', component:DetalleSolicitudComponent,data:{titulo:"Detalle Solicitud",modulo:"repse"},canActivate:[]},
 
             { path: 'comunicados', component:ComunicadosComponent, data: { titulo: "Comunicados",modulo:"comunicados" },canActivate:[VerificaAdminGuard] },
             { path:'listado', component:ListadoComponent,data:{titulo:"Proveedores",modulo:"#"},canActivate:[VerificaAdminGuard]},

@@ -38,18 +38,18 @@ export class DetalleSolicitudComponent implements OnInit {
     }
 
     const solicitud = solicitudHistory || solicitudDelServicio;
-
-    if (solicitud) {
-      await this.obtenerSolicitud(solicitud.id_solicitud!);
-    } else {
-      const solicitudId = this.route.snapshot.paramMap.get('id');
-      if (solicitudId) {
+    if (!solicitud) {
+        const solicitudId = this.route.snapshot.paramMap.get('id');
+        if (solicitudId) {          
         console.warn('Solicitud no encontrada. ID:', solicitudId);
       }
+      return;
+      
     }
+      await this.obtenerSolicitud(solicitud.id_solicitud!);      
   }
 
-  /** El detalle informó que la solicitud pudo cambiar: refrescamos el encabezado. */
+  
   async refrescarSolicitud(): Promise<void> {
     if (this.solicitud?.id_solicitud) {
       await this.obtenerSolicitud(this.solicitud.id_solicitud);

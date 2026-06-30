@@ -25,8 +25,9 @@ export class SolicitudService {
 
   constructor(private _http: HttpClient) {}
 
-  public obtenerSolicitudes() {
-    return this._http.get<ResponseSolicitudes>(`${this.URL_SERVICE}/solicitud`);
+  public obtenerSolicitudes(id_usuario?: number) {
+
+    return this._http.get<ResponseSolicitudes>(`${this.URL_SERVICE}/solicitud?id_usuario=${id_usuario || '0'}`);
   }
 
   public obtener(id_solicitud: string) {
