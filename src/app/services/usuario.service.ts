@@ -99,16 +99,15 @@ export class UsuarioService {
   }
   async cargarStorage() {
     
-    this.usuario = JSON.parse(localStorage.getItem('usuario'));
-    if (this.usuario && !this.esAdmin() ) {                      
-      console.log("Cargando usuario por proveedor: ",this.usuario.Proveedor);      
-        await this.porProveedor(this.usuario.Proveedor).toPromise();        
-      
-      this.settingService.cargarAjustes();
+    this.usuario = JSON.parse(localStorage.getItem('usuario'));    
+    if (this.usuario && !this.esAdmin() ) {                            
+      await this.porProveedor(this.usuario.Proveedor).toPromise();                     
+    }  
+    if (this.usuario){
+      this.settingService.cargarAjustes();      
+     }
+         
     
-    } else {
-      this.usuario = null;
-    }
   }
   guardarStorage(usuario: Usuario) {    
     localStorage.setItem('usuario', JSON.stringify(usuario));
