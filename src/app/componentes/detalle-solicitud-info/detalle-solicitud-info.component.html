@@ -60,6 +60,14 @@
         <span class="doc-aceptados-texto">Aceptados de</span>
         <span class="doc-aceptados-total">{{ documentosRepse.length }}</span>
       </span>
+      <button *ngIf="puedeCopiarIntelisis"
+        class="btn btn-sm doc-btn-intelisis waves-effect"
+        [disabled]="copiandoIntelisis"
+        (click)="copiarArchivosIntelisis()"
+        title="Copiar archivos a Intelisis">
+        <i class="fa" [ngClass]="copiandoIntelisis ? 'fa-spinner fa-spin' : 'fa-cloud-upload'"></i>
+        {{ copiandoIntelisis ? 'Copiando archivos...' : 'Volver a copiar archivos a Intelisis' }}
+      </button>
     </div>
     <ejs-grid #gridDocs [dataSource]="documentosRepse" [editSettings]="editSettings"
       [pageSettings]="pageOptions"
@@ -114,14 +122,14 @@
         </e-column>
         <e-column headerText="Acciones" width="150" *ngIf="esAdmin" textAlign="Center" allowSorting="false" allowFiltering="false">
           <ng-template #template let-data>
-            <div class="doc-acciones" *ngIf="data.estado!=='Aceptado' && data.nombre && !esPdf(data)">
+            <div class="doc-acciones" *ngIf="mostrarAccionesGrid(data)">
               <button class="btn btn-sm doc-btn-aprobar waves-effect"
-                [disabled]="data.estado === 'Aceptado'"
+                [disabled]="!puedeAprobar(data)"
                 (click)="aprobarDocumento(data)" title="Aprobar">
                 <i class="fa fa-check"></i> Aprobar
               </button>
               <button class="btn btn-sm doc-btn-rechazar waves-effect"
-                [disabled]="data.estado === 'Rechazado'"
+                [disabled]="!puedeRechazar(data)"
                 (click)="abrirModalRechazo(data)" title="Rechazar">
                 <i class="fa fa-times"></i> Rechazar
               </button>
@@ -183,12 +191,14 @@
     </h5>
 
     <div class="pdf-preview-acciones"
-      *ngIf="docPdfSeleccionado && docPdfSeleccionado.estado !== 'Aceptado' && esAdmin">
+      *ngIf="mostrarAccionesPreview(docPdfSeleccionado)">
       <button class="btn btn-sm doc-btn-aprobar waves-effect"
+        [disabled]="!puedeAprobar(docPdfSeleccionado)"
         (click)="aprobarDesdePreview(modal)" title="Aprobar">
         <i class="fa fa-check"></i> Aprobar
       </button>
       <button class="btn btn-sm doc-btn-rechazar waves-effect"
+        [disabled]="!puedeRechazar(docPdfSeleccionado)"
         (click)="rechazarDesdePreview(modal)" title="Rechazar">
         <i class="fa fa-times"></i> Rechazar
       </button>

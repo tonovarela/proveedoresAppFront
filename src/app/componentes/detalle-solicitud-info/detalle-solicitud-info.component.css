@@ -387,6 +387,28 @@
   pointer-events: none;
 }
 
+.doc-btn-intelisis {
+  font-size: 12px;
+  padding: 4px 12px;
+  background-color: #398bf7;
+  color: #fff;
+  border: 1px solid #398bf7;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.doc-btn-intelisis:not(:disabled):hover {
+  background-color: #1c6fd6;
+  border-color: #1c6fd6;
+  color: #fff;
+}
+
+.doc-btn-intelisis:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .doc-btn-cancelar {
   font-size: 13px;
   padding: 6px 16px;

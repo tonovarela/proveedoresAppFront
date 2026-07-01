@@ -108,6 +108,10 @@ export class SolicitudService {
     return this._http.get(url, { responseType: 'blob' });
   }
   
+  public copiarArchivosIntelisis(id_solicitud: string) {
+    return this._http.get(`${this.URL_SERVICE}/solicitud/intelisis/copiar/${id_solicitud}`);
+  }
+
   public obtenerNotas(id_solicitud: string,id_usuarioLogueado:string) {
     return this._http.get<SolicitudNotasResponse>(`${this.URL_SERVICE}/solicitud/notas/${id_solicitud}`).pipe(
       map((response) => {

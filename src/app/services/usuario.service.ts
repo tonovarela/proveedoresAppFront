@@ -7,6 +7,7 @@ import { map} from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { PerfilComponent } from '../pages/perfil/perfil.component';
 @Injectable({
   providedIn: 'root'
 })
@@ -50,6 +51,20 @@ export class UsuarioService {
       })
     );
   }
+
+
+  porProveedor(proveedor: string) {
+    const url = `${this.url}/cliente/proveedor/${proveedor}`;
+    return this.http.get<ResponseLogin>(url).pipe(
+      map((resp) => {
+        if (resp.validacion == true) {
+          this.usuario = resp.data[0];
+          this.guardarStorage(resp.data[0]);
+        }
+        return resp;
+      })
+    );
+  }
   
   autorizacionCR() {  
     return this.facturaService.obtenerPagosAprobados(this.usuario.Proveedor).pipe(
@@ -82,15 +97,20 @@ export class UsuarioService {
   estaLogueado() {
     return this.usuario != null;
   }
-  cargarStorage() {
-    if (localStorage.getItem('usuario')) {
-      this.usuario = JSON.parse(localStorage.getItem('usuario'));
+  async cargarStorage() {
+    
+    this.usuario = JSON.parse(localStorage.getItem('usuario'));
+    if (this.usuario && !this.esAdmin() ) {                      
+      console.log("Cargando usuario por proveedor: ",this.usuario.Proveedor);      
+        await this.porProveedor(this.usuario.Proveedor).toPromise();        
+      
       this.settingService.cargarAjustes();
+    
     } else {
       this.usuario = null;
     }
   }
-  guardarStorage(usuario: Usuario) {
+  guardarStorage(usuario: Usuario) {    
     localStorage.setItem('usuario', JSON.stringify(usuario));
   }
   logout() {

@@ -50,6 +50,7 @@ export class DetalleSolicitudInfoComponent implements OnChanges, AfterViewInit, 
   docEnSubida: DocumentoRepse | null = null;
   aprobandoDocumento: boolean = false;
   rechazandoDocumento: boolean = false;
+  copiandoIntelisis: boolean = false;
   motivoRechazo: string = '';
 
   editSettings: EditSettingsModel = { allowEditing: false, allowDeleting: false };
@@ -59,6 +60,11 @@ export class DetalleSolicitudInfoComponent implements OnChanges, AfterViewInit, 
 
   get documentosAceptados(): number {
     return this.documentosRepse.filter(doc => doc.estado === 'Aceptado').length;
+  }
+
+  /** Muestra el botón "Copiar archivos a Intelisis": solo admin y con la solicitud aceptada. */
+  get puedeCopiarIntelisis(): boolean {
+    return this.esAdmin && this.solicitud?.estado === 'Aceptado';
   }
 
   constructor(
@@ -109,6 +115,30 @@ export class DetalleSolicitudInfoComponent implements OnChanges, AfterViewInit, 
 
   esPdf(doc: DocumentoRepse): boolean {
     return !doc.tipo.includes('ZIP');
+  }
+
+  // ---- Visibilidad centralizada de acciones (Aprobar / Rechazar) ----
+
+  /** Muestra las acciones dentro del grid: solo admin, con archivo cargado y no PDF (los PDF se accionan desde la previsualización). */
+  mostrarAccionesGrid(doc: DocumentoRepse | null): boolean {
+    if (this.solicitud?.estado === "Aceptado") { return false; } // Si la solicitud ya está Aceptada, no se muestran acciones.
+    return this.esAdmin && !!doc?.nombre && !this.esPdf(doc);
+  }
+
+  /** Muestra las acciones dentro de la previsualización de PDF: solo admin y mientras no esté aceptado. */
+  mostrarAccionesPreview(doc: DocumentoRepse | null): boolean {
+    if (this.solicitud?.estado === 'Aceptado') { return false; } // Si la solicitud ya está Aceptada, no se muestran acciones.
+    return this.esAdmin && !!doc ;
+  }
+
+  /** El botón Aprobar está disponible mientras el documento no esté ya aceptado. */
+  puedeAprobar(doc: DocumentoRepse | null): boolean {
+    return !!doc && doc.estado !== 'Aceptado';
+  }
+
+  /** El botón Rechazar está disponible mientras el documento no esté ya rechazado. */
+  puedeRechazar(doc: DocumentoRepse | null): boolean {
+    return !!doc && doc.estado !== 'Rechazado';
   }
 
   // ---- Carga de datos ----
@@ -327,6 +357,20 @@ export class DetalleSolicitudInfoComponent implements OnChanges, AfterViewInit, 
       console.error('Error al rechazar el documento:', error);
     } finally {
       this.rechazandoDocumento = false;
+    }
+  }
+
+  async copiarArchivosIntelisis(): Promise<void> {
+    const id_solicitud = this.solicitud?.id_solicitud;
+    if (!id_solicitud || this.copiandoIntelisis) { return; }
+    this.copiandoIntelisis = true;
+    try {
+      await this.solicitudService.copiarArchivosIntelisis(id_solicitud).toPromise();
+      this._uiService.mostrarAlertaSuccess('Archivos copiados', 'Los archivos se copiaron a Intelisis correctamente.');
+    } catch (error) {
+      console.error('Error al copiar archivos a Intelisis:', error);
+    } finally {
+      this.copiandoIntelisis = false;
     }
   }
 

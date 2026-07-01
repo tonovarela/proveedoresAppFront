@@ -13,8 +13,7 @@ export class LoginGuard implements CanActivate {
     state: RouterStateSnapshot): boolean {
       if (this._usuarioService.estaLogueado()){
         return true;
-      }else{
-        //console.log("bloqueado por el guard");
+      }else{        
         this._router.navigate(['/login']);
         return false;
       }
