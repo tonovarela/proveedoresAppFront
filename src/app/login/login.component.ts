@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/comunicados']);
         return;
       }
-      this.router.navigate(['/pendientes-cobro']);
+      this.router.navigate(['/facturas-emitidas']);
     }
   }
 
