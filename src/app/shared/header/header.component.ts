@@ -13,6 +13,7 @@ import { filter, map} from 'rxjs/operators';
 import { Factura } from 'src/app/models/movimiento';
 import { FilteringEventArgs, } from '@syncfusion/ej2-angular-dropdowns';
 import { Comunicado, ResponseComunicadosPorLeer } from 'src/app/models/comunicado';
+import { environment } from 'src/environments/environment';
 
 
 declare function cerrarBusqueda();
@@ -35,6 +36,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   comunicadosPendientesPorLeer:Comunicado[]=[];
   private subscription: Subscription;
   private subscriptionVerificarNotificacion: Subscription;
+
+  isDebug = !environment.production;
   //obscuro:boolean;
 
 

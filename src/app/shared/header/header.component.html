@@ -12,10 +12,10 @@
                     <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                     <!-- Dark Logo icon -->
                     <!-- <img src="https://sistemas.litoprocess.com/crece/img/Lito2.png"  height="10px"  alt="homepage" class="dark-logo" /> -->
-                    <img src="assets\images\logoLito.png" alt="homepage" class="dark-logo" />
+                    <!-- <img src="assets\images\logoLito.png" alt="homepage" class="dark-logo" /> -->
 
                     <!-- Light Logo icon -->
-                    <img src="assets\images\logoLito.png" alt="homepage" class="light-logo" />
+                    <!-- <img src="assets\images\logoLito.png" alt="homepage" class="light-logo" /> -->
                     <!-- <img src="https://sistemas.litoprocess.com/litoapps/img/logo_b.png" alt="homepage" class="light-logo" /> -->
                     <!-- <img src="assets/images/logo-light-icon.png" alt="homepage" class="light-logo" /> -->
                 </b>
@@ -25,8 +25,8 @@
                     <!-- <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo" /> -->
                     <!-- Light Logo text -->
                     <!-- <img src="assets/images/logo-light-text.png" class="light-logo" alt="homepage" /> -->
-                    <img src="assets\images\letrasLito.png" class="light-logo" alt="homepage" />
-                    <img src="assets\images\letras-light.png" class="dark-logo" alt="homepage" />
+                    <img  *ngIf="isDebug" src="https://servicios.litoprocess.com/static/assets/img/lito-light.png" class="light-logo" alt="homepage" />
+                    <img *ngIf="isDebug" width="200px" src="https://servicios.litoprocess.com/static/assets/img/lito-light.png" class="dark-logo" alt="homepage" />
                 </span>
             </a>
         </div>

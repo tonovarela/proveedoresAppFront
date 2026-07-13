@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ResponseLogin } from '../models/proveedor';
 import { forkJoin} from 'rxjs';
+import { environment } from 'src/environments/environment';
 declare function iniciar_plugins();
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ declare function iniciar_plugins();
 export class LoginComponent implements OnInit {
   fondo="";
   usuario = { usuario: "", password: "" };
+  isDebug= !environment.production;
   constructor(private _usuarioService: UsuarioService,
     private _uiService: UiService,
     public router: Router
